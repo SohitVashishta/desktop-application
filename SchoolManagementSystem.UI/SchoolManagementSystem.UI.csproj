@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationManifest></ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SchoolManagementSystem.Business\SchoolManagementSystem.Business.csproj" />
+    <ProjectReference Include="..\SchoolManagementSystem.Common\SchoolManagementSystem.Common.csproj" />
+    <ProjectReference Include="..\SchoolManagementSystem.Models\SchoolManagementSystem.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UI\Controls\" />
+    <Folder Include="UI\Resources\" />
+    <Folder Include="UI\Views\Courses\" />
+    <Folder Include="UI\Views\Gradebook\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+  </ItemGroup>
+
+</Project>

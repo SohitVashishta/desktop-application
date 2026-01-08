@@ -1,0 +1,11 @@
+D:\Project\SMS APP\SchoolManagementSystem.Common\bin\Debug\net8.0\SchoolManagementSystem.Common.deps.json
+D:\Project\SMS APP\SchoolManagementSystem.Common\bin\Debug\net8.0\SchoolManagementSystem.Common.dll
+D:\Project\SMS APP\SchoolManagementSystem.Common\bin\Debug\net8.0\SchoolManagementSystem.Common.pdb
+D:\Project\SMS APP\SchoolManagementSystem.Common\obj\Debug\net8.0\SchoolManagementSystem.Common.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project\SMS APP\SchoolManagementSystem.Common\obj\Debug\net8.0\SchoolManagementSystem.Common.AssemblyInfoInputs.cache
+D:\Project\SMS APP\SchoolManagementSystem.Common\obj\Debug\net8.0\SchoolManagementSystem.Common.AssemblyInfo.cs
+D:\Project\SMS APP\SchoolManagementSystem.Common\obj\Debug\net8.0\SchoolManagementSystem.Common.csproj.CoreCompileInputs.cache
+D:\Project\SMS APP\SchoolManagementSystem.Common\obj\Debug\net8.0\SchoolManagementSystem.Common.dll
+D:\Project\SMS APP\SchoolManagementSystem.Common\obj\Debug\net8.0\refint\SchoolManagementSystem.Common.dll
+D:\Project\SMS APP\SchoolManagementSystem.Common\obj\Debug\net8.0\SchoolManagementSystem.Common.pdb
+D:\Project\SMS APP\SchoolManagementSystem.Common\obj\Debug\net8.0\ref\SchoolManagementSystem.Common.dll

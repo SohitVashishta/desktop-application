@@ -1,0 +1,158 @@
+﻿<UserControl x:Class="SchoolManagementSystem.UI.UI.Views.Dashboard.TeacherDashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <StackPanel Margin="0,0,0,20">
+            <TextBlock Text="Teacher Dashboard"
+                       FontSize="24"
+                       FontWeight="Bold"/>
+            <TextBlock Text="Overview of classes, attendance and daily activities"
+                       Foreground="Gray"
+                       FontSize="12"/>
+        </StackPanel>
+
+        <!-- CONTENT -->
+        <ScrollViewer Grid.Row="1">
+            <StackPanel>
+
+                <!-- KPI CARDS -->
+                <UniformGrid Columns="4" Margin="0,0,0,20">
+
+                    <Border Background="#3498DB" CornerRadius="6" Margin="8" Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="My Classes" Foreground="White"/>
+                            <TextBlock Text="{Binding TotalClasses}"
+                                       FontSize="26"
+                                       FontWeight="Bold"
+                                       Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="#27AE60" CornerRadius="6" Margin="8" Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="Students" Foreground="White"/>
+                            <TextBlock Text="{Binding TotalStudents}"
+                                       FontSize="26"
+                                       FontWeight="Bold"
+                                       Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="#E67E22" CornerRadius="6" Margin="8" Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="Today's Attendance" Foreground="White"/>
+                            <TextBlock Text="{Binding TodayAttendancePercent}"
+                                       FontSize="26"
+                                       FontWeight="Bold"
+                                       Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="#C0392B" CornerRadius="6" Margin="8" Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="Pending Tasks" Foreground="White"/>
+                            <TextBlock Text="{Binding PendingTasks}"
+                                       FontSize="26"
+                                       FontWeight="Bold"
+                                       Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+
+                </UniformGrid>
+
+                <!-- QUICK ACTIONS -->
+                <TextBlock Text="Quick Actions"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           Margin="5"/>
+
+                <UniformGrid Columns="4" Margin="0,10,0,20">
+
+                    <Button Content="Mark Attendance"
+                            Height="60"
+                            Margin="6"
+                            Command="{Binding MarkAttendanceCommand}"/>
+
+                    <Button Content="Manage Classes"
+                            Height="60"
+                            Margin="6"
+                            Command="{Binding ManageClassesCommand}"/>
+
+                    <Button Content="Assignments"
+                            Height="60"
+                            Margin="6"
+                            Command="{Binding AssignmentsCommand}"/>
+
+                    <Button Content="Reports"
+                            Height="60"
+                            Margin="6"
+                            Command="{Binding ReportsCommand}"/>
+
+                </UniformGrid>
+
+                <!-- PANELS -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- TODAY SCHEDULE -->
+                    <Border CornerRadius="6"
+                            BorderBrush="#E0E0E0"
+                            BorderThickness="1"
+                            Padding="12"
+                            Margin="5">
+
+                        <StackPanel>
+                            <TextBlock Text="Today's Schedule"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"/>
+
+                            <ItemsControl ItemsSource="{Binding TodaySchedule}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"
+                                                   Margin="5,4"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ANNOUNCEMENTS -->
+                    <Border Grid.Column="1"
+                            CornerRadius="6"
+                            BorderBrush="#E0E0E0"
+                            BorderThickness="1"
+                            Padding="12"
+                            Margin="5">
+
+                        <StackPanel>
+                            <TextBlock Text="Announcements"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"/>
+
+                            <ItemsControl ItemsSource="{Binding Announcements}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"
+                                                   Margin="5,4"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

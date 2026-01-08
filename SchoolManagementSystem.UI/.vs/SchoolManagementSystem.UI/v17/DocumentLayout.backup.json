@@ -1,0 +1,219 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Project\\SMS APP\\SchoolManagementSystem.UI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{50C1EF32-3357-8EEA-D2AB-91F3331FB3CE}|..\\SchoolManagementSystem.Business\\SchoolManagementSystem.Business.csproj|d:\\project\\sms app\\schoolmanagementsystem.business\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{16E4AB8F-CD42-515E-4FDB-3C0B8759681C}|..\\SchoolManagementSystem.Data\\SchoolManagementSystem.Data.csproj|d:\\project\\sms app\\schoolmanagementsystem.data\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B084BCCD-70BF-2BAF-1BD9-49E74ABE3FBB}|..\\SchoolManagementSystem.Common\\SchoolManagementSystem.Common.csproj|d:\\project\\sms app\\schoolmanagementsystem.common\\session\\usersession.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82E384A7-EA31-41D9-9EB7-8C3C27E29FCC}|SchoolManagementSystem.UI.csproj|d:\\project\\sms app\\schoolmanagementsystem.ui\\ui\\viewmodels\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82E384A7-EA31-41D9-9EB7-8C3C27E29FCC}|SchoolManagementSystem.UI.csproj|solutionrelative:ui\\viewmodels\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82E384A7-EA31-41D9-9EB7-8C3C27E29FCC}|SchoolManagementSystem.UI.csproj|d:\\project\\sms app\\schoolmanagementsystem.ui\\ui\\views\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{82E384A7-EA31-41D9-9EB7-8C3C27E29FCC}|SchoolManagementSystem.UI.csproj|solutionrelative:ui\\views\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82E384A7-EA31-41D9-9EB7-8C3C27E29FCC}|SchoolManagementSystem.UI.csproj|d:\\project\\sms app\\schoolmanagementsystem.ui\\ui\\views\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82E384A7-EA31-41D9-9EB7-8C3C27E29FCC}|SchoolManagementSystem.UI.csproj|solutionrelative:ui\\views\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{50C1EF32-3357-8EEA-D2AB-91F3331FB3CE}|..\\SchoolManagementSystem.Business\\SchoolManagementSystem.Business.csproj|d:\\project\\sms app\\schoolmanagementsystem.business\\security\\permissionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{16E4AB8F-CD42-515E-4FDB-3C0B8759681C}|..\\SchoolManagementSystem.Data\\SchoolManagementSystem.Data.csproj|d:\\project\\sms app\\schoolmanagementsystem.data\\schooldbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82E384A7-EA31-41D9-9EB7-8C3C27E29FCC}|SchoolManagementSystem.UI.csproj|d:\\project\\sms app\\schoolmanagementsystem.ui\\ui\\views\\loginview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82E384A7-EA31-41D9-9EB7-8C3C27E29FCC}|SchoolManagementSystem.UI.csproj|solutionrelative:ui\\views\\loginview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6E63E35-7186-FC12-F6FE-72637F075BE2}|..\\SchoolManagementSystem.Models\\SchoolManagementSystem.Models.csproj|d:\\project\\sms app\\schoolmanagementsystem.models\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82E384A7-EA31-41D9-9EB7-8C3C27E29FCC}|SchoolManagementSystem.UI.csproj|d:\\project\\sms app\\schoolmanagementsystem.ui\\ui\\views\\attendance\\attendanceview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{82E384A7-EA31-41D9-9EB7-8C3C27E29FCC}|SchoolManagementSystem.UI.csproj|solutionrelative:ui\\views\\attendance\\attendanceview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82E384A7-EA31-41D9-9EB7-8C3C27E29FCC}|SchoolManagementSystem.UI.csproj|d:\\project\\sms app\\schoolmanagementsystem.ui\\ui\\views\\dashboard\\admindashboardview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{82E384A7-EA31-41D9-9EB7-8C3C27E29FCC}|SchoolManagementSystem.UI.csproj|solutionrelative:ui\\views\\dashboard\\admindashboardview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "LoginViewModel.cs",
+              "DocumentMoniker": "D:\\Project\\SMS APP\\SchoolManagementSystem.UI\\UI\\ViewModels\\LoginViewModel.cs",
+              "RelativeDocumentMoniker": "UI\\ViewModels\\LoginViewModel.cs",
+              "ToolTip": "D:\\Project\\SMS APP\\SchoolManagementSystem.UI\\UI\\ViewModels\\LoginViewModel.cs",
+              "RelativeToolTip": "UI\\ViewModels\\LoginViewModel.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAACMAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T16:40:30.636Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "D:\\Project\\SMS APP\\SchoolManagementSystem.UI\\UI\\Views\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "UI\\Views\\MainWindow.xaml",
+              "ToolTip": "D:\\Project\\SMS APP\\SchoolManagementSystem.UI\\UI\\Views\\MainWindow.xaml",
+              "RelativeToolTip": "UI\\Views\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-01-08T16:32:37.382Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PermissionService.cs",
+              "DocumentMoniker": "D:\\Project\\SMS APP\\SchoolManagementSystem.Business\\Security\\PermissionService.cs",
+              "RelativeDocumentMoniker": "..\\SchoolManagementSystem.Business\\Security\\PermissionService.cs",
+              "ToolTip": "D:\\Project\\SMS APP\\SchoolManagementSystem.Business\\Security\\PermissionService.cs",
+              "RelativeToolTip": "..\\SchoolManagementSystem.Business\\Security\\PermissionService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T16:31:34.577Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UserRepository.cs",
+              "DocumentMoniker": "D:\\Project\\SMS APP\\SchoolManagementSystem.Data\\UserRepository.cs",
+              "RelativeDocumentMoniker": "..\\SchoolManagementSystem.Data\\UserRepository.cs",
+              "ToolTip": "D:\\Project\\SMS APP\\SchoolManagementSystem.Data\\UserRepository.cs",
+              "RelativeToolTip": "..\\SchoolManagementSystem.Data\\UserRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T16:29:50.692Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "D:\\Project\\SMS APP\\SchoolManagementSystem.Business\\Services\\AuthService.cs",
+              "RelativeDocumentMoniker": "..\\SchoolManagementSystem.Business\\Services\\AuthService.cs",
+              "ToolTip": "D:\\Project\\SMS APP\\SchoolManagementSystem.Business\\Services\\AuthService.cs",
+              "RelativeToolTip": "..\\SchoolManagementSystem.Business\\Services\\AuthService.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAAABAAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T16:25:33.938Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "User.cs",
+              "DocumentMoniker": "D:\\Project\\SMS APP\\SchoolManagementSystem.Models\\Models\\User.cs",
+              "RelativeDocumentMoniker": "..\\SchoolManagementSystem.Models\\Models\\User.cs",
+              "ToolTip": "D:\\Project\\SMS APP\\SchoolManagementSystem.Models\\Models\\User.cs",
+              "RelativeToolTip": "..\\SchoolManagementSystem.Models\\Models\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAgAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T16:21:01.812Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "SchoolDbContext.cs",
+              "DocumentMoniker": "D:\\Project\\SMS APP\\SchoolManagementSystem.Data\\SchoolDbContext.cs",
+              "RelativeDocumentMoniker": "..\\SchoolManagementSystem.Data\\SchoolDbContext.cs",
+              "ToolTip": "D:\\Project\\SMS APP\\SchoolManagementSystem.Data\\SchoolDbContext.cs",
+              "RelativeToolTip": "..\\SchoolManagementSystem.Data\\SchoolDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T16:16:52.701Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "LoginView.xaml.cs",
+              "DocumentMoniker": "D:\\Project\\SMS APP\\SchoolManagementSystem.UI\\UI\\Views\\LoginView.xaml.cs",
+              "RelativeDocumentMoniker": "UI\\Views\\LoginView.xaml.cs",
+              "ToolTip": "D:\\Project\\SMS APP\\SchoolManagementSystem.UI\\UI\\Views\\LoginView.xaml.cs",
+              "RelativeToolTip": "UI\\Views\\LoginView.xaml.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAQwCQAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T16:08:01.681Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UserSession.cs",
+              "DocumentMoniker": "D:\\Project\\SMS APP\\SchoolManagementSystem.Common\\Session\\UserSession.cs",
+              "RelativeDocumentMoniker": "..\\SchoolManagementSystem.Common\\Session\\UserSession.cs",
+              "ToolTip": "D:\\Project\\SMS APP\\SchoolManagementSystem.Common\\Session\\UserSession.cs",
+              "RelativeToolTip": "..\\SchoolManagementSystem.Common\\Session\\UserSession.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAQAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T16:07:21.818Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "D:\\Project\\SMS APP\\SchoolManagementSystem.UI\\UI\\Views\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "UI\\Views\\MainWindow.xaml.cs",
+              "ToolTip": "D:\\Project\\SMS APP\\SchoolManagementSystem.UI\\UI\\Views\\MainWindow.xaml.cs",
+              "RelativeToolTip": "UI\\Views\\MainWindow.xaml.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAewG0AAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T15:48:41.458Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AttendanceView.xaml",
+              "DocumentMoniker": "D:\\Project\\SMS APP\\SchoolManagementSystem.UI\\UI\\Views\\Attendance\\AttendanceView.xaml",
+              "RelativeDocumentMoniker": "UI\\Views\\Attendance\\AttendanceView.xaml",
+              "ToolTip": "D:\\Project\\SMS APP\\SchoolManagementSystem.UI\\UI\\Views\\Attendance\\AttendanceView.xaml",
+              "RelativeToolTip": "UI\\Views\\Attendance\\AttendanceView.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-01-08T15:57:13.589Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "AdminDashboardView.xaml",
+              "DocumentMoniker": "D:\\Project\\SMS APP\\SchoolManagementSystem.UI\\UI\\Views\\Dashboard\\AdminDashboardView.xaml",
+              "RelativeDocumentMoniker": "UI\\Views\\Dashboard\\AdminDashboardView.xaml",
+              "ToolTip": "D:\\Project\\SMS APP\\SchoolManagementSystem.UI\\UI\\Views\\Dashboard\\AdminDashboardView.xaml",
+              "RelativeToolTip": "UI\\Views\\Dashboard\\AdminDashboardView.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-01-08T15:47:50.622Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

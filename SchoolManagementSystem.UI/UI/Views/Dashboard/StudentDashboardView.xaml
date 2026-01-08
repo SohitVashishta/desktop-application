@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="SchoolManagementSystem.UI.UI.Views.Dashboard.StudentDashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Margin="20">
+        <UniformGrid Columns="3">
+
+            <Border Background="#4F46E5" Margin="10" Padding="20" CornerRadius="6">
+                <StackPanel>
+                    <TextBlock Text="Attendance"
+                               Foreground="White"/>
+                    <TextBlock Text="{Binding AttendancePercent}"
+                               FontSize="28"
+                               Foreground="White"/>
+                </StackPanel>
+            </Border>
+
+            <Border Background="#059669" Margin="10" Padding="20" CornerRadius="6">
+                <StackPanel>
+                    <TextBlock Text="Subjects"
+                               Foreground="White"/>
+                    <TextBlock Text="{Binding TotalSubjects}"
+                               FontSize="28"
+                               Foreground="White"/>
+                </StackPanel>
+            </Border>
+
+            <Border Background="#D97706" Margin="10" Padding="20" CornerRadius="6">
+                <StackPanel>
+                    <TextBlock Text="Pending Tasks"
+                               Foreground="White"/>
+                    <TextBlock Text="{Binding PendingTasks}"
+                               FontSize="28"
+                               Foreground="White"/>
+                </StackPanel>
+            </Border>
+
+        </UniformGrid>
+    </Grid>
+</UserControl>

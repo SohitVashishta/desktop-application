@@ -1,0 +1,17 @@
+D:\Project\SMS APP\SchoolManagementSystem.Data\obj\Debug\net8.0\SchoolManagementSystem.Data.csproj.AssemblyReference.cache
+D:\Project\SMS APP\SchoolManagementSystem.Data\obj\Debug\net8.0\SchoolManagementSystem.Data.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project\SMS APP\SchoolManagementSystem.Data\obj\Debug\net8.0\SchoolManagementSystem.Data.AssemblyInfoInputs.cache
+D:\Project\SMS APP\SchoolManagementSystem.Data\obj\Debug\net8.0\SchoolManagementSystem.Data.AssemblyInfo.cs
+D:\Project\SMS APP\SchoolManagementSystem.Data\obj\Debug\net8.0\SchoolManagementSystem.Data.csproj.CoreCompileInputs.cache
+D:\Project\SMS APP\SchoolManagementSystem.Data\bin\Debug\net8.0\SchoolManagementSystem.Data.deps.json
+D:\Project\SMS APP\SchoolManagementSystem.Data\bin\Debug\net8.0\SchoolManagementSystem.Data.dll
+D:\Project\SMS APP\SchoolManagementSystem.Data\bin\Debug\net8.0\SchoolManagementSystem.Data.pdb
+D:\Project\SMS APP\SchoolManagementSystem.Data\bin\Debug\net8.0\SchoolManagementSystem.Common.dll
+D:\Project\SMS APP\SchoolManagementSystem.Data\bin\Debug\net8.0\SchoolManagementSystem.Models.dll
+D:\Project\SMS APP\SchoolManagementSystem.Data\bin\Debug\net8.0\SchoolManagementSystem.Common.pdb
+D:\Project\SMS APP\SchoolManagementSystem.Data\bin\Debug\net8.0\SchoolManagementSystem.Models.pdb
+D:\Project\SMS APP\SchoolManagementSystem.Data\obj\Debug\net8.0\SchoolMa.12A12A31.Up2Date
+D:\Project\SMS APP\SchoolManagementSystem.Data\obj\Debug\net8.0\SchoolManagementSystem.Data.dll
+D:\Project\SMS APP\SchoolManagementSystem.Data\obj\Debug\net8.0\refint\SchoolManagementSystem.Data.dll
+D:\Project\SMS APP\SchoolManagementSystem.Data\obj\Debug\net8.0\SchoolManagementSystem.Data.pdb
+D:\Project\SMS APP\SchoolManagementSystem.Data\obj\Debug\net8.0\ref\SchoolManagementSystem.Data.dll
