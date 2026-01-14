@@ -1,4 +1,5 @@
-﻿using SchoolManagementSystem.UI.UI.ViewModels;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SchoolManagementSystem.UI.UI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,8 @@ namespace SchoolManagementSystem.UI.UI.Views.Students
         public StudentListView()
         {
             InitializeComponent();
-            DataContext = new StudentViewModel();
+            DataContext = App.Services.GetRequiredService<StudentViewModel>();
+
         }
     }
 }

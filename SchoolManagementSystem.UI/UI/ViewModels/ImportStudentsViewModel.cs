@@ -2,16 +2,15 @@
 using SchoolManagementSystem.Business.Services;
 using SchoolManagementSystem.UI.UI.Helpers;
 using System;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
 namespace SchoolManagementSystem.UI.UI.ViewModels.Import
 {
-    public class ImportStudentsViewModel : INotifyPropertyChanged
+    public class ImportStudentsViewModel : BaseViewModel
     {
-        private readonly ImportService _service = new();
+        private readonly IImportService _importService;
 
         private int _progress;
         private bool _isImporting;
@@ -19,26 +18,48 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Import
         public int Progress
         {
             get => _progress;
-            set { _progress = value; OnPropertyChanged(nameof(Progress)); }
+            set
+            {
+                _progress = value;
+                OnPropertyChanged();
+            }
         }
 
         public bool IsImporting
         {
             get => _isImporting;
-            set { _isImporting = value; OnPropertyChanged(nameof(IsImporting)); }
+            set
+            {
+                _isImporting = value;
+                OnPropertyChanged();
+                CommandManager.InvalidateRequerySuggested(); // refresh button state
+            }
         }
 
         public ICommand ImportCommand { get; }
 
-        public ImportStudentsViewModel()
+        // ✅ Constructor Injection
+        public ImportStudentsViewModel(IImportService importService)
         {
-            ImportCommand = new RelayCommand(async () => await ImportAsync(), () => !IsImporting);
+            _importService = importService;
+
+            ImportCommand = new RelayCommand(
+                async () => await ImportAsync(),
+                () => !IsImporting);
         }
 
-        public async Task ImportAsync()
+        // =============================
+        // IMPORT STUDENTS (ASYNC + PROGRESS)
+        // =============================
+        private async Task ImportAsync()
         {
-            var dlg = new OpenFileDialog { Filter = "Excel (*.xlsx)|*.xlsx" };
-            if (dlg.ShowDialog() != true) return;
+            var dlg = new OpenFileDialog
+            {
+                Filter = "Excel Files (*.xlsx)|*.xlsx"
+            };
+
+            if (dlg.ShowDialog() != true)
+                return;
 
             Progress = 0;
             IsImporting = true;
@@ -47,20 +68,22 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Import
 
             try
             {
-                await Task.Run(() =>
-                    _service.ImportStudentsWithProgress(dlg.FileName, progress));
+                // ✅ Async service call – no Task.Run
+                await _importService.ImportStudentsWithProgressAsync(
+                    dlg.FileName,
+                    progress);
 
                 MessageBox.Show("Students imported successfully");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Import Failed",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
                 IsImporting = false;
             }
         }
-
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void OnPropertyChanged(string prop) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
     }
 }

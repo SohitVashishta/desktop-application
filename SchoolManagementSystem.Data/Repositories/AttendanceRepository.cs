@@ -1,33 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Models;
+using SchoolManagementSystem.Models.Models;
+using System.Linq;
 
 namespace SchoolManagementSystem.Data.Repositories
 {
-    public class AttendanceRepository
+    public class AttendanceRepository : IAttendanceRepository
     {
+        private readonly SchoolDbContext _context;
+
+        // ✅ Inject DbContext
+        public AttendanceRepository(SchoolDbContext context)
+        {
+            _context = context;
+        }
+
         // =============================
         // GET BY DATE
         // =============================
-        public List<Attendance> GetByDate(DateTime date)
+        public async Task<List<Attendance>> GetByDateAsync(DateTime date)
         {
-            using var ctx = new SchoolDbContext();
-            return ctx.Attendances
-                      .Where(a => a.AttendanceDate == date.Date)
-                      .ToList();
+            var targetDate = date.Date;
+
+            return await _context.Attendances
+                .AsNoTracking()
+                .Where(a => a.AttendanceDate == targetDate)
+                .ToListAsync();
         }
 
         // =============================
         // UPSERT SINGLE RECORD
         // =============================
-        public void Upsert(int studentId, DateTime date, bool isPresent)
+        public async Task UpsertAsync(int studentId, DateTime date, bool isPresent)
         {
-            using var ctx = new SchoolDbContext();
+            var targetDate = date.Date;
 
-            var record = ctx.Attendances.FirstOrDefault(a =>
-                a.StudentId == studentId &&
-                a.AttendanceDate == date.Date);
+            var record = await _context.Attendances
+                .FirstOrDefaultAsync(a =>
+                    a.StudentId == studentId &&
+                    a.AttendanceDate == targetDate);
 
             if (record != null)
             {
@@ -35,48 +46,35 @@ namespace SchoolManagementSystem.Data.Repositories
             }
             else
             {
-                ctx.Attendances.Add(new Attendance
+                await _context.Attendances.AddAsync(new Attendance
                 {
                     StudentId = studentId,
-                    AttendanceDate = date.Date,
+                    AttendanceDate = targetDate,
                     IsPresent = isPresent
                 });
             }
 
-            ctx.SaveChanges();
-        }
-        // =========================================
-        // DASHBOARD CALCULATION
-        // =========================================
-        public int GetAttendancePercentageByDate(DateTime date)
-        {
-            using var ctx = new SchoolDbContext();
-
-            var total = ctx.Attendances
-                           .Count(a => a.AttendanceDate == date.Date);
-
-            if (total == 0)
-                return 0;
-
-            var present = ctx.Attendances
-                             .Count(a => a.AttendanceDate == date.Date && a.IsPresent);
-
-            return (int)((present * 100.0) / total);
+            await _context.SaveChangesAsync();
         }
 
-
         // =============================
-        // BULK UPSERT (FAST & SAFE)
+        // BULK UPSERT (STANDARD & SAFE)
         // =============================
-        public void UpsertBulk(DateTime date, List<Attendance> records)
+        public async Task UpsertBulkAsync(DateTime date, List<Attendance> records)
         {
-            using var ctx = new SchoolDbContext();
+            var targetDate = date.Date;
+
+            var studentIds = records.Select(r => r.StudentId).ToList();
+
+            var existingRecords = await _context.Attendances
+                .Where(a => a.AttendanceDate == targetDate &&
+                            studentIds.Contains(a.StudentId))
+                .ToListAsync();
 
             foreach (var item in records)
             {
-                var existing = ctx.Attendances.FirstOrDefault(a =>
-                    a.StudentId == item.StudentId &&
-                    a.AttendanceDate == date.Date);
+                var existing = existingRecords
+                    .FirstOrDefault(x => x.StudentId == item.StudentId);
 
                 if (existing != null)
                 {
@@ -84,16 +82,35 @@ namespace SchoolManagementSystem.Data.Repositories
                 }
                 else
                 {
-                    ctx.Attendances.Add(new Attendance
+                    await _context.Attendances.AddAsync(new Attendance
                     {
                         StudentId = item.StudentId,
-                        AttendanceDate = date.Date,
+                        AttendanceDate = targetDate,
                         IsPresent = item.IsPresent
                     });
                 }
             }
 
-            ctx.SaveChanges();
+            await _context.SaveChangesAsync();
+        }
+
+        // =============================
+        // DASHBOARD CALCULATION (STANDARD)
+        // =============================
+        public async Task<int> GetAttendancePercentageByDateAsync(DateTime date)
+        {
+            var targetDate = date.Date;
+
+            var total = await _context.Attendances
+                .CountAsync(a => a.AttendanceDate == targetDate);
+
+            if (total == 0)
+                return 0;
+
+            var present = await _context.Attendances
+                .CountAsync(a => a.AttendanceDate == targetDate && a.IsPresent);
+
+            return (int)((present * 100.0) / total);
         }
     }
 }

@@ -1,40 +1,82 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Input;
+﻿using SchoolManagementSystem.Business;
 using SchoolManagementSystem.Business.Services;
 using SchoolManagementSystem.Models;
+using SchoolManagementSystem.Models.Models;
 using SchoolManagementSystem.UI.UI.Helpers;
+using System;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace SchoolManagementSystem.UI.UI.ViewModels
 {
-    public class StudentAddEditViewModel
+    public class StudentAddEditViewModel : BaseViewModel
     {
-        private readonly StudentService _service = new();
-        private readonly Window _window;
-        private readonly int _studentId;
+        private readonly IStudentService _studentService;
+        private int _studentId;
+
+        // ================= UI PROPERTIES =================
 
         public string Title => _studentId == 0 ? "Add Student" : "Edit Student";
 
-        public string FirstName { get; set; } = "";
-        public string LastName { get; set; } = "";
-        public string Email { get; set; } = "";
-        public DateTime? DateOfBirth { get; set; }
-        public DateTime EnrollmentDate { get; set; } = DateTime.Today;
+        private string _firstName = string.Empty;
+        public string FirstName
+        {
+            get => _firstName;
+            set { _firstName = value; OnPropertyChanged(); }
+        }
+
+        private string _lastName = string.Empty;
+        public string LastName
+        {
+            get => _lastName;
+            set { _lastName = value; OnPropertyChanged(); }
+        }
+
+        private string _email = string.Empty;
+        public string Email
+        {
+            get => _email;
+            set { _email = value; OnPropertyChanged(); }
+        }
+
+        private DateTime? _dateOfBirth;
+        public DateTime? DateOfBirth
+        {
+            get => _dateOfBirth;
+            set { _dateOfBirth = value; OnPropertyChanged(); }
+        }
+
+        private DateTime _enrollmentDate = DateTime.Today;
+        public DateTime EnrollmentDate
+        {
+            get => _enrollmentDate;
+            set { _enrollmentDate = value; OnPropertyChanged(); }
+        }
+
+        // ================= COMMANDS =================
 
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
 
+        // Notify View to close
+        public event Action<bool>? CloseRequested;
+
+        // ================= CONSTRUCTORS =================
+
         // ADD
-        public StudentAddEditViewModel(Window window)
+        public StudentAddEditViewModel(IStudentService studentService)
         {
-            _window = window;
-            SaveCommand = new RelayCommand(Save);
-            CancelCommand = new RelayCommand(Cancel);
+            _studentService = studentService;
+
+            SaveCommand = new RelayCommand(async () => await SaveAsync());
+            CancelCommand = new RelayCommand(() => CloseRequested?.Invoke(false));
         }
 
         // EDIT
-        public StudentAddEditViewModel(Window window, Student student)
-            : this(window)
+        public StudentAddEditViewModel(
+            IStudentService studentService,
+            Student student) : this(studentService)
         {
             _studentId = student.StudentId;
             FirstName = student.FirstName;
@@ -42,13 +84,23 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
             Email = student.Email;
             DateOfBirth = student.DateOfBirth;
             EnrollmentDate = student.EnrollmentDate;
+
+            OnPropertyChanged(nameof(Title));
         }
 
-        private void Save()
+        // ================= SAVE =================
+
+        private async Task SaveAsync()
         {
             if (string.IsNullOrWhiteSpace(FirstName))
             {
                 MessageBox.Show("First Name is required");
+                return;
+            }
+
+            if (DateOfBirth == null)
+            {
+                MessageBox.Show("Date of Birth is required");
                 return;
             }
 
@@ -58,23 +110,16 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
                 FirstName = FirstName,
                 LastName = LastName,
                 Email = Email,
-                DateOfBirth = DateOfBirth,
+                DateOfBirth = DateOfBirth.Value,
                 EnrollmentDate = EnrollmentDate
             };
 
             if (_studentId == 0)
-                _service.AddStudent(student);
+                await _studentService.AddStudentAsync(student);
             else
-                _service.UpdateStudent(student);
+                await _studentService.UpdateStudentAsync(student);
 
-            _window.DialogResult = true;
-            _window.Close();
-        }
-
-        private void Cancel()
-        {
-            _window.DialogResult = false;
-            _window.Close();
+            CloseRequested?.Invoke(true);
         }
     }
 }

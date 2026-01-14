@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="SchoolManagementSystem.UI.UI.Views.Admin.HrPayrollView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:SchoolManagementSystem.UI.UI.ViewModels">
+
+    <!--<UserControl.DataContext>
+        <vm:HrPayrollViewModel/>
+    </UserControl.DataContext>-->
+
+    <ScrollViewer>
+        <StackPanel>
+
+            <TextBlock Text="HR Payroll"
+                       Style="{StaticResource SectionHeaderStyle}"/>
+
+            <!-- ADD STAFF -->
+            <Border Style="{StaticResource CardStyle}">
+                <StackPanel>
+
+                    <TextBlock Text="Add Staff"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,10"/>
+
+                    <WrapPanel>
+                        <TextBox Width="160" Margin="5"
+                                
+                                 Text="{Binding StaffName}"/>
+
+                        <TextBox Width="140" Margin="5"
+                                
+                                 Text="{Binding Role}"/>
+
+                        <TextBox Width="120" Margin="5"
+                                
+                                 Text="{Binding BasicSalary}"/>
+
+                        <TextBox Width="120" Margin="5"
+                                 
+                                 Text="{Binding Allowance}"/>
+
+                        <TextBox Width="120" Margin="5"
+                                 
+                                 Text="{Binding Deduction}"/>
+                    </WrapPanel>
+
+                    <Button Content="Add Staff"
+                            Command="{Binding AddStaffCommand}"
+                            Style="{StaticResource ActionButtonStyle}"
+                            Background="{StaticResource PrimaryBrush}"
+                            Foreground="White"
+                            Margin="0,10,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- STAFF LIST -->
+            <Border Style="{StaticResource CardStyle}" Margin="0,16,0,0">
+                <DataGrid ItemsSource="{Binding Staff}"
+                          AutoGenerateColumns="False">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name"
+                                            Binding="{Binding StaffName}"/>
+                        <DataGridTextColumn Header="Role"
+                                            Binding="{Binding Role}"/>
+                        <DataGridTextColumn Header="Basic"
+                                            Binding="{Binding BasicSalary}"/>
+                        <DataGridTextColumn Header="Allowance"
+                                            Binding="{Binding Allowance}"/>
+                        <DataGridTextColumn Header="Deduction"
+                                            Binding="{Binding Deduction}"/>
+                        <DataGridTextColumn Header="Net Salary"
+                                            Binding="{Binding NetSalary}"/>
+                    </DataGrid.Columns>
+
+                </DataGrid>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

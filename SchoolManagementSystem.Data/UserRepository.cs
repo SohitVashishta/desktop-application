@@ -1,35 +1,45 @@
-﻿using Microsoft.Data.SqlClient;
-using SchoolManagementSystem.Models;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Models.Models;
+using System.Data;
 
 namespace SchoolManagementSystem.Data.Repositories
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
-        private readonly string _conn =
-            "Server=.;Database=SchoolDB;Trusted_Connection=True;TrustServerCertificate=True";
+        private readonly SchoolDbContext _context;
 
-        public User? GetByUsername(string username)
+        public UserRepository(SchoolDbContext context)
         {
-            using var con = new SqlConnection(_conn);
-            var cmd = new SqlCommand(
-                "SELECT * FROM Users WHERE Username=@u AND IsActive=1", con);
+            _context = context;
+        }
 
-            cmd.Parameters.AddWithValue("@u", username);
+        public async Task AddUserAsync(User user)
+        {
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+        }
 
-            con.Open();
-            using var dr = cmd.ExecuteReader();
+        public Task DeactivateUserAsync(int userId)
+        {
+            throw new NotImplementedException();
+        }
 
-            if (!dr.Read()) return null;
+        public async Task<List<User>> GetUsersAsync()
+        {
+            return await _context.Users
+                .AsNoTracking()
+                .ToListAsync();
+        }
+        public Task UpdatePasswordAsync(int userId, string passwordHash)
+        {
+            throw new NotImplementedException();
+        }
 
-            return new User
-            {
-                UserId = (int)dr["UserId"],
-                Username = dr["Username"].ToString()!,
-                PasswordHash = dr["PasswordHash"].ToString()!,
-                Role = dr["Role"].ToString(),
-                IsActive = (bool)dr["IsActive"]
-            };
+        public Task UpdateUserAsync(User user)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,64 +1,54 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Models;
-using System.Collections.Generic;
-using System.Linq;
+using SchoolManagementSystem.Models.Models;
 
 namespace SchoolManagementSystem.Data.Repositories
 {
-    public class StudentRepository
+    public class StudentRepository : IStudentRepository
     {
-        private readonly string _conn =
-            "Server=.;Database=SchoolDB;Trusted_Connection=True;TrustServerCertificate=True";
+        private readonly SchoolDbContext _context;
 
-        public List<Student> GetAll()
+        public StudentRepository(SchoolDbContext context)
         {
-            using var context = new SchoolDbContext();
-            return context.Students.ToList();
+            _context = context;
         }
 
-        public void Add(Student student)
+        public async Task<List<Student>> GetAllAsync()
         {
-            using var context = new SchoolDbContext();
-            context.Students.Add(student);
-            context.SaveChanges();
+            return await _context.Students
+                .AsNoTracking()
+                .ToListAsync();
         }
 
-        public void Update(Student student)
+        public async Task<Student?> GetByIdAsync(int id)
         {
-            using var context = new SchoolDbContext();
-            context.Students.Update(student);
-            context.SaveChanges();
+            return await _context.Students
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.StudentId == id);
         }
 
-        // ✅ ADD THIS
-        public void Delete(int studentId)
+        public async Task AddAsync(Student student)
         {
-            using var context = new SchoolDbContext();
-            var student = context.Students.FirstOrDefault(s => s.StudentId == studentId);
+            await _context.Students.AddAsync(student);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Student student)
+        {
+            _context.Students.Update(student);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var student = await _context.Students
+                .FirstOrDefaultAsync(x => x.StudentId == id);
+
             if (student != null)
             {
-                context.Students.Remove(student);
-                context.SaveChanges();
+                _context.Students.Remove(student);
+                await _context.SaveChangesAsync();
             }
         }
-        public void InsertSingleStudent(Student s)
-        {
-            using var con = new SqlConnection(_conn);
-            con.Open();
-
-            var cmd = new SqlCommand(@"
-        INSERT INTO Students
-        (FirstName, LastName, Email, DateOfBirth, EnrollmentDate)
-        VALUES (@fn, @ln, @em, @dob, @ed)", con);
-
-            cmd.Parameters.AddWithValue("@fn", s.FirstName);
-            cmd.Parameters.AddWithValue("@ln", s.LastName);
-            cmd.Parameters.AddWithValue("@em", s.Email);
-            cmd.Parameters.AddWithValue("@dob", s.DateOfBirth);
-            cmd.Parameters.AddWithValue("@ed", s.EnrollmentDate);
-
-            cmd.ExecuteNonQuery();
-        }
-
     }
 }

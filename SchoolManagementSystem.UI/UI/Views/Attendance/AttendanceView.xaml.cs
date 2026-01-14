@@ -1,4 +1,5 @@
-﻿using SchoolManagementSystem.UI.UI.ViewModels;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SchoolManagementSystem.UI.UI.ViewModels;
 using SchoolManagementSystem.UI.UI.ViewModels.Attendances;
 using System.Windows.Controls;
 
@@ -9,7 +10,8 @@ namespace SchoolManagementSystem.UI.UI.Views.Attendance
         public AttendanceView()
         {
             InitializeComponent();
-            DataContext = new MarkAttendanceViewModel();
+            DataContext = App.Services.GetRequiredService<MarkAttendanceViewModel>();
+
         }
     }
 }

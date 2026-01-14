@@ -11,11 +11,18 @@ namespace SchoolManagementSystem.UI.UI.Helpers
 {
     public class BoolToVisibilityConverter : IValueConverter
     {
-        public object Convert(object value, Type t, object p, CultureInfo c)
-            => (bool)value ? Visibility.Visible : Visibility.Collapsed;
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is bool isVisible && isVisible)
+                return Visibility.Visible;
 
-        public object ConvertBack(object value, Type t, object p, CultureInfo c)
-            => throw new NotImplementedException();
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
-   
+
 }

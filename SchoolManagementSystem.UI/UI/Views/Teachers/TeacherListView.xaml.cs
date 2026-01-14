@@ -1,5 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using Microsoft.Extensions.DependencyInjection;
 using SchoolManagementSystem.UI.UI.ViewModels;
+using System.Windows.Controls;
 
 namespace SchoolManagementSystem.UI.UI.Views.Teachers
 {
@@ -8,7 +9,8 @@ namespace SchoolManagementSystem.UI.UI.Views.Teachers
         public TeacherListView()
         {
             InitializeComponent();
-            DataContext = new TeacherViewModel();
+            DataContext = App.Services.GetRequiredService<TeacherViewModel>();
+
         }
     }
 }

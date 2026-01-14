@@ -1,35 +1,43 @@
 ﻿using ClosedXML.Excel;
+using SchoolManagementSystem.Business;
 using SchoolManagementSystem.Business.Services;
 using SchoolManagementSystem.Models;
+using SchoolManagementSystem.Models.Models;
 using SchoolManagementSystem.UI.UI.Helpers;
 using SchoolManagementSystem.UI.UI.Views.Students;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
 namespace SchoolManagementSystem.UI.UI.ViewModels
 {
-    public class StudentViewModel : INotifyPropertyChanged
+    public class StudentViewModel : BaseViewModel
     {
-        private readonly StudentService _service = new();
+        private readonly IStudentService _studentService;
+
         private readonly int _pageSize = 10;
         private int _currentPage = 1;
-        private string _searchText = "";
+        private string _searchText = string.Empty;
         private DateTime? _fromDate;
         private DateTime? _toDate;
         private Timer? _searchTimer;
 
-        public ObservableCollection<Student> Students { get; set; } = new();
-        public ObservableCollection<Student> PagedStudents { get; set; } = new();
+        public ObservableCollection<Student> Students { get; } = new();
+        public ObservableCollection<Student> PagedStudents { get; } = new();
 
         public int CurrentPage
         {
             get => _currentPage;
-            set { _currentPage = value; OnPropertyChanged(nameof(CurrentPage)); }
+            set
+            {
+                _currentPage = value;
+                OnPropertyChanged();
+                UpdatePagedStudents();
+            }
         }
 
         public int TotalPages =>
@@ -41,7 +49,7 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
             set
             {
                 _searchText = value;
-                OnPropertyChanged(nameof(SearchText));
+                OnPropertyChanged();
                 DebounceSearch();
             }
         }
@@ -49,13 +57,23 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
         public DateTime? FromDate
         {
             get => _fromDate;
-            set { _fromDate = value; ApplyFilters(); }
+            set
+            {
+                _fromDate = value;
+                OnPropertyChanged();
+                _ = ApplyFiltersAsync();
+            }
         }
 
         public DateTime? ToDate
         {
             get => _toDate;
-            set { _toDate = value; ApplyFilters(); }
+            set
+            {
+                _toDate = value;
+                OnPropertyChanged();
+                _ = ApplyFiltersAsync();
+            }
         }
 
         // COMMANDS
@@ -66,25 +84,40 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
         public ICommand EditStudentCommand { get; }
         public ICommand DeleteStudentCommand { get; }
 
-        public StudentViewModel()
+        // ✅ Constructor Injection
+        public StudentViewModel(IStudentService studentService)
         {
-            RefreshCommand = new RelayCommand(LoadStudents);
+            _studentService = studentService;
+
+            RefreshCommand = new RelayCommand(async () => await LoadStudentsAsync());
             ExportExcelCommand = new RelayCommand(ExportExcel);
-            PrevPageCommand = new RelayCommand(() => ChangePage(-1), () => CurrentPage > 1);
-            NextPageCommand = new RelayCommand(() => ChangePage(1), () => CurrentPage < TotalPages);
+
+            PrevPageCommand = new RelayCommand(() =>
+            {
+                if (CurrentPage > 1)
+                    CurrentPage--;
+            });
+
+            NextPageCommand = new RelayCommand(() =>
+            {
+                if (CurrentPage < TotalPages)
+                    CurrentPage++;
+            });
 
             EditStudentCommand = new RelayCommand<Student>(EditStudent);
-            DeleteStudentCommand = new RelayCommand<Student>(DeleteStudent);
+            DeleteStudentCommand = new RelayCommand<Student>(async s => await DeleteStudentAsync(s));
 
-            LoadStudents();
+            _ = LoadStudentsAsync();
         }
 
         // ================= CORE LOGIC =================
 
-        private void LoadStudents()
+        private async Task LoadStudentsAsync()
         {
             Students.Clear();
-            foreach (var s in _service.GetStudents())
+
+            var data = await _studentService.GetStudentsAsync();
+            foreach (var s in data)
                 Students.Add(s);
 
             CurrentPage = 1;
@@ -92,9 +125,11 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
             OnPropertyChanged(nameof(TotalPages));
         }
 
-        private void ApplyFilters()
+        private async Task ApplyFiltersAsync()
         {
-            var filtered = _service.GetStudents().AsQueryable();
+            var all = await _studentService.GetStudentsAsync();
+
+            var filtered = all.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(SearchText))
                 filtered = filtered.Where(s =>
@@ -103,13 +138,14 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
                     s.Email.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
 
             if (FromDate.HasValue)
-                filtered = filtered.Where(s => s.EnrollmentDate >= FromDate);
+                filtered = filtered.Where(s => s.EnrollmentDate >= FromDate.Value);
 
             if (ToDate.HasValue)
-                filtered = filtered.Where(s => s.EnrollmentDate <= ToDate);
+                filtered = filtered.Where(s => s.EnrollmentDate <= ToDate.Value);
 
-            Students = new ObservableCollection<Student>(filtered);
-            OnPropertyChanged(nameof(Students));
+            Students.Clear();
+            foreach (var s in filtered)
+                Students.Add(s);
 
             CurrentPage = 1;
             UpdatePagedStudents();
@@ -130,39 +166,33 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
             OnPropertyChanged(nameof(PagedStudents));
         }
 
-        private void ChangePage(int delta)
-        {
-            CurrentPage += delta;
-            UpdatePagedStudents();
-        }
-
         // ================= SEARCH DEBOUNCE =================
 
         private void DebounceSearch()
         {
             _searchTimer?.Dispose();
-            _searchTimer = new Timer(_ =>
+            _searchTimer = new Timer(async _ =>
             {
-                Application.Current.Dispatcher.Invoke(ApplyFilters);
+                await Application.Current.Dispatcher.InvokeAsync(ApplyFiltersAsync);
             }, null, 400, Timeout.Infinite);
         }
 
         // ================= ROW ACTIONS =================
 
-        private void EditStudent(Student student)
+        private async void EditStudent(Student student)
         {
             var win = new StudentAddEditView(student);
             if (win.ShowDialog() == true)
-                LoadStudents();
+                await LoadStudentsAsync();
         }
 
-        private void DeleteStudent(Student student)
+        private async Task DeleteStudentAsync(Student student)
         {
             if (MessageBox.Show("Delete student?", "Confirm",
                 MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                _service.DeleteStudent(student.StudentId);
-                LoadStudents();
+                await _studentService.DeleteStudentAsync(student.StudentId);
+                await LoadStudentsAsync();
             }
         }
 
@@ -170,7 +200,7 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
 
         private void ExportExcel()
         {
-            var wb = new XLWorkbook();
+            using var wb = new XLWorkbook();
             var ws = wb.Worksheets.Add("Students");
 
             ws.Cell(1, 1).Value = "First Name";
@@ -200,11 +230,5 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
                 MessageBox.Show("Export completed");
             }
         }
-
-        // ================= INotify =================
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void OnPropertyChanged(string prop) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
     }
 }

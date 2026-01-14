@@ -1,6 +1,7 @@
-﻿using System.Windows;
+﻿using Microsoft.Extensions.DependencyInjection;
 using SchoolManagementSystem.Models;
 using SchoolManagementSystem.UI.UI.ViewModels;
+using System.Windows;
 
 namespace SchoolManagementSystem.UI.UI.Views.Students
 {
@@ -9,13 +10,15 @@ namespace SchoolManagementSystem.UI.UI.Views.Students
         public StudentAddEditView()
         {
             InitializeComponent();
-            DataContext = new StudentAddEditViewModel(this);
+             DataContext = App.Services.GetRequiredService<StudentAddEditViewModel>();
+
         }
 
         public StudentAddEditView(Student student)
         {
             InitializeComponent();
-            DataContext = new StudentAddEditViewModel(this, student);
+        DataContext = App.Services.GetRequiredService<StudentAddEditViewModel>();
+
         }
     }
 }

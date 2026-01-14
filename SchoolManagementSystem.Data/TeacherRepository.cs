@@ -1,40 +1,56 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SchoolManagementSystem.Data.Repositories
 {
-    public class TeacherRepository
+    public class TeacherRepository : ITeacherRepository
     {
-        public List<Teacher> GetAll()
+        private readonly SchoolDbContext _context;
+
+        // ✅ DbContext injected (NO new keyword)
+        public TeacherRepository(SchoolDbContext context)
         {
-            using var ctx = new SchoolDbContext();
-            return ctx.Teachers.ToList();
+            _context = context;
         }
 
-        public void Add(Teacher teacher)
+        public async Task<List<Teacher>> GetAllAsync()
         {
-            using var ctx = new SchoolDbContext();
-            ctx.Teachers.Add(teacher);
-            ctx.SaveChanges();
+            return await _context.Teachers
+                .AsNoTracking()
+                .ToListAsync();
         }
 
-        public void Update(Teacher teacher)
+        public async Task AddAsync(Teacher teacher)
         {
-            using var ctx = new SchoolDbContext();
-            ctx.Teachers.Update(teacher);
-            ctx.SaveChanges();
+            await _context.Teachers.AddAsync(teacher);
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task UpdateAsync(Teacher teacher)
         {
-            using var ctx = new SchoolDbContext();
-            var teacher = ctx.Teachers.FirstOrDefault(x => x.TeacherId == id);
+            _context.Teachers.Update(teacher);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var teacher = await _context.Teachers
+                .FirstOrDefaultAsync(x => x.TeacherId == id);
+
             if (teacher != null)
             {
-                ctx.Teachers.Remove(teacher);
-                ctx.SaveChanges();
+                _context.Teachers.Remove(teacher);
+                await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<Teacher> GetByIdAsync(int id)
+        {
+            return await _context.Teachers
+                                 .FirstOrDefaultAsync(t => t.TeacherId == id);
+        }
+
     }
 }

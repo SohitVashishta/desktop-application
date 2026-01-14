@@ -10,6 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\login.png" />
+    <None Remove="Assets\logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SchoolManagementSystem.Business\SchoolManagementSystem.Business.csproj" />
     <ProjectReference Include="..\SchoolManagementSystem.Common\SchoolManagementSystem.Common.csproj" />
     <ProjectReference Include="..\SchoolManagementSystem.Models\SchoolManagementSystem.Models.csproj" />
@@ -18,12 +23,29 @@
   <ItemGroup>
     <Folder Include="UI\Controls\" />
     <Folder Include="UI\Resources\" />
+    <Folder Include="UI\ViewModels\Parent\" />
+    <Folder Include="UI\ViewModels\Student\" />
     <Folder Include="UI\Views\Courses\" />
     <Folder Include="UI\Views\Gradebook\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\login.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\logo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\login-bg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

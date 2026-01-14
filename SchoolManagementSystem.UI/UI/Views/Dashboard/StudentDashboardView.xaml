@@ -3,38 +3,186 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Grid Margin="20">
-        <UniformGrid Columns="3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <Border Background="#4F46E5" Margin="10" Padding="20" CornerRadius="6">
-                <StackPanel>
-                    <TextBlock Text="Attendance"
-                               Foreground="White"/>
-                    <TextBlock Text="{Binding AttendancePercent}"
-                               FontSize="28"
-                               Foreground="White"/>
-                </StackPanel>
-            </Border>
+        <!-- HEADER -->
+        <StackPanel Margin="0,0,0,20">
+            <TextBlock Text="Student Dashboard"
+                       FontSize="24"
+                       FontWeight="Bold"/>
+            <TextBlock Text="Your classes, attendance, assignments and announcements"
+                       Foreground="Gray"
+                       FontSize="12"/>
+        </StackPanel>
 
-            <Border Background="#059669" Margin="10" Padding="20" CornerRadius="6">
-                <StackPanel>
-                    <TextBlock Text="Subjects"
-                               Foreground="White"/>
-                    <TextBlock Text="{Binding TotalSubjects}"
-                               FontSize="28"
-                               Foreground="White"/>
-                </StackPanel>
-            </Border>
+        <!-- CONTENT -->
+        <ScrollViewer Grid.Row="1">
+            <StackPanel>
 
-            <Border Background="#D97706" Margin="10" Padding="20" CornerRadius="6">
-                <StackPanel>
-                    <TextBlock Text="Pending Tasks"
-                               Foreground="White"/>
-                    <TextBlock Text="{Binding PendingTasks}"
-                               FontSize="28"
-                               Foreground="White"/>
-                </StackPanel>
-            </Border>
+                <!-- KPI CARDS -->
+                <UniformGrid Columns="4" Margin="0,0,0,20">
 
-        </UniformGrid>
+                    <Border Background="#1ABC9C" CornerRadius="6" Margin="8" Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="My Subjects" Foreground="White"/>
+                            <TextBlock Text="{Binding TotalSubjects}"
+                                       FontSize="26"
+                                       FontWeight="Bold"
+                                       Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="#3498DB" CornerRadius="6" Margin="8" Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="Attendance %" Foreground="White"/>
+                            <TextBlock Text="{Binding AttendancePercentage}"
+                                       FontSize="26"
+                                       FontWeight="Bold"
+                                       Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="#E67E22" CornerRadius="6" Margin="8" Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="Assignments Due" Foreground="White"/>
+                            <TextBlock Text="{Binding PendingAssignments}"
+                                       FontSize="26"
+                                       FontWeight="Bold"
+                                       Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="#9B59B6" CornerRadius="6" Margin="8" Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="Exams Scheduled" Foreground="White"/>
+                            <TextBlock Text="{Binding UpcomingExams}"
+                                       FontSize="26"
+                                       FontWeight="Bold"
+                                       Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+
+                </UniformGrid>
+
+                <!-- ACADEMIC OVERVIEW -->
+                <TextBlock Text="Academic Overview"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           Margin="5"/>
+
+                <Grid Margin="0,10,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- TODAY SCHEDULE -->
+                    <Border CornerRadius="6"
+                            BorderBrush="#E0E0E0"
+                            BorderThickness="1"
+                            Padding="12"
+                            Margin="5">
+
+                        <StackPanel>
+                            <TextBlock Text="Today's Classes"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"/>
+
+                            <ItemsControl ItemsSource="{Binding TodayClasses}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"
+                                                   Margin="5,4"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ASSIGNMENTS -->
+                    <Border Grid.Column="1"
+                            CornerRadius="6"
+                            BorderBrush="#E0E0E0"
+                            BorderThickness="1"
+                            Padding="12"
+                            Margin="5">
+
+                        <StackPanel>
+                            <TextBlock Text="Upcoming Assignments"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"/>
+
+                            <ItemsControl ItemsSource="{Binding UpcomingAssignments}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"
+                                                   Margin="5,4"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- NOTICES & RESULTS -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- ANNOUNCEMENTS -->
+                    <Border CornerRadius="6"
+                            BorderBrush="#E0E0E0"
+                            BorderThickness="1"
+                            Padding="12"
+                            Margin="5">
+
+                        <StackPanel>
+                            <TextBlock Text="Announcements"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"/>
+
+                            <ItemsControl ItemsSource="{Binding Announcements}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"
+                                                   Margin="5,4"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- RESULTS -->
+                    <Border Grid.Column="1"
+                            CornerRadius="6"
+                            BorderBrush="#E0E0E0"
+                            BorderThickness="1"
+                            Padding="12"
+                            Margin="5">
+
+                        <StackPanel>
+                            <TextBlock Text="Recent Results"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"/>
+
+                            <ItemsControl ItemsSource="{Binding RecentResults}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"
+                                                   Margin="5,4"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

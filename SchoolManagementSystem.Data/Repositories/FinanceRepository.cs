@@ -1,56 +1,66 @@
-﻿using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Models;
+using SchoolManagementSystem.Models.Models;
 
 namespace SchoolManagementSystem.Data.Repositories
 {
-    public class FinanceRepository
+    public class FinanceRepository : IFinanceRepository
     {
-        // =============================
-        // DASHBOARD: TOTAL PENDING FEES
-        // =============================
-        public decimal GetPendingAmount()
-        {
-            using var ctx = new SchoolDbContext();
+        private readonly SchoolDbContext _context;
 
-            return ctx.FeeInvoices
-                      .Where(f => !f.IsPaid)
-                      .Sum(f => f.Amount);
+        // ✅ DbContext injected
+        public FinanceRepository(SchoolDbContext context)
+        {
+            _context = context;
         }
 
         // =============================
-        // LIST INVOICES
+        // DASHBOARD: TOTAL PENDING FEES
         // =============================
-        public IQueryable<FeeInvoice> GetAll()
+        public async Task<decimal> GetPendingAmountAsync()
         {
-            var ctx = new SchoolDbContext();
-            return ctx.FeeInvoices;
+            return await _context.FeeInvoices
+                .AsNoTracking()
+                .Where(f => !f.IsPaid)
+                .SumAsync(f => f.Amount);
+        }
+
+        // =============================
+        // LIST INVOICES (SAFE)
+        // =============================
+        public async Task<List<FeeInvoice>> GetAllAsync()
+        {
+            return await _context.FeeInvoices
+                .AsNoTracking()
+                .OrderByDescending(f => f.FeeInvoiceId)
+                .ToListAsync();
         }
 
         // =============================
         // ADD INVOICE
         // =============================
-        public void Add(FeeInvoice invoice)
+        public async Task AddInvoiceAsync(FeeInvoice invoice)
         {
-            using var ctx = new SchoolDbContext();
-            ctx.FeeInvoices.Add(invoice);
-            ctx.SaveChanges();
+            await _context.FeeInvoices.AddAsync(invoice);
+            await _context.SaveChangesAsync();
         }
 
         // =============================
         // MARK AS PAID
         // =============================
-        public void MarkPaid(int invoiceId, string paymentMode)
+        public async Task MarkPaidAsync(int invoiceId, string paymentMode)
         {
-            using var ctx = new SchoolDbContext();
+            var invoice = await _context.FeeInvoices
+                .FirstOrDefaultAsync(x => x.FeeInvoiceId == invoiceId);
 
-            var invoice = ctx.FeeInvoices.FirstOrDefault(x => x.FeeInvoiceId == invoiceId);
-            if (invoice == null) return;
+            if (invoice == null)
+                return;
 
             invoice.IsPaid = true;
-            invoice.PaidOn = System.DateTime.Today;
+            invoice.PaidOn = DateTime.Today;
             invoice.PaymentMode = paymentMode;
 
-            ctx.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

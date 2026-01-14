@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using Microsoft.Extensions.DependencyInjection;
 using SchoolManagementSystem.UI.UI.ViewModels;
 
 namespace SchoolManagementSystem.UI.UI.Views.Dashboard
@@ -8,7 +9,9 @@ namespace SchoolManagementSystem.UI.UI.Views.Dashboard
         public DashboardView()
         {
             InitializeComponent();
-            DataContext = new DashboardViewModel();
+
+            // ✅ Resolve ViewModel via DI
+            DataContext = App.Services.GetRequiredService<DashboardViewModel>();
         }
     }
 }

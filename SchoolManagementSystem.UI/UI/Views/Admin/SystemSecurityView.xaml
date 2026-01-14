@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="SchoolManagementSystem.UI.UI.Views.Admin.SystemSecurityView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:SchoolManagementSystem.UI.UI.ViewModels">
+
+    <!--<UserControl.DataContext>
+        <vm:SystemSecurityViewModel/>
+    </UserControl.DataContext>-->
+
+    <ScrollViewer>
+        <StackPanel>
+
+            <TextBlock Text="System Security"
+                       Style="{StaticResource SectionHeaderStyle}"/>
+
+            <!-- SYSTEM SETTINGS -->
+            <Border Style="{StaticResource CardStyle}">
+                <StackPanel>
+                    <TextBlock Text="System Settings"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,10"/>
+
+                    <DataGrid ItemsSource="{Binding Settings}"
+                              AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Setting"
+                                                Binding="{Binding Key}"/>
+                            <DataGridTextColumn Header="Value"
+                                                Binding="{Binding Value}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Button Content="Run Backup Now"
+                            Command="{Binding RunBackupCommand}"
+                            Style="{StaticResource ActionButtonStyle}"
+                            Background="{StaticResource DangerBrush}"
+                            Foreground="White"
+                            Margin="0,10,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- AUDIT LOGS -->
+            <Border Style="{StaticResource CardStyle}" Margin="0,16,0,0">
+                <StackPanel>
+
+                    <TextBlock Text="Audit Logs"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,10"/>
+
+                    <DataGrid ItemsSource="{Binding AuditLogs}"
+                              AutoGenerateColumns="False">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="User"
+                                                Binding="{Binding User}"/>
+                            <DataGridTextColumn Header="Action"
+                                                Binding="{Binding Action}"/>
+                            <DataGridTextColumn Header="Module"
+                                                Binding="{Binding Module}"/>
+                            <DataGridTextColumn Header="Date"
+                                                Binding="{Binding DateTime}"/>
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

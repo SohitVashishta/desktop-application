@@ -2,6 +2,69 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
+    <Compile Update="UI\Views\Admin\AddUserDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\AssignRolesPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\AttendanceManagementView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\AttendanceView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\CommunicationView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\ExaminationGradingView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\ExamManagementView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\FeeManagementView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\HrPayrollView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\InventoryAssetView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\InventoryManagementView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\LibraryManagementView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\ManageUsersPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\PermissionMatrixPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\PortalAccessPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\ResetPasswordsPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\StudentManagementView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\SystemSecurityView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\TimetableManagementView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\UserManagementView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Admin\UserRoleManagementView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UI\Views\Attendance\AttendanceReportView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -11,13 +74,31 @@
     <Compile Update="UI\Views\Attendance\MarkAttendanceView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="UI\Views\Dashboard\AdminDashboardView.xaml.cs">
+    <Compile Update="UI\Views\Dashboard\AccountantDashboardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Dashboard\AdminDashboard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UI\Views\Dashboard\DashboardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UI\Views\Dashboard\HRDashboardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Dashboard\LibrarianDashboardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Dashboard\ParentDashboard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Dashboard\ParentDashboardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UI\Views\Dashboard\StudentDashboardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Dashboard\TeacherDashboard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UI\Views\Import\ImportStudentsView.xaml.cs">
@@ -35,13 +116,28 @@
     <Compile Update="UI\Views\Notification\NotificationView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UI\Views\Perent\ParentFeesView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UI\Views\Reports\ReportsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UI\Views\Students\StudentAddEditView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UI\Views\Students\StudentAttendanceView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Students\StudentExamsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Students\StudentFeesView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UI\Views\Students\StudentListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Students\StudentProfileView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UI\Views\Teachers\TeacherAddEditView.xaml.cs">
@@ -50,10 +146,25 @@
     <Compile Update="UI\Views\Dashboard\TeacherDashboardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UI\Views\Teachers\TeacherAttendanceView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UI\Views\Teachers\TeacherClassesView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UI\Views\Teachers\TeacherListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Teachers\TeacherMarksView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Teachers\TeacherStudentsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Teachers\TeacherTimetableView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\UserDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

@@ -4,6 +4,10 @@
     {
         Admin,
         Teacher,
-        Student
+        Student,
+        Parent,
+        Accountant,
+        Librarian,
+        HR
     }
 }

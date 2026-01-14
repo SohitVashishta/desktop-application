@@ -1,59 +1,158 @@
 ﻿<Window x:Class="SchoolManagementSystem.UI.UI.Views.LoginView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:SchoolManagementSystem.UI.UI.ViewModels"
         Title="Login"
-        Height="330"
-        Width="400"
+        Height="480"
+        Width="780"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Background="#F3F4F6"
+        WindowStyle="None">
+    <!-- ✅ ATTACH VIEWMODEL -->
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="380" />
+        </Grid.ColumnDefinitions>
 
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        <!-- ================= LEFT IMAGE PANEL ================= -->
+        <Grid Grid.Column="0">
+            <!-- BACKGROUND IMAGE -->
+            <Image Source=""
+                   Stretch="UniformToFill"/>
 
-        <!-- HEADER -->
-        <TextBlock Text="School Management System"
-                   FontSize="18"
-                   FontWeight="Bold"
-                   HorizontalAlignment="Center"
-                   Margin="0,0,0,20"/>
+            <!-- DARK OVERLAY -->
+            <Border Background="#80000000">
+                <StackPanel VerticalAlignment="Center"
+                            HorizontalAlignment="Center">
 
-        <!-- FORM -->
-        <StackPanel Grid.Row="1">
+                    <Image Source="pack://application:,,,/Assets/login.png"
+                           Width="90"
+                           Margin="0,0,0,20"/>
 
-            <TextBlock Text="Username"/>
-            <TextBox x:Name="txtUsername"
-                     Margin="0,5,0,15"/>
+                    <TextBlock Text="School Management System"
+                               FontSize="22"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               HorizontalAlignment="Center"/>
 
-            <TextBlock Text="Password"/>
-            <PasswordBox x:Name="pwdBox"
-                         Margin="0,5,0,10"/>
+                    <TextBlock Text="Secure • Smart • Modern"
+                               Foreground="#D1D5DB"
+                               FontSize="12"
+                               Margin="0,6,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
 
-            <!-- ERROR MESSAGE -->
-            <TextBlock x:Name="txtError"
-                       Foreground="Red"
-                       FontSize="12"
-                       Visibility="Collapsed"
-                       Text="Invalid username or password"/>
-        </StackPanel>
+        <!-- ================= LOGIN CARD ================= -->
+        <Border Grid.Column="1"
+                Background="White"
+                Padding="28">
 
-        <!-- BUTTONS -->
-        <StackPanel Grid.Row="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <Button Content="Login"
-                    Height="35"
-                    Margin="0,10,0,5"
-                    Click="Login_Click"/>
+                <!-- HEADER -->
+                <StackPanel Margin="0,0,0,25">
+                    <TextBlock Text="Welcome Back 👋"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Foreground="#111827"/>
 
-            <TextBlock Text="Forgot password?"
-                       Foreground="Blue"
-                       Cursor="Hand"
-                       TextAlignment="Center"
-                       MouseDown="ForgotPassword_Click"/>
-        </StackPanel>
+                    <TextBlock Text="Please login to your account"
+                               FontSize="12"
+                               Foreground="#6B7280"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
 
+                <!-- FORM -->
+                <StackPanel Grid.Row="1">
+
+                    <TextBlock Text="Username"
+                               FontSize="12"
+                               Foreground="#374151"/>
+
+                    <TextBox Style="{StaticResource TextBoxInputStyle}"
+         Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+         Margin="0,6,0,16"/>
+
+                    <TextBlock Text="Password"
+                               FontSize="12"
+                               Foreground="#374151"/>
+
+                    <!-- PASSWORD WITH EYE INSIDE -->
+                    <Grid Margin="0,6,0,6">
+                        <Border Background="#F9FAFB"
+                                BorderBrush="#D1D5DB"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Height="36">
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="40"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- PASSWORD -->
+                                <PasswordBox x:Name="pwdBox"
+                                             Style="{StaticResource PasswordBoxInputStyle}"
+                                             BorderThickness="0"/>
+
+                                <!-- VISIBLE PASSWORD -->
+                                <TextBox x:Name="txtPasswordVisible"
+                                         Style="{StaticResource TextBoxInputStyle}"
+                                         BorderThickness="0"
+                                         Visibility="Collapsed"/>
+
+                                <!-- EYE BUTTON -->
+                                <Button Grid.Column="1"
+                                        Content="👁"
+                                        FontSize="14"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Cursor="Hand"
+                                        Click="TogglePassword_Click"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <TextBlock Text="{Binding ErrorMessage}"
+           Foreground="#DC2626"
+           FontSize="11"
+           Visibility="{Binding HasError,
+                                Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                </StackPanel>
+
+                <!-- ACTIONS -->
+                <StackPanel Grid.Row="2" Margin="0,20,0,0">
+
+                    <Button Content="Sign In"
+                            Height="38"
+                            FontSize="14"
+                            FontWeight="SemiBold"
+                            Background="#2563EB"
+                            Foreground="White"
+                            BorderThickness="0"
+                            Cursor="Hand"
+                            Click="Login_Click"/>
+
+                    <TextBlock Text="Forgot password?"
+                               FontSize="12"
+                               Foreground="#2563EB"
+                               Cursor="Hand"
+                               HorizontalAlignment="Center"
+                               Margin="0,12,0,0"
+                               MouseDown="ForgotPassword_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </Window>

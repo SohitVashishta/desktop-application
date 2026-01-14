@@ -1,4 +1,6 @@
-﻿using SchoolManagementSystem.UI.UI.ViewModels.Import;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SchoolManagementSystem.UI.UI.ViewModels;
+using SchoolManagementSystem.UI.UI.ViewModels.Import;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +26,9 @@ namespace SchoolManagementSystem.UI.UI.Views.Import
         public ImportTeachersView()
         {
             InitializeComponent();
-            DataContext = new ImportTeachersViewModel();
+            DataContext = App.Services.GetRequiredService<ImportTeachersViewModel>();
+
+
         }
     }
 }

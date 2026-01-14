@@ -1,76 +1,99 @@
-﻿using SchoolManagementSystem.Business.Services;
-using SchoolManagementSystem.Common.Session;
+﻿using SchoolManagementSystem.Business.Auth;
+using SchoolManagementSystem.UI.UI.Helpers;
 using SchoolManagementSystem.UI.UI.Views;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace SchoolManagementSystem.UI.UI.ViewModels
 {
-    public class LoginViewModel : INotifyPropertyChanged
+    public class LoginViewModel : BaseViewModel
     {
-        private readonly Window _window;
-        private readonly AuthService _authService = new();
+        private readonly IAuthService _authService;
 
-        private string _username = "";
-        private string _errorMessage = "";
+        public LoginViewModel(IAuthService authService)
+        {
+            _authService = authService;
+            LoginCommand = new RelayCommand(async () => await LoginAsync());
+        }
 
+        // ================== PROPERTIES ==================
+
+        private string _username;
         public string Username
         {
             get => _username;
             set { _username = value; OnPropertyChanged(); }
         }
 
+        private string _password;
+        public string Password
+        {
+            get => _password;
+            set { _password = value; OnPropertyChanged(); }
+        }
+
+        private string _errorMessage;
         public string ErrorMessage
         {
             get => _errorMessage;
             set { _errorMessage = value; OnPropertyChanged(); }
         }
 
-        public LoginViewModel(Window window)
+        private bool _hasError;
+        public bool HasError
         {
-            _window = window;
+            get => _hasError;
+            set { _hasError = value; OnPropertyChanged(); }
         }
 
-        public void Login(string password)
-        {
-            ErrorMessage = "";
+        // ================== COMMAND ==================
 
-            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(password))
+        public ICommand LoginCommand { get; }
+
+        // ================== LOGIC ==================
+
+        private async Task LoginAsync()
+        {
+            HasError = false;
+            ErrorMessage = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(Username) ||
+                string.IsNullOrWhiteSpace(Password))
             {
-                ErrorMessage = "Username and password are required";
+                ShowError("Username and password are required.");
                 return;
             }
 
-            var user = _authService.Login(Username, password);
+            var success = await _authService.LoginAsync(Username, Password);
 
-            if (user == null)
+            if (success!=null)
             {
-                ErrorMessage = "Invalid username or password";
+                ShowError("Invalid username or password.");
                 return;
             }
 
-            // ✅ SET SESSION (CRITICAL FOR ROLE-BASED UI)
-            UserSession.UserId = user.UserId;
-            UserSession.Username = user.Username;
-            UserSession.Role = user.Role;
+            // 🔐 LOGIN SUCCESS → OPEN MAIN WINDOW
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                var main = new MainWindow();
+                main.Show();
 
-            // ✅ SUCCESS MESSAGE
-            MessageBox.Show(
-                $"Welcome {user.Username}!",
-                "Login Successful",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information
-            );
-
-            // ✅ OPEN MAIN WINDOW
-            new MainWindow().Show();
-            _window.Close();
+                foreach (Window w in Application.Current.Windows)
+                {
+                    if (w is Views.LoginView)
+                    {
+                        w.Close();
+                        break;
+                    }
+                }
+            });
         }
 
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string? name = null)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        private void ShowError(string message)
+        {
+            ErrorMessage = message;
+            HasError = true;
+        }
     }
 }

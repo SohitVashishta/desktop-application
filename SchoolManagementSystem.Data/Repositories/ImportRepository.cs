@@ -1,51 +1,104 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using SchoolManagementSystem.Models;
+using SchoolManagementSystem.Models.Models;
+using System.Data;
 
 namespace SchoolManagementSystem.Data.Repositories
 {
-    public class ImportRepository
+    public class ImportRepository : IImportRepository
     {
-        private readonly string _conn =
-            "Server=.;Database=SchoolDB;Trusted_Connection=True;TrustServerCertificate=True";
+        private readonly string _connectionString;
 
-        public void ImportStudents(List<Student> students)
+        // ✅ Inject connection string via DI
+        public ImportRepository(IConfiguration configuration)
         {
-            using var con = new SqlConnection(_conn);
-            con.Open();
+            _connectionString = configuration.GetConnectionString("SchoolDb")
+                ?? throw new ArgumentNullException(nameof(configuration), "Connection string not found");
+        }
 
-            foreach (var s in students)
+        // =============================
+        // IMPORT STUDENTS (ASYNC + TRANSACTION SAFE)
+        // =============================
+        public async Task ImportStudentsAsync(List<Student> students)
+        {
+            if (students == null || students.Count == 0)
+                return;
+
+            await using var con = new SqlConnection(_connectionString);
+            await con.OpenAsync();
+
+            await using var tran = await con.BeginTransactionAsync();
+
+            try
             {
-                var cmd = new SqlCommand(@"
-                    INSERT INTO Students (FirstName, LastName, Email, DateOfBirth, EnrollmentDate)
-                    VALUES (@fn, @ln, @em, @dob, @ed)", con);
+                foreach (var s in students)
+                {
+                    await using var cmd = new SqlCommand(@"
+                        INSERT INTO Students
+                        (FirstName, LastName, Email, DateOfBirth, EnrollmentDate)
+                        VALUES
+                        (@fn, @ln, @em, @dob, @ed)",
+                        con, (SqlTransaction)tran);
 
-                cmd.Parameters.AddWithValue("@fn", s.FirstName);
-                cmd.Parameters.AddWithValue("@ln", s.LastName);
-                cmd.Parameters.AddWithValue("@em", s.Email);
-                cmd.Parameters.AddWithValue("@dob", s.DateOfBirth);
-                cmd.Parameters.AddWithValue("@ed", s.EnrollmentDate);
+                    cmd.Parameters.Add("@fn", SqlDbType.NVarChar).Value = s.FirstName;
+                    cmd.Parameters.Add("@ln", SqlDbType.NVarChar).Value = s.LastName;
+                    cmd.Parameters.Add("@em", SqlDbType.NVarChar).Value = s.Email;
+                    cmd.Parameters.Add("@dob", SqlDbType.Date).Value = s.DateOfBirth;
+                    cmd.Parameters.Add("@ed", SqlDbType.Date).Value = s.EnrollmentDate;
 
-                cmd.ExecuteNonQuery();
+                    await cmd.ExecuteNonQueryAsync();
+                }
+
+                await tran.CommitAsync();
+            }
+            catch
+            {
+                await tran.RollbackAsync();
+                throw;
             }
         }
 
-        public void ImportTeachers(List<Teacher> teachers)
+        // =============================
+        // IMPORT TEACHERS (ASYNC + TRANSACTION SAFE)
+        // =============================
+        public async Task ImportTeachersAsync(List<Teacher> teachers)
         {
-            using var con = new SqlConnection(_conn);
-            con.Open();
+            if (teachers == null || teachers.Count == 0)
+                return;
 
-            foreach (var t in teachers)
+            await using var con = new SqlConnection(_connectionString);
+            await con.OpenAsync();
+
+            await using var tran = await con.BeginTransactionAsync();
+
+            try
             {
-                var cmd = new SqlCommand(@"
-                    INSERT INTO Teachers (Name,FirstName, LastName, Email, Subject)
-                    VALUES (@fln,@fn, @ln, @em, @sub)", con);
-                cmd.Parameters.AddWithValue("@fln", t.FirstName+" "+t.LastName);
-                cmd.Parameters.AddWithValue("@fn", t.FirstName);
-                cmd.Parameters.AddWithValue("@ln", t.LastName);
-                cmd.Parameters.AddWithValue("@em", t.Email);
-                cmd.Parameters.AddWithValue("@sub", t.Subject);
+                foreach (var t in teachers)
+                {
+                    await using var cmd = new SqlCommand(@"
+                        INSERT INTO Teachers
+                        (Name, FirstName, LastName, Email, Subject)
+                        VALUES
+                        (@name, @fn, @ln, @em, @sub)",
+                        con, (SqlTransaction)tran);
 
-                cmd.ExecuteNonQuery();
+                    cmd.Parameters.Add("@name", SqlDbType.NVarChar).Value =
+                        $"{t.FirstName} {t.LastName}";
+                    cmd.Parameters.Add("@fn", SqlDbType.NVarChar).Value = t.FirstName;
+                    cmd.Parameters.Add("@ln", SqlDbType.NVarChar).Value = t.LastName;
+                    cmd.Parameters.Add("@em", SqlDbType.NVarChar).Value = t.Email;
+                    cmd.Parameters.Add("@sub", SqlDbType.NVarChar).Value = t.Subject;
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+
+                await tran.CommitAsync();
+            }
+            catch
+            {
+                await tran.RollbackAsync();
+                throw;
             }
         }
     }

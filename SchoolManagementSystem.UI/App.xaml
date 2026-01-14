@@ -2,34 +2,420 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:SchoolManagementSystem.UI.UI.Helpers"
+             xmlns:ui="clr-namespace:SchoolManagementSystem.UI.UI.Helpers"
              StartupUri="UI/Views/LoginView.xaml">
 
     <Application.Resources>
+        <!-- ================= BASE COLORS ================= -->
+        <Color x:Key="Gray900">#111827</Color>
+        <Color x:Key="Gray700">#374151</Color>
+        <Color x:Key="Gray500">#6B7280</Color>
+        <Color x:Key="Gray300">#D1D5DB</Color>
+        <Color x:Key="Gray100">#F3F4F6</Color>
+        <Color x:Key="Gray50">#F9FAFB</Color>
 
-        <!-- MENU BUTTON STYLE -->
-        <Style x:Key="MenuButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="{StaticResource Gray900}"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="{StaticResource Gray500}"/>
+        <SolidColorBrush x:Key="InputBg" Color="{StaticResource Gray50}"/>
+        <SolidColorBrush x:Key="InputBorder" Color="{StaticResource Gray300}"/>
+        <!-- ================= COLORS ================= -->
+        <Color x:Key="PrimaryColor">#2563EB</Color>
+        <Color x:Key="SuccessColor">#16A34A</Color>
+        <Color x:Key="WarningColor">#D97706</Color>
+        <Color x:Key="DangerColor">#DC2626</Color>
+        <Color x:Key="PurpleColor">#7C3AED</Color>
+
+        <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
+        <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}"/>
+        <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}"/>
+        <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource DangerColor}"/>
+        <SolidColorBrush x:Key="PurpleBrush" Color="{StaticResource PurpleColor}"/>
+       
+        <!-- ================= DASHBOARD CARD ================= -->
+        <Style x:Key="DashboardCardStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="8"/>
+        </Style>
+        <!-- ================= CARD ================= -->
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="Padding" Value="32"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="25"
+                              ShadowDepth="0"
+                              Opacity="0.15"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ================= KPI ================= -->
+        <Style x:Key="KpiTitleStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="Margin" Value="6"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="Padding" Value="12,0"/>
-            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
 
-            <Style.Triggers>
-                <Trigger Property="Tag" Value="Active">
-                    <Setter Property="Background" Value="#374151"/>
-                    <Setter Property="FontWeight" Value="Bold"/>
-                </Trigger>
-            </Style.Triggers>
+        <Style x:Key="KpiValueStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- ================= SECTION HEADER ================= -->
+        <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+
+        <!-- ================= ACTION BUTTON ================= -->
+        <Style x:Key="ActionButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <!-- ================= MENU BUTTON STYLE ================= -->
+        <Style x:Key="MenuButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="6,3"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Root"
+                                CornerRadius="6"
+                                Background="Transparent">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="36"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- ICON -->
+                                <TextBlock x:Name="Icon"
+                                           FontFamily="Segoe MDL2 Assets"
+                                           FontSize="14"
+                                           Foreground="#9CA3AF"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Text="{TemplateBinding Tag}"/>
+
+                                <!-- TEXT -->
+                                <TextBlock x:Name="Text"
+                                           Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           FontSize="13"
+                                           FontWeight="SemiBold"
+                                           Foreground="#E5E7EB"
+                                           Text="{TemplateBinding Content}"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- STATES -->
+                        <ControlTemplate.Triggers>
+
+                            <!-- Hover -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Root"
+                                        Property="Background"
+                                        Value="#374151"/>
+                            </Trigger>
+
+                            <!-- ACTIVE MENU -->
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                           Path=(ui:MenuHelper.IsActive)}"
+                                         Value="True">
+                                <Setter TargetName="Root"
+                                        Property="Background"
+                                        Value="#2563EB"/>
+                                <Setter TargetName="Icon"
+                                        Property="Foreground"
+                                        Value="White"/>
+                                <Setter TargetName="Text"
+                                        Property="Foreground"
+                                        Value="White"/>
+                            </DataTrigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- ================= INPUT ================= -->
+        <Style x:Key="InputStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Background" Value="{StaticResource InputBg}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource InputBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="Bd"
+                CornerRadius="8"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#2563EB"/>
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="8"
+                          ShadowDepth="0"
+                          Color="#2563EB"
+                          Opacity="0.4"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- ================= BASE INPUT (CONTROL) ================= -->
+        <!-- ================= BASE INPUT ================= -->
+        <Style x:Key="BaseInputStyle" TargetType="Control">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Background" Value="#F9FAFB"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <!-- ================= TEXTBOX ================= -->
+        <Style x:Key="TextBoxInputStyle"
+       TargetType="TextBox"
+       BasedOn="{StaticResource BaseInputStyle}">
+
+            <Setter Property="Padding" Value="10,0"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="Bd"
+                        CornerRadius="8"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                  VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="Bd"
+                                Property="BorderBrush"
+                                Value="#2563EB"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ================= PASSWORD BOX ================= -->
+        <Style x:Key="PasswordBoxInputStyle"
+       TargetType="PasswordBox"
+       BasedOn="{StaticResource BaseInputStyle}">
+
+            <Setter Property="Padding" Value="10,0"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border x:Name="Bd"
+                        CornerRadius="8"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                  VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="Bd"
+                                Property="BorderBrush"
+                                Value="#2563EB"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- ================= SIDEBAR EXPANDER STYLE ================= -->
+        <!-- ================= SIDEBAR EXPANDER STYLE (FIXED) ================= -->
+        <Style x:Key="SidebarExpanderStyle" TargetType="Expander">
+            <Setter Property="Background" Value="#1F2937"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="IsExpanded" Value="False"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Expander">
+                        <StackPanel>
+
+                            <!-- HEADER -->
+                            <ToggleButton x:Name="HeaderToggle"
+                                  IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                                  Background="Transparent"
+                                  BorderThickness="0"
+                                  Padding="10,8"
+                                  HorizontalContentAlignment="Left"
+                                  Cursor="Hand">
+
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{TemplateBinding Tag}"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       Foreground="#9CA3AF"
+                                       Margin="0,0,10,0"/>
+
+                                    <TextBlock Text="{TemplateBinding Header}"
+                                       Foreground="White"
+                                       FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </ToggleButton>
+
+                            <!-- CONTENT -->
+                            <Border x:Name="ContentBorder"
+                            Visibility="Collapsed"
+                            Margin="0,4,0,6">
+                                <ContentPresenter ContentSource="Content"/>
+                            </Border>
+
+                        </StackPanel>
+
+                        <ControlTemplate.Triggers>
+
+                            <!-- SHOW / HIDE CONTENT -->
+                            <Trigger Property="IsExpanded" Value="True">
+                                <Setter TargetName="ContentBorder"
+                                Property="Visibility"
+                                Value="Visible"/>
+                            </Trigger>
+
+                            <!-- ACTIVE PARENT -->
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                   Path=(ui:MenuHelper.IsActive)}"
+                                 Value="True">
+                                <Setter TargetName="HeaderToggle"
+                                Property="Background"
+                                Value="#2563EB"/>
+                            </DataTrigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
 
-        <!-- CONVERTERS -->
+
+        <!-- ================= SUB MENU BUTTON ================= -->
+        <Style x:Key="SubMenuButtonStyle"
+       TargetType="Button"
+       BasedOn="{StaticResource MenuButtonStyle}">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Margin" Value="24,2,6,2"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        </Style>
+        <Style x:Key="PlaceholderTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Grid>
+                            <!-- Actual Text -->
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+
+                            <!-- Placeholder -->
+                            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                              Path=(ui:PlaceholderHelper.Placeholder)}"
+                               Foreground="Gray"
+                               Margin="8,0"
+                               VerticalAlignment="Center"
+                               IsHitTestVisible="False"
+                               Visibility="Collapsed"
+                               x:Name="PlaceholderText"/>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Text" Value="">
+                                <Setter TargetName="PlaceholderText"
+                                Property="Visibility"
+                                Value="Visible"/>
+                            </Trigger>
+
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="PlaceholderText"
+                                Property="Visibility"
+                                Value="Collapsed"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PlaceholderComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <!-- Selected item -->
+                            <ContentPresenter x:Name="ContentSite"
+                                      Margin="8,0"
+                                      VerticalAlignment="Center"
+                                      Content="{TemplateBinding SelectionBoxItem}"
+                                      ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" />
+
+                            <!-- Placeholder -->
+                            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                              Path=(ui:PlaceholderHelper.Placeholder)}"
+                               Foreground="Gray"
+                               Margin="8,0"
+                               VerticalAlignment="Center"
+                               IsHitTestVisible="False"
+                               Visibility="Collapsed"
+                               x:Name="PlaceholderText"/>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="SelectedItem" Value="{x:Null}">
+                                <Setter TargetName="PlaceholderText"
+                                Property="Visibility"
+                                Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
+
+
+
+        <!-- ================= CONVERTERS ================= -->
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <local:InverseBoolConverter x:Key="InverseBoolConverter"/>
         <local:ZeroToVisibilityConverter x:Key="ZeroToVisibilityConverter"/>
-
+        <local:MenuHelper x:Key="MenuHelper"/>
+        
     </Application.Resources>
-
 </Application>

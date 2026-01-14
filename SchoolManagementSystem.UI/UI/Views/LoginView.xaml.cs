@@ -1,66 +1,58 @@
-﻿using SchoolManagementSystem.Business.Services;
-using SchoolManagementSystem.Common.Enums;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SchoolManagementSystem.Business.Services;
 using SchoolManagementSystem.Common.Session;
-using SchoolManagementSystem.Data;
 using SchoolManagementSystem.Models.Models;
+using SchoolManagementSystem.UI.UI.ViewModels;
+using SchoolManagementSystem.UI.UI.Views.Dashboard;
 using System.Windows;
 
 namespace SchoolManagementSystem.UI.UI.Views
 {
     public partial class LoginView : Window
     {
-        private readonly AuthService _authService = new();
+        private LoginViewModel ViewModel => DataContext as LoginViewModel;
 
         public LoginView()
         {
             InitializeComponent();
+            DataContext = App.Services.GetRequiredService<LoginViewModel>();
+
         }
 
-
+        // ================= PASSWORD TO VM =================
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            txtError.Visibility = Visibility.Collapsed;
+            ViewModel.Password = pwdBox.Visibility == Visibility.Visible
+                ? pwdBox.Password
+                : txtPasswordVisible.Text;
 
-            var username = txtUsername.Text.Trim();
-            var password = pwdBox.Password;
-
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
-            {
-                txtError.Text = "Username and password are required";
-                txtError.Visibility = Visibility.Visible;
-                return;
-            }
-
-            var user = _authService.Login(username, password);
-
-            if (user == null)
-            {
-                txtError.Text = "Invalid username or password";
-                txtError.Visibility = Visibility.Visible;
-                return;
-            }
-
-            // ✅ SET SESSION (CRITICAL)
-            UserSession.UserId = user.UserId;
-            UserSession.Username = user.Username;
-            UserSession.Role = user.Role; // Admin / Teacher / Student
-
-            // ✅ OPEN MAIN WINDOW
-            var main = new MainWindow();
-            main.Show();
-
-            Close();
+            ViewModel.LoginCommand.Execute(null);
         }
-        
 
+        // ================= TOGGLE PASSWORD =================
+        private void TogglePassword_Click(object sender, RoutedEventArgs e)
+        {
+            if (pwdBox.Visibility == Visibility.Visible)
+            {
+                txtPasswordVisible.Text = pwdBox.Password;
+                pwdBox.Visibility = Visibility.Collapsed;
+                txtPasswordVisible.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                pwdBox.Password = txtPasswordVisible.Text;
+                txtPasswordVisible.Visibility = Visibility.Collapsed;
+                pwdBox.Visibility = Visibility.Visible;
+            }
+        }
+
+        // ================= FORGOT PASSWORD =================
         private void ForgotPassword_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(
-                "Please contact the system administrator to reset your password.",
-                "Forgot Password",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
+            MessageBox.Show("Contact administrator to reset password.",
+                            "Forgot Password",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
         }
-
     }
 }

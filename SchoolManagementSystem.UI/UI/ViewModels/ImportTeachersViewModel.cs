@@ -1,16 +1,16 @@
 ﻿using Microsoft.Win32;
 using SchoolManagementSystem.Business.Services;
 using SchoolManagementSystem.UI.UI.Helpers;
-using System.ComponentModel;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
 namespace SchoolManagementSystem.UI.UI.ViewModels.Import
 {
-    public class ImportTeachersViewModel : INotifyPropertyChanged
+    public class ImportTeachersViewModel : BaseViewModel
     {
-        private readonly ImportService _service = new();
+        private readonly IImportService _importService;
 
         private int _progress;
         private bool _isImporting;
@@ -18,7 +18,11 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Import
         public int Progress
         {
             get => _progress;
-            set { _progress = value; OnPropertyChanged(nameof(Progress)); }
+            set
+            {
+                _progress = value;
+                OnPropertyChanged();
+            }
         }
 
         public bool IsImporting
@@ -27,20 +31,27 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Import
             set
             {
                 _isImporting = value;
-                OnPropertyChanged(nameof(IsImporting));
+                OnPropertyChanged();
+                CommandManager.InvalidateRequerySuggested(); // ✅ refresh CanExecute
             }
         }
 
         public ICommand ImportCommand { get; }
 
-        public ImportTeachersViewModel()
+        // ✅ Constructor Injection
+        public ImportTeachersViewModel(IImportService importService)
         {
-            // 🔴 FIX: Call ASYNC import, not old method
-            ImportCommand = new RelayCommand(async () => await ImportAsync(), () => !IsImporting);
+            _importService = importService;
+
+            ImportCommand = new RelayCommand(
+                async () => await ImportAsync(),
+                () => !IsImporting);
         }
 
-        // ✅ ONLY IMPORT METHOD (WITH PROGRESS)
-        public async Task ImportAsync()
+        // =============================
+        // IMPORT TEACHERS (ASYNC + PROGRESS)
+        // =============================
+        private async Task ImportAsync()
         {
             var dlg = new OpenFileDialog
             {
@@ -57,23 +68,22 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Import
 
             try
             {
-                await Task.Run(() =>
-                    _service.ImportTeachersWithProgress(dlg.FileName, progress));
+                // ✅ Service is async – no Task.Run needed
+                await _importService.ImportTeachersWithProgressAsync(
+                    dlg.FileName,
+                    progress);
 
                 MessageBox.Show("Teachers imported successfully");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, "Import Failed",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
                 IsImporting = false;
             }
         }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void OnPropertyChanged(string prop)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
     }
 }

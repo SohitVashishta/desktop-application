@@ -9,9 +9,10 @@ namespace SchoolManagementSystem.Models.Models
     public class Notification
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
+        public int UserId { get; set; }   // ✅ important
+        public string Title { get; set; }
         public string Message { get; set; }
         public bool IsRead { get; set; }
-        public DateTime CreatedOn { get; set; } = DateTime.Now;
+        public DateTime CreatedOn { get; set; }
     }
 }

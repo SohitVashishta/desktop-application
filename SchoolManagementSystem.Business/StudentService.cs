@@ -1,32 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using SchoolManagementSystem.Data;
 using SchoolManagementSystem.Data.Repositories;
 using SchoolManagementSystem.Models;
+using SchoolManagementSystem.Models.Models;
 
 namespace SchoolManagementSystem.Business.Services
 {
-    public class StudentService
+    public class StudentService : IStudentService
     {
-        private readonly StudentRepository _repo = new StudentRepository();
+        private readonly IStudentRepository _repository;
 
-        public List<Student> GetStudents()
+        // ✅ Repository injected via DI
+        public StudentService(IStudentRepository repository)
         {
-            return _repo.GetAll();
+            _repository = repository;
         }
 
-        public void AddStudent(Student student)
-        {
-            _repo.Add(student);
-        }
+        public Task<List<Student>> GetStudentsAsync()
+            => _repository.GetAllAsync();
 
-        public void UpdateStudent(Student student)
-        {
-            _repo.Update(student);
-        }
+        public Task<Student?> GetStudentByIdAsync(int id)
+            => _repository.GetByIdAsync(id);
 
-        // ✅ ADD THIS
-        public void DeleteStudent(int studentId)
-        {
-            _repo.Delete(studentId);
-        }
+        public Task AddStudentAsync(Student student)
+            => _repository.AddAsync(student);
+
+        public Task UpdateStudentAsync(Student student)
+            => _repository.UpdateAsync(student);
+
+        public Task DeleteStudentAsync(int id)
+            => _repository.DeleteAsync(id);
     }
 }

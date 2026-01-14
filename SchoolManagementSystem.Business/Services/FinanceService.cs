@@ -1,28 +1,52 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using SchoolManagementSystem.Data.Repositories;
+﻿using SchoolManagementSystem.Data.Repositories;
 using SchoolManagementSystem.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SchoolManagementSystem.Business.Services
 {
-    public class FinanceService
+    public class FinanceService : IFinanceService
     {
-        private readonly FinanceRepository _repo = new();
+        private readonly IFinanceRepository _repository;
 
-        // DASHBOARD
-        public decimal GetPendingFeesAmount()
-            => _repo.GetPendingAmount();
+        // ✅ Constructor Injection via INTERFACE
+        public FinanceService(IFinanceRepository repository)
+        {
+            _repository = repository;
+        }
 
-        // LIST
-        public List<FeeInvoice> GetInvoices()
-            => _repo.GetAll().ToList();
+        // ================= DASHBOARD =================
 
-        // ADD
-        public void AddInvoice(FeeInvoice invoice)
-            => _repo.Add(invoice);
+        public async Task<decimal> GetPendingFeesAmountAsync()
+        {
+            return await _repository.GetPendingAmountAsync();
+        }
 
-        // PAY
-        public void MarkInvoicePaid(int invoiceId, string paymentMode)
-            => _repo.MarkPaid(invoiceId, paymentMode);
+        // ================= LIST =================
+
+        public async Task<List<FeeInvoice>> GetInvoicesAsync()
+        {
+            return await _repository.GetAllAsync();
+        }
+
+        // ================= ADD =================
+
+        public async Task AddInvoiceAsync(FeeInvoice invoice)
+        {
+            if (invoice == null)
+                return;
+
+            await _repository.AddInvoiceAsync(invoice);
+        }
+
+        // ================= PAY =================
+
+        public async Task MarkInvoicePaidAsync(int invoiceId, string paymentMode)
+        {
+            if (invoiceId <= 0 || string.IsNullOrWhiteSpace(paymentMode))
+                return;
+
+            await _repository.MarkPaidAsync(invoiceId, paymentMode);
+        }
     }
 }

@@ -1,54 +1,86 @@
-﻿using SchoolManagementSystem.Business.Services;
+﻿using SchoolManagementSystem.Business;
+using SchoolManagementSystem.Business.Services;
 using SchoolManagementSystem.Models;
+using SchoolManagementSystem.Models.Models;
 using SchoolManagementSystem.UI.UI.Helpers;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace SchoolManagementSystem.UI.UI.ViewModels.Attendances
 {
-    public class MarkAttendanceViewModel
+    public class MarkAttendanceViewModel : BaseViewModel
     {
-        private readonly AttendanceService _attendanceService = new();
-        private readonly StudentService _studentService = new();
+        private readonly IAttendanceService _attendanceService;
+        private readonly IStudentService _studentService;
 
-        public DateTime SelectedDate { get; set; } = DateTime.Today;
+        private DateTime _selectedDate = DateTime.Today;
+        public DateTime SelectedDate
+        {
+            get => _selectedDate;
+            set
+            {
+                _selectedDate = value;
+                OnPropertyChanged();
+            }
+        }
 
-        // UI collection
-        public ObservableCollection<StudentAttendanceViewModel> Students { get; set; }
+        private ObservableCollection<StudentAttendanceViewModel> _students;
+        public ObservableCollection<StudentAttendanceViewModel> Students
+        {
+            get => _students;
+            set
+            {
+                _students = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ICommand SaveCommand { get; }
 
-        public MarkAttendanceViewModel()
+        // ✅ Constructor Injection
+        public MarkAttendanceViewModel(
+            IAttendanceService attendanceService,
+            IStudentService studentService)
         {
-            LoadStudents();
-            SaveCommand = new RelayCommand(Save);
+            _attendanceService = attendanceService;
+            _studentService = studentService;
+
+            Students = new ObservableCollection<StudentAttendanceViewModel>();
+
+            SaveCommand = new RelayCommand(async () => await SaveAsync());
+
+            // Load students asynchronously
+            _ = LoadStudentsAsync();
         }
 
         // =========================================
-        // LOAD STUDENTS (UI ONLY)
+        // LOAD STUDENTS
         // =========================================
-        private void LoadStudents()
+        private async Task LoadStudentsAsync()
         {
-            var students = _studentService.GetStudents();
+            var students = await _studentService.GetStudentsAsync();
 
-            Students = new ObservableCollection<StudentAttendanceViewModel>(
-                students.Select(s => new StudentAttendanceViewModel
+            Students.Clear();
+
+            foreach (var s in students)
+            {
+                Students.Add(new StudentAttendanceViewModel
                 {
                     StudentId = s.StudentId,
                     FirstName = s.FirstName,
                     LastName = s.LastName,
-                    IsPresent = true // default checked
-                })
-            );
+                    IsPresent = true // default present
+                });
+            }
         }
 
         // =========================================
-        // SAVE ATTENDANCE
+        // SAVE ATTENDANCE (BULK STANDARD)
         // =========================================
-        private void Save()
+        private async Task SaveAsync()
         {
             var records = Students.Select(s => new Attendance
             {
@@ -57,9 +89,7 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Attendances
                 IsPresent = s.IsPresent
             }).ToList();
 
-            _attendanceService.SaveAttendanceBulk(SelectedDate, records);
-
-            MessageBox.Show("Attendance saved successfully");
+           
         }
     }
 }
