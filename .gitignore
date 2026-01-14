@@ -35,3 +35,19 @@ Thumbs.db
 *.suo
 *.userosscache
 *.sln.docstates
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio cache / indexes
+*.vsidx
+*.db
+*.v2
+HierarchyCache.v1.txt
+DocumentLayout.json
+DocumentLayout.backup.json
+
+# Copilot / IntelliSense
+CopilotIndices/
