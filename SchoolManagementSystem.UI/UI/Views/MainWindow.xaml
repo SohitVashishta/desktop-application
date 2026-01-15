@@ -9,9 +9,7 @@
         WindowStartupLocation="CenterScreen"
         Background="#F4F6F9">
     <!-- VIEW MODEL -->
-    <Window.DataContext>
-        <vm:MainWindowViewModel/>
-    </Window.DataContext>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="230"/>

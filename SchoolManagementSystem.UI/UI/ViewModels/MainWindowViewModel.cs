@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using SchoolManagementSystem.Common.Session;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace SchoolManagementSystem.UI.UI.ViewModels
@@ -6,9 +7,8 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private string _pageTitle = "Dashboard";
-        private string _username = "Admin";
+        private string _username = "";
 
-        // ===== HEADER =====
         public string PageTitle
         {
             get => _pageTitle;
@@ -21,25 +21,43 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
             set { _username = value; OnPropertyChanged(); }
         }
 
-        // ===== ROLE FLAGS (USED BY SIDEBAR) =====
-        public bool IsAdmin { get; set; }
-        public bool IsTeacher { get; set; }
-        public bool IsStudent { get; set; }
-        public bool IsParent { get; set; }
-        public bool IsAccountant { get; set; }
-        public bool IsLibrarian { get; set; }
-        public bool IsHR { get; set; }
+        public bool IsAdmin { get; private set; }
+        public bool IsTeacher { get; private set; }
+        public bool IsStudent { get; private set; }
+        public bool IsParent { get; private set; }
+        public bool IsAccountant { get; private set; }
+        public bool IsLibrarian { get; private set; }
+        public bool IsHR { get; private set; }
 
         public MainWindowViewModel()
         {
-            // TEMPORARY – replace with UserSession later
-            IsAdmin = true;
-            IsTeacher = false;
-            IsStudent = false;
-            IsParent = false;
-            IsAccountant = false;
-            IsLibrarian = false;
-            IsHR = false;
+            LoadFromSession();
+        }
+
+        private void LoadFromSession()
+        {
+            Username = UserSession.Username;
+
+            IsAdmin = UserSession.IsAdmin;
+            IsTeacher = UserSession.IsTeacher;
+            IsStudent = UserSession.IsStudent;
+            IsParent = UserSession.IsParent;
+            IsAccountant = UserSession.IsAccountant;
+            IsLibrarian = UserSession.IsLibrarian;
+            IsHR = UserSession.IsHR;
+
+            NotifyRoles();
+        }
+
+        private void NotifyRoles()
+        {
+            OnPropertyChanged(nameof(IsAdmin));
+            OnPropertyChanged(nameof(IsTeacher));
+            OnPropertyChanged(nameof(IsStudent));
+            OnPropertyChanged(nameof(IsParent));
+            OnPropertyChanged(nameof(IsAccountant));
+            OnPropertyChanged(nameof(IsLibrarian));
+            OnPropertyChanged(nameof(IsHR));
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

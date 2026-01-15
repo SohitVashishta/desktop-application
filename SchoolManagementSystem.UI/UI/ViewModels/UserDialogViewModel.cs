@@ -1,4 +1,5 @@
 ﻿using SchoolManagementSystem.Business.Services;
+using SchoolManagementSystem.Common.Enums;
 using SchoolManagementSystem.Models.Models;
 using SchoolManagementSystem.UI.UI.Helpers;
 using SchoolManagementSystem.UI.UI.ViewModels;
@@ -15,6 +16,7 @@ public class UserDialogViewModel : SchoolManagementSystem.UI.UI.Helpers.BaseView
     public string Email { get; set; }
     public string Password { get; set; }
     public string Role { get; set; }
+    public UserRole SelectedRole { get; set; }
 
     public ICommand SaveCommand { get; }
 
@@ -32,7 +34,7 @@ public class UserDialogViewModel : SchoolManagementSystem.UI.UI.Helpers.BaseView
         {
             Username = Username,
             Email = Email,
-            Role = Role
+            Role = SelectedRole
         };
 
         await _userService.CreateUserAsync(user, Password);

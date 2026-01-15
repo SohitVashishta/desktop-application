@@ -1,4 +1,5 @@
 ﻿using SchoolManagementSystem.Business.Services;
+using SchoolManagementSystem.Common.Enums;
 using SchoolManagementSystem.Models.Models;
 using SchoolManagementSystem.UI.UI.Helpers;
 using System.Collections.ObjectModel;
@@ -18,7 +19,7 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
         public string Password { get; set; }
 
         public ObservableCollection<string> Roles { get; }
-        public string SelectedRole { get; set; }
+        public UserRole SelectedRole { get; set; }
 
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
@@ -45,7 +46,7 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
             if (string.IsNullOrWhiteSpace(Username) ||
                 string.IsNullOrWhiteSpace(Email) ||
                 string.IsNullOrWhiteSpace(Password) ||
-                string.IsNullOrWhiteSpace(SelectedRole))
+                SelectedRole == UserRole.None)
             {
                 MessageBox.Show("All fields are required");
                 return;
@@ -67,6 +68,7 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
 
             Close();
         }
+
 
         private void Close()
         {

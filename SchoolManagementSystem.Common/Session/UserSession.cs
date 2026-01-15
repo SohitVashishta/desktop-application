@@ -25,7 +25,9 @@ namespace SchoolManagementSystem.Common.Session
         public static void End()
         {
             UserId = 0;
-            Username = null;
+            Username = string.Empty;
+            Role = UserRole.None;
         }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using SchoolManagementSystem.Business.Auth;
+using SchoolManagementSystem.Common.Session;
 using SchoolManagementSystem.UI.UI.Helpers;
 using SchoolManagementSystem.UI.UI.Views;
 using System.Threading.Tasks;
@@ -65,18 +66,19 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
                 return;
             }
 
-            var success = await _authService.LoginAsync(Username, Password);
+            var user = await _authService.LoginAsync(Username, Password);
 
-            if (success!=null)
+            // ❌ WRONG PASSWORD OR USERNAME
+            if (user == null)
             {
                 ShowError("Invalid username or password.");
                 return;
             }
-
-            // 🔐 LOGIN SUCCESS → OPEN MAIN WINDOW
+            UserSession.Start(user.UserId, user.Username, user.Role);
+            // ✅ LOGIN SUCCESS
             Application.Current.Dispatcher.Invoke(() =>
             {
-                var main = new MainWindow();
+                var main = new MainWindow(); // pass user if needed
                 main.Show();
 
                 foreach (Window w in Application.Current.Windows)
