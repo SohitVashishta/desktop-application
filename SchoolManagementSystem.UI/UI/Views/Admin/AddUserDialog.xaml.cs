@@ -13,5 +13,12 @@ namespace SchoolManagementSystem.UI.UI.Views.Admin
             // 🔹 Hook password manually
             vm.PasswordProvider = () => PwdBox.Password;
         }
+        private void PwdBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is AddUserViewModel vm)
+            {
+                vm.UpdatePasswordStrength();
+            }
+        }
     }
 }
