@@ -2,6 +2,8 @@
 using SchoolManagementSystem.Data;
 using SchoolManagementSystem.Data.Repositories;
 using SchoolManagementSystem.Models.Models;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace SchoolManagementSystem.Business.Services
 {
@@ -24,10 +26,16 @@ namespace SchoolManagementSystem.Business.Services
         // ============================
         public async Task CreateUserAsync(User user, string password)
         {
-            user.PasswordHash = PasswordHasher.Hash(password);
+            user.PasswordHash = password;
             user.IsActive = true;
 
             await _repo.AddUserAsync(user);
+        }
+        private static string HashPassword(string password)
+        {
+            using var sha = SHA256.Create();
+            var bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return Convert.ToBase64String(bytes);
         }
 
         // ============================

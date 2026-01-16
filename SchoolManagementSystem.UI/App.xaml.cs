@@ -41,14 +41,14 @@ namespace SchoolManagementSystem.UI
                     "Connection string 'SchoolDb' is missing in App.config");
             }
 
-            services.AddDbContext<SchoolDbContext>(options =>
-                options.UseSqlServer(cs.ConnectionString));
+            // ✅ DB CONTEXT (ONLY ONCE)
+            services.AddDbContextFactory<SchoolDbContext>(options =>
+     options.UseSqlServer(cs.ConnectionString));
+
 
             // ================= REPOSITORIES =================
-           
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
-            services.AddScoped<IReportService, ReportService>();
             services.AddScoped<ITeacherRepository, TeacherRepository>();
             services.AddScoped<IAttendanceRepository, AttendanceRepository>();
             services.AddScoped<ICommunicationRepository, CommunicationRepository>();
@@ -57,13 +57,13 @@ namespace SchoolManagementSystem.UI
             services.AddScoped<IHrRepository, HrRepository>();
             services.AddScoped<IImportRepository, ImportRepository>();
             services.AddScoped<IInventoryRepository, InventoryRepository>();
-            services.AddScoped<ILibraryRepository , LibraryRepository>();
+            services.AddScoped<ILibraryRepository, LibraryRepository>();
             services.AddScoped<IPermissionRepository, PermissionRepository>();
             services.AddScoped<ISystemRepository, SystemRepository>();
             services.AddScoped<ITimetableRepository, TimetableRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+
             // ================= SERVICES =================
-           
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IReportService, ReportService>();
@@ -71,20 +71,13 @@ namespace SchoolManagementSystem.UI
             services.AddScoped<IAttendanceService, AttendanceService>();
             services.AddScoped<ICommunicationService, CommunicationService>();
             services.AddScoped<IExamService, ExamService>();
-            //services.AddScoped<IFinanceService, FinanceService>();
             services.AddScoped<IHrService, HrService>();
             services.AddScoped<IImportService, ImportService>();
             services.AddScoped<IInventoryService, InventoryService>();
             services.AddScoped<ILibraryService, LibraryService>();
-            //services.AddScoped<IPermissionService, PermissionService>();
             services.AddScoped<ISystemService, SystemService>();
             services.AddScoped<ITimetableService, TimetableService>();
             services.AddScoped<IUserService, UserService>();
-
-
-            
-
-
 
             // ================= VIEWMODELS =================
             services.AddTransient<UserManagementViewModel>();
@@ -97,9 +90,7 @@ namespace SchoolManagementSystem.UI
             services.AddTransient<ImportStudentsViewModel>();
             services.AddTransient<ImportTeachersViewModel>();
             services.AddTransient<MarkAttendanceViewModel>();
-            services.AddTransient<LoginViewModel>(); 
-            
-
+            services.AddTransient<LoginViewModel>();
         }
 
     }

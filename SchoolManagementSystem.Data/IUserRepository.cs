@@ -12,7 +12,8 @@ namespace SchoolManagementSystem.Data
         Task<List<User>> GetUsersAsync();
         Task AddUserAsync(User user);
         Task UpdateUserAsync(User user);
-        Task DeactivateUserAsync(int userId);
         Task UpdatePasswordAsync(int userId, string passwordHash);
+        Task DeactivateUserAsync(int userId);
     }
+
 }

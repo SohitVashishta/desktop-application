@@ -1,28 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using SchoolManagementSystem.UI.UI.ViewModels.Admin;
 
 namespace SchoolManagementSystem.UI.UI.Views.Admin
 {
-    /// <summary>
-    /// Interaction logic for AddUserDialog.xaml
-    /// </summary>
     public partial class AddUserDialog : Window
     {
-        public AddUserDialog()
+        public AddUserDialog(AddUserViewModel vm)
         {
             InitializeComponent();
+            DataContext = vm;
+
+            // 🔹 Hook password manually
+            vm.PasswordProvider = () => PwdBox.Password;
         }
     }
 }

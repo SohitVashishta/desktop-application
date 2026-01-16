@@ -1,10 +1,11 @@
-﻿using SchoolManagementSystem.Business.Services;
-using SchoolManagementSystem.Common.Enums;
+﻿using SchoolManagementSystem.Common.Enums;
 using SchoolManagementSystem.Models.Models;
 using SchoolManagementSystem.UI.UI.Helpers;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Cryptography;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
@@ -12,70 +13,84 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
 {
     public class AddUserViewModel : BaseViewModel
     {
-        private readonly IUserService _userService;
+        // ================= FIELDS =================
+        public string Username { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
 
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
+        // Password provided by VIEW (PasswordBox)
+        public Func<string>? PasswordProvider { get; set; }
 
-        public ObservableCollection<string> Roles { get; }
-        public UserRole SelectedRole { get; set; }
+        // ================= ROLES =================
+        public ObservableCollection<UserRole> Roles { get; } =
+            new ObservableCollection<UserRole>(
+                Enum.GetValues(typeof(UserRole)).Cast<UserRole>());
 
+        private UserRole _selectedRole;
+        public UserRole SelectedRole
+        {
+            get => _selectedRole;
+            set
+            {
+                _selectedRole = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // ================= COMMANDS =================
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
 
-        public event Func<Task> UserSaved;
+        // ================= EVENTS =================
+        public event Action<User>? UserSaved;
 
-        public AddUserViewModel(IUserService userService)
+        public AddUserViewModel()
         {
-            _userService = userService;
-
-            Roles = new ObservableCollection<string>
-            {
-                "Admin",
-                "Teacher",
-                "Student"
-            };
-
-            SaveCommand = new RelayCommand(async () => await SaveAsync());
+            SaveCommand = new RelayCommand(Save);
             CancelCommand = new RelayCommand(Close);
         }
 
-        private async Task SaveAsync()
+        // ================= SAVE =================
+        private void Save()
         {
+            var password = PasswordProvider?.Invoke();
+
             if (string.IsNullOrWhiteSpace(Username) ||
-                string.IsNullOrWhiteSpace(Email) ||
-                string.IsNullOrWhiteSpace(Password) ||
-                SelectedRole == UserRole.None)
+                string.IsNullOrWhiteSpace(password))
             {
-                MessageBox.Show("All fields are required");
+                MessageBox.Show(
+                    "Username and Password are required",
+                    "Validation",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
                 return;
             }
 
             var user = new User
             {
-                Username = Username,
-                Email = Email,
-                Role = SelectedRole
+                Username = Username.Trim(),
+                Email = Email?.Trim(),
+                Role = SelectedRole,
+                IsActive = true,
+                PasswordHash = HashPassword(password)
             };
 
-            // ✅ SAVE TO DATABASE
-            await _userService.CreateUserAsync(user, Password);
-
-            // ✅ Notify parent to reload grid
-            if (UserSaved != null)
-                await UserSaved.Invoke();
-
+            UserSaved?.Invoke(user);
             Close();
         }
 
+        private static string HashPassword(string password)
+        {
+            using var sha = SHA256.Create();
+            return Convert.ToBase64String(
+                sha.ComputeHash(Encoding.UTF8.GetBytes(password)));
+        }
 
         private void Close()
         {
             Application.Current.Windows
                 .OfType<Window>()
-                .Single(w => w.IsActive)
-                .Close();
+                .FirstOrDefault(w => w.IsActive)
+                ?.Close();
         }
     }
 }

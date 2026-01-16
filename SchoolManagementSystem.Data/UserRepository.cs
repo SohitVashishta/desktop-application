@@ -1,8 +1,6 @@
-﻿using Dapper;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Models.Models;
-using System.Data;
+using System.Diagnostics;
 
 namespace SchoolManagementSystem.Data.Repositories
 {
@@ -15,31 +13,86 @@ namespace SchoolManagementSystem.Data.Repositories
             _context = context;
         }
 
+        // ================= ADD =================
+
         public async Task AddUserAsync(User user)
         {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
         }
 
-        public Task DeactivateUserAsync(int userId)
-        {
-            throw new NotImplementedException();
-        }
-
+        // ================= GET ALL =================
         public async Task<List<User>> GetUsersAsync()
         {
-            return await _context.Users
+            
+            var users = await _context.Users
                 .AsNoTracking()
+                .OrderBy(u => u.UserId)
                 .ToListAsync();
-        }
-        public Task UpdatePasswordAsync(int userId, string passwordHash)
-        {
-            throw new NotImplementedException();
+
+            Debug.WriteLine($"Users count = {users.Count}");
+
+            foreach (var u in users)
+            {
+                Debug.WriteLine(
+                    $"UserId={u.UserId}, Username={u.Username}, Role={u.Role}, Active={u.IsActive}");
+            }
+
+            return users;
         }
 
-        public Task UpdateUserAsync(User user)
+        // ================= UPDATE USER =================
+
+        public async Task UpdateUserAsync(User user)
         {
-            throw new NotImplementedException();
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+
+            var existing = await _context.Users
+                .FirstOrDefaultAsync(x => x.UserId == user.UserId);
+
+            if (existing == null)
+                throw new InvalidOperationException("User not found");
+
+            existing.Username = user.Username;
+            existing.Email = user.Email;
+            existing.Role = user.Role;
+            existing.IsActive = user.IsActive;
+
+            await _context.SaveChangesAsync();
+        }
+
+        // ================= PASSWORD =================
+
+        public async Task UpdatePasswordAsync(int userId, string passwordHash)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x => x.UserId == userId);
+
+            if (user == null)
+                throw new InvalidOperationException("User not found");
+
+            user.PasswordHash = passwordHash;
+
+            await _context.SaveChangesAsync();
+        }
+
+        // ================= DEACTIVATE =================
+
+        public async Task DeactivateUserAsync(int userId)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x => x.UserId == userId);
+
+            if (user == null)
+                throw new InvalidOperationException("User not found");
+
+            user.IsActive = false;
+
+            await _context.SaveChangesAsync();
         }
     }
 }
