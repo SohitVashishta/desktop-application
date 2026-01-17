@@ -24,6 +24,14 @@
             <local:InverseBoolConverter x:Key="InverseBoolConverter"/>
             <local:BoolToBrushConverter x:Key="BoolToBrushConverter"/>
             <local:BoolToStatusTextConverter x:Key="BoolToStatusTextConverter"/>
+            <local:PasswordMismatchVisibilityConverter x:Key="PasswordMismatchVisibilityConverter"/>
+            <local:BoolToStatusBackgroundConverter x:Key="BoolToStatusBackgroundConverter"/>
+            <local:FirstLetterConverter x:Key="FirstLetterConverter"/>
+            <Style TargetType="Control">
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+                <Setter Property="FontSize" Value="13"/>
+            </Style>
+
             <!-- ================= MENU BUTTON ================= -->
             <Style x:Key="MenuButtonStyle"
        TargetType="Button"

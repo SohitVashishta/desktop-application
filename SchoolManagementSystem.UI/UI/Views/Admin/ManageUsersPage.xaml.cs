@@ -14,6 +14,7 @@ namespace SchoolManagementSystem.UI.UI.Views.Admin
             DataContext = App.Services.GetRequiredService<UserManagementViewModel>();
 
             Loaded += ManageUsersPage_Loaded;
+
         }
 
         private async void ManageUsersPage_Loaded(object sender, RoutedEventArgs e)

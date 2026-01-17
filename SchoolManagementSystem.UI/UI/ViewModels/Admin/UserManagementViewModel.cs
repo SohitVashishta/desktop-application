@@ -8,19 +8,35 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
 {
+    /// <summary>
+    /// ViewModel responsible for:
+    /// - User listing (filter, pagination)
+    /// - Add / Edit user dialog
+    /// - Password validation (Add mode only)
+    /// </summary>
     public class UserManagementViewModel : BaseViewModel
     {
         private readonly IUserService _userService;
 
-        // ================= UI STATE =================
+        #region ================= UI STATE =================
+
         private bool _isDialogOpen;
         public bool IsDialogOpen
         {
             get => _isDialogOpen;
-            set { _isDialogOpen = value; OnPropertyChanged(); }
+            set
+            {
+                // When dialog closes, always clear sensitive state
+                if (_isDialogOpen && !value)
+                    ResetDialogState();
+
+                _isDialogOpen = value;
+                OnPropertyChanged();
+            }
         }
 
         private bool _isSaving;
@@ -31,33 +47,175 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
             {
                 _isSaving = value;
                 OnPropertyChanged();
-                ((RelayCommand)SaveUserCommand).RaiseCanExecuteChanged();
+                NotifyCanSaveChanged();
             }
         }
 
-        // ================= SNACKBAR =================
-        public SnackbarMessageQueue SnackbarMessageQueue { get; } = new();
+        #endregion
 
-        // ================= USERS =================
+        #region ================= ADD / EDIT MODE =================
+
+        private bool _isAddMode;
+        /// <summary>
+        /// True when dialog is opened via "Add User"
+        /// False when editing an existing user
+        /// </summary>
+        public bool IsAddMode
+        {
+            get => _isAddMode;
+            set
+            {
+                _isAddMode = value;
+                OnPropertyChanged();
+                NotifyCanSaveChanged();
+            }
+        }
+
+        #endregion
+
+        #region ================= PASSWORD STATE (ADD MODE ONLY) =================
+
+        /// <summary>
+        /// Plain password entered by the user (never stored in User entity)
+        /// </summary>
+        private string _password = string.Empty;
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                _password = value;
+                OnPropertyChanged();
+                ValidatePasswords();
+            }
+        }
+
+        private string _confirmPassword = string.Empty;
+        public string ConfirmPassword
+        {
+            get => _confirmPassword;
+            set
+            {
+                _confirmPassword = value;
+                OnPropertyChanged();
+                ValidatePasswords();
+            }
+        }
+
+        /// <summary>
+        /// Whether password eye (show/hide) is enabled
+        /// </summary>
+        private bool _showPassword;
+        public bool ShowPassword
+        {
+            get => _showPassword;
+            set
+            {
+                _showPassword = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _passwordStrengthValue;
+        public int PasswordStrengthValue
+        {
+            get => _passwordStrengthValue;
+            set
+            {
+                _passwordStrengthValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _passwordStrength;
+        public string PasswordStrength
+        {
+            get => _passwordStrength;
+            set
+            {
+                _passwordStrength = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isPasswordStrong;
+        public bool IsPasswordStrong
+        {
+            get => _isPasswordStrong;
+            set
+            {
+                _isPasswordStrong = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region ================= SAVE ENABLE LOGIC =================
+
+        /// <summary>
+        /// Determines whether Save button should be enabled
+        /// </summary>
+        public bool CanSave
+        {
+            get
+            {
+                if (IsSaving || EditUser == null)
+                    return false;
+
+                if (string.IsNullOrWhiteSpace(EditUser.Username) ||
+                    string.IsNullOrWhiteSpace(EditUser.Email))
+                    return false;
+
+                // Password rules apply only when adding a user
+                if (IsAddMode)
+                {
+                    return
+                        !string.IsNullOrWhiteSpace(Password) &&
+                        Password == ConfirmPassword &&
+                        IsPasswordStrong;
+                }
+
+                return true; // Edit mode
+            }
+        }
+
+        private void NotifyCanSaveChanged()
+        {
+            OnPropertyChanged(nameof(CanSave));
+            ((RelayCommand)SaveUserCommand).RaiseCanExecuteChanged();
+        }
+
+        #endregion
+
+        #region ================= USERS & FILTERING =================
+
         public ObservableCollection<User> Users { get; } = new();
         public ObservableCollection<User> FilteredUsers { get; } = new();
 
-        // ================= DIALOG =================
         private User _editUser;
         public User EditUser
         {
             get => _editUser;
-            set { _editUser = value; OnPropertyChanged(); }
+            set
+            {
+                _editUser = value;
+                OnPropertyChanged();
+                NotifyCanSaveChanged();
+            }
         }
 
         private string _dialogTitle;
         public string DialogTitle
         {
             get => _dialogTitle;
-            set { _dialogTitle = value; OnPropertyChanged(); }
+            set
+            {
+                _dialogTitle = value;
+                OnPropertyChanged();
+            }
         }
 
-        // ================= SEARCH =================
         private string _searchText = string.Empty;
         public string SearchText
         {
@@ -71,7 +229,6 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
             }
         }
 
-        // ================= STATUS FILTER =================
         private string _selectedStatus = "All";
         public string SelectedStatus
         {
@@ -85,7 +242,6 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
             }
         }
 
-        // ================= ROLES =================
         public ObservableCollection<UserRole> Roles { get; } =
             new(Enum.GetValues(typeof(UserRole)).Cast<UserRole>());
 
@@ -102,21 +258,31 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
             }
         }
 
-        // ================= PAGINATION =================
+        #endregion
+
+        #region ================= PAGINATION =================
+
         public int PageSize { get; } = 10;
 
         private int _currentPage = 1;
         public int CurrentPage
         {
             get => _currentPage;
-            set { _currentPage = value; OnPropertyChanged(); }
+            set
+            {
+                _currentPage = value;
+                OnPropertyChanged();
+            }
         }
 
         public string PageInfo => $"Page {CurrentPage}";
         public bool CanGoPrevious => CurrentPage > 1;
         public bool CanGoNext => Users.Count > CurrentPage * PageSize;
 
-        // ================= COMMANDS =================
+        #endregion
+
+        #region ================= COMMANDS =================
+
         public ICommand RefreshCommand { get; }
         public ICommand AddUserCommand { get; }
         public ICommand EditUserCommand { get; }
@@ -127,7 +293,16 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
         public ICommand NextPageCommand { get; }
         public ICommand PrevPageCommand { get; }
 
-        // ================= CONSTRUCTOR =================
+        #endregion
+
+        #region ================= SNACKBAR =================
+
+        public SnackbarMessageQueue SnackbarMessageQueue { get; } = new();
+
+        #endregion
+
+        #region ================= CONSTRUCTOR =================
+
         public UserManagementViewModel(IUserService userService)
         {
             _userService = userService;
@@ -135,8 +310,14 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
             RefreshCommand = new RelayCommand(async () => await LoadUsersAsync());
             AddUserCommand = new RelayCommand(OpenAddDialog);
             EditUserCommand = new RelayCommand<User>(OpenEditDialog);
-            SaveUserCommand = new RelayCommand(async () => await SaveAsync(), () => !IsSaving);
-            CancelDialogCommand = new RelayCommand(() => IsDialogOpen = false);
+            SaveUserCommand = new RelayCommand(async () => await SaveAsync(), () => CanSave);
+
+            CancelDialogCommand = new RelayCommand(() =>
+            {
+                IsDialogOpen = false;
+                ResetDialogState();
+            });
+
             ToggleStatusCommand = new RelayCommand<User>(async u => await ToggleStatusAsync(u));
 
             ResetFiltersCommand = new RelayCommand(() =>
@@ -159,7 +340,62 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
             }, () => CanGoPrevious);
         }
 
-        // ================= LOAD =================
+        #endregion
+
+        #region ================= PASSWORD VALIDATION =================
+        private Brush _passwordStrengthBrush = Brushes.Transparent;
+        public Brush PasswordStrengthBrush
+        {
+            get => _passwordStrengthBrush;
+            set
+            {
+                _passwordStrengthBrush = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private void ValidatePasswords()
+        {
+            if (string.IsNullOrWhiteSpace(Password))
+            {
+                PasswordStrengthValue = 0;
+                PasswordStrengthBrush = Brushes.Transparent;
+                IsPasswordStrong = false;
+                NotifyCanSaveChanged();
+                return;
+            }
+
+            int score = 0;
+            if (Password.Length >= 8) score += 25;
+            if (Password.Any(char.IsUpper)) score += 25;
+            if (Password.Any(char.IsLower)) score += 25;
+            if (Password.Any(char.IsDigit)) score += 25;
+
+            PasswordStrengthValue = score;
+
+            if (score < 50)
+            {
+                PasswordStrengthBrush = Brushes.Red;
+                IsPasswordStrong = false;
+            }
+            else if (score < 75)
+            {
+                PasswordStrengthBrush = Brushes.Orange;
+                IsPasswordStrong = false;
+            }
+            else
+            {
+                PasswordStrengthBrush = Brushes.Green;
+                IsPasswordStrong = true;
+            }
+
+            NotifyCanSaveChanged();
+        }
+
+        #endregion
+
+        #region ================= DATA LOADING =================
+
         public async Task LoadOnStartupAsync()
         {
             await LoadUsersAsync();
@@ -171,14 +407,12 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
             FilteredUsers.Clear();
 
             var users = await _userService.GetAllUsersAsync();
-
-            foreach (var u in users)
-                Users.Add(u);
+            foreach (var user in users)
+                Users.Add(user);
 
             ApplyFilters();
         }
 
-        // ================= FILTER =================
         private void ApplyFilters()
         {
             FilteredUsers.Clear();
@@ -200,22 +434,27 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
             else if (SelectedStatus == "Inactive")
                 query = query.Where(u => !u.IsActive);
 
-            query = query
-                .Skip((CurrentPage - 1) * PageSize)
-                .Take(PageSize);
-
-            foreach (var u in query)
-                FilteredUsers.Add(u);
+            foreach (var user in query
+                     .Skip((CurrentPage - 1) * PageSize)
+                     .Take(PageSize))
+            {
+                FilteredUsers.Add(user);
+            }
 
             OnPropertyChanged(nameof(PageInfo));
             OnPropertyChanged(nameof(CanGoPrevious));
             OnPropertyChanged(nameof(CanGoNext));
         }
 
-        // ================= ADD / EDIT =================
+        #endregion
+
+        #region ================= ADD / EDIT =================
+
         private void OpenAddDialog()
         {
             DialogTitle = "Add User";
+            IsAddMode = true;
+
             EditUser = new User { IsActive = true };
             IsDialogOpen = true;
         }
@@ -223,8 +462,8 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
         private void OpenEditDialog(User user)
         {
             DialogTitle = "Edit User";
+            IsAddMode = false;
 
-            // Clone user to avoid instant grid mutation
             EditUser = new User
             {
                 UserId = user.UserId,
@@ -238,26 +477,22 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
             IsDialogOpen = true;
         }
 
-        // ================= SAVE =================
+        #endregion
+
+        #region ================= SAVE =================
+
         private async Task SaveAsync()
         {
-            if (string.IsNullOrWhiteSpace(EditUser.Username))
-            {
-                SnackbarMessageQueue.Enqueue("Username is required");
-                return;
-            }
-
             try
             {
                 IsSaving = true;
 
-                if (EditUser.UserId == 0)
-                    await _userService.CreateUserAsync(EditUser, EditUser.PasswordHash);
+                if (IsAddMode)
+                    await _userService.CreateUserAsync(EditUser, Password);
                 else
                     await _userService.UpdateUserAsync(EditUser);
 
                 SnackbarMessageQueue.Enqueue("User saved successfully");
-
                 IsDialogOpen = false;
                 await LoadUsersAsync();
             }
@@ -271,12 +506,26 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
             }
         }
 
-        // ================= STATUS =================
+        private void ResetDialogState()
+        {
+            Password = string.Empty;
+            ConfirmPassword = string.Empty;
+            ShowPassword = false;
+            IsAddMode = false;
+            EditUser = null;
+        }
+
+        #endregion
+
+        #region ================= STATUS =================
+
         private async Task ToggleStatusAsync(User user)
         {
             user.IsActive = !user.IsActive;
             await _userService.UpdateUserAsync(user);
             SnackbarMessageQueue.Enqueue("User status updated");
         }
+
+        #endregion
     }
 }

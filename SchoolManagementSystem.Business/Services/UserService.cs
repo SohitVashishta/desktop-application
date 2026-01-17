@@ -26,8 +26,8 @@ namespace SchoolManagementSystem.Business.Services
         // ============================
         public async Task CreateUserAsync(User user, string password)
         {
-            user.PasswordHash = password;
-            user.IsActive = true;
+            user.PasswordHash = HashPassword(password);
+            //user.IsActive = true;
 
             await _repo.AddUserAsync(user);
         }
