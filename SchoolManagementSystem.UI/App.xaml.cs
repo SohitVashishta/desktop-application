@@ -92,6 +92,8 @@ namespace SchoolManagementSystem.UI
             services.AddTransient<MarkAttendanceViewModel>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<AssignRolesViewModel>();
+            services.AddTransient<ResetPasswordsViewModel>();
+            services.AddTransient<ControlPortalAccessViewModel>();
 
         }
 

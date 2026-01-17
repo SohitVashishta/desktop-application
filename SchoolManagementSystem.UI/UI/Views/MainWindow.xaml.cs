@@ -53,7 +53,7 @@ namespace SchoolManagementSystem.UI.UI.Views
             => Navigate(new ResetPasswordsPage(), "Reset Passwords");
 
         private void PortalAccess_Click(object sender, RoutedEventArgs e)
-            => Navigate(new PortalAccessPage(), "Portal Access Control");
+            => Navigate(new ControlPortalAccessPage(), "Portal Access Control");
 
         private void StudentManagement_Click(object sender, RoutedEventArgs e)
             => Navigate(new StudentManagementView(), "Student Management");

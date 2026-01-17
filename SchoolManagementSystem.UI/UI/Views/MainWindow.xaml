@@ -113,7 +113,7 @@
 
                         <Button Content="Dashboard"
                                 Tag="ViewDashboard"
-                                Style="{StaticResource MenuButtonStyle}"/>
+                                Style="{StaticResource MenuButtonStyle}" Click="Dashboard_Click"/>
 
                         <Expander Header="User &amp; Role Management"
                                   Tag="AccountGroup"
@@ -122,8 +122,8 @@
                             <StackPanel>
                                 <Button Content="Manage Users" Tag="AccountMultiple" Style="{StaticResource SubMenuButtonStyle}" Click="ManageUsers_Click"/>
                                 <Button Content="Assign Roles &amp; Permissions" Tag="ShieldAccount" Style="{StaticResource SubMenuButtonStyle}" Click="AssignRoles_Click"/>
-                                <Button Content="Reset Passwords" Tag="LockReset" Style="{StaticResource SubMenuButtonStyle}"/>
-                                <Button Content="Portal Access Control" Tag="ShieldKey" Style="{StaticResource SubMenuButtonStyle}"/>
+                                <Button Content="Reset Passwords" Tag="LockReset" Style="{StaticResource SubMenuButtonStyle}" Click="ResetPasswords_Click"/>
+                                <Button Content="Portal Access Control" Tag="ShieldKey" Style="{StaticResource SubMenuButtonStyle}" Click="PortalAccess_Click"/>
                             </StackPanel>
                         </Expander>
 

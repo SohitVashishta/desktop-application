@@ -1,28 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SchoolManagementSystem.UI.UI.ViewModels.Admin;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SchoolManagementSystem.UI.UI.Views.Admin
 {
-    /// <summary>
-    /// Interaction logic for ResetPasswordsPage.xaml
-    /// </summary>
     public partial class ResetPasswordsPage : UserControl
     {
         public ResetPasswordsPage()
         {
             InitializeComponent();
+            DataContext = App.Services.GetRequiredService<ResetPasswordsViewModel>();
+            Loaded += ResetPasswordsPage_Loaded;
+        }
+
+        private async void ResetPasswordsPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ResetPasswordsViewModel vm)
+                await vm.LoadOnStartupAsync();
         }
     }
 }

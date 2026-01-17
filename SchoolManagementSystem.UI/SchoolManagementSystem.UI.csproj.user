@@ -17,6 +17,9 @@
     <Compile Update="UI\Views\Admin\CommunicationView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UI\Views\Admin\ControlPortalAccessPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UI\Views\Admin\ExaminationGradingView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

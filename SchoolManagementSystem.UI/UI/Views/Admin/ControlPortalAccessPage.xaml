@@ -1,0 +1,123 @@
+﻿<UserControl
+    x:Class="SchoolManagementSystem.UI.UI.Views.Admin.ControlPortalAccessPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:helpers="clr-namespace:SchoolManagementSystem.UI.UI.Helpers">
+
+    <UserControl.Resources>
+        <helpers:FirstLetterConverter x:Key="FirstLetterConverter"/>
+        <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid Margin="24">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- ================= HEADER ================= -->
+        <StackPanel Margin="0,0,0,20">
+            <TextBlock Text="Control Portal Access"
+                       FontSize="18"
+                       FontWeight="SemiBold"/>
+
+            <TextBlock Text="Enable or disable user access to the portal"
+                       FontSize="12"
+                       Foreground="#6B7280"/>
+        </StackPanel>
+
+        <!-- ================= USER CARDS ================= -->
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto">
+
+            <ItemsControl ItemsSource="{Binding FilteredUsers}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel ItemWidth="280"
+                                   ItemHeight="160"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+
+                        <!-- ================= CARD ================= -->
+                        <Border Background="White"
+                                Margin="8"
+                                Padding="16"
+                                BorderBrush="#E5E7EB"
+                                BorderThickness="1"
+                                CornerRadius="10"
+                                Width="260">
+
+                            <StackPanel>
+
+                                <!-- USER INFO -->
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="0,0,0,12">
+
+                                    <Border Width="40"
+                                            Height="40"
+                                            CornerRadius="20"
+                                            Background="#E0E7FF">
+
+                                        <TextBlock Text="{Binding Username,
+                                            Converter={StaticResource FirstLetterConverter}}"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="16"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="#1E3A8A"/>
+                                    </Border>
+
+                                    <StackPanel Margin="12,0">
+                                        <TextBlock Text="{Binding Username}"
+                                                   FontSize="13"
+                                                   FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding Email}"
+                                                   FontSize="11"
+                                                   Foreground="#6B7280"/>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <!-- STATUS -->
+                                <StackPanel Orientation="Horizontal"
+                                            VerticalAlignment="Center">
+
+                                    <TextBlock Text="Portal Access"
+                                               FontSize="12"
+                                               FontWeight="SemiBold"/>
+
+                                    <ToggleButton Margin="12,0,0,0"
+                                                  Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                                  IsChecked="{Binding IsActive, Mode=TwoWay}"
+                                                  Command="{Binding DataContext.ToggleAccessCommand,
+                                                    RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                  CommandParameter="{Binding}"/>
+                                </StackPanel>
+
+                                <!-- STATUS TEXT -->
+                                <TextBlock Text="{Binding IsActive,
+                                    Converter={StaticResource BoolToStatusTextConverter}}"
+                                           FontSize="11"
+                                           Margin="0,6,0,0"
+                                           Foreground="#6B7280"/>
+
+                            </StackPanel>
+                        </Border>
+
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- ================= SNACKBAR ================= -->
+        <materialDesign:Snackbar
+            MessageQueue="{Binding SnackbarMessageQueue}"
+            VerticalAlignment="Bottom"
+            HorizontalAlignment="Right"
+            Margin="16"/>
+    </Grid>
+</UserControl>
