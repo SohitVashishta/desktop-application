@@ -53,7 +53,6 @@
                         <Expander Header="User &amp; Role Management"
           Tag=""
           Style="{StaticResource SidebarExpanderStyle}"
-          Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}">
 
                             <StackPanel>
                                 <Button Content="Manage Users"
