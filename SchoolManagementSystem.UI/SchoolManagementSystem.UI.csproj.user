@@ -38,6 +38,9 @@
     <Compile Update="UI\Views\Admin\LibraryManagementView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UI\Views\Admin\ManageUserAccessPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UI\Views\Admin\ManageUsersPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

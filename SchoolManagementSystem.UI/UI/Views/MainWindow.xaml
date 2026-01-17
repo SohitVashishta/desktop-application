@@ -121,7 +121,7 @@
                                   Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}">
                             <StackPanel>
                                 <Button Content="Manage Users" Tag="AccountMultiple" Style="{StaticResource SubMenuButtonStyle}" Click="ManageUsers_Click"/>
-                                <Button Content="Assign Roles &amp; Permissions" Tag="ShieldAccount" Style="{StaticResource SubMenuButtonStyle}"/>
+                                <Button Content="Assign Roles &amp; Permissions" Tag="ShieldAccount" Style="{StaticResource SubMenuButtonStyle}" Click="AssignRoles_Click"/>
                                 <Button Content="Reset Passwords" Tag="LockReset" Style="{StaticResource SubMenuButtonStyle}"/>
                                 <Button Content="Portal Access Control" Tag="ShieldKey" Style="{StaticResource SubMenuButtonStyle}"/>
                             </StackPanel>
