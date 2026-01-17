@@ -1,133 +1,247 @@
 ﻿<UserControl x:Class="SchoolManagementSystem.UI.UI.Views.Admin.ManageUsersPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="clr-namespace:SchoolManagementSystem.UI.UI.ViewModels.Admin"
-             xmlns:ui="clr-namespace:SchoolManagementSystem.UI.UI.Helpers">
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
-    
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <!-- ================================================= -->
+    <!-- ROOT DIALOG HOST -->
+    <!-- ================================================= -->
+    <materialDesign:DialogHost IsOpen="{Binding IsDialogOpen}">
 
-        <!-- HEADER -->
-        <Border Padding="15"
-                Background="White"
-                CornerRadius="10"
-                Margin="0,0,0,15">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            <!-- ================================================= -->
+            <!-- TOOLBAR : FILTERS (LEFT) + ADD USER (RIGHT) -->
+            <!-- ================================================= -->
+            <materialDesign:Card Padding="12" Margin="0,0,0,16">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <TextBlock Text="User Management"
-                           FontSize="22"
-                           FontWeight="SemiBold"/>
+                    <!-- FILTERS -->
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center">
 
-                <Button Grid.Column="1"
-                        Content="+ Add User"
-                        Width="130"
-                        Height="36"
-                        Background="#4F46E5"
-                        Foreground="White"
-                        Command="{Binding AddUserCommand}"/>
-            </Grid>
-        </Border>
+                        <TextBox Width="160"
+                                 Margin="0,0,12,0"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 materialDesign:HintAssist.Hint="Search user"
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <!-- MAIN CONTENT -->
-        <Border Grid.Row="1"
-                Padding="15"
-                Background="White"
-                CornerRadius="10">
+                        <ComboBox Width="160"
+                                  Margin="0,0,12,0"
+                                  Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                                  ItemsSource="{Binding Roles}"
+                                  SelectedItem="{Binding SelectedRole}"
+                                  materialDesign:HintAssist.Hint="Role"/>
 
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+                        <ComboBox Width="160"
+                                  Margin="0,0,12,0"
+                                  Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                                  SelectedItem="{Binding SelectedStatus}">
+                            <ComboBoxItem Content="All"/>
+                            <ComboBoxItem Content="Active"/>
+                            <ComboBoxItem Content="Inactive"/>
+                        </ComboBox>
 
-                <!-- FILTER BAR -->
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button Width="160"
+                                Style="{StaticResource MaterialDesignFlatButton}"
+                                Command="{Binding ResetFiltersCommand}">
+                            Reset
+                        </Button>
 
-                    <TextBox Width="250"
-                             Height="38"
-                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                             Style="{StaticResource PlaceholderTextBoxStyle}"
-                             ui:PlaceholderHelper.Placeholder="Search user..." />
+                    </StackPanel>
 
-                    <ComboBox Width="160"
-                              Height="32"
-                              Margin="10,0,0,0"
-                              ItemsSource="{Binding Roles}"
-                              SelectedItem="{Binding SelectedRole}"
-                              Style="{StaticResource PlaceholderComboBoxStyle}"
-                              ui:PlaceholderHelper.Placeholder="All Roles..." />
-                </StackPanel>
+                    <!-- ADD USER -->
+                    <Button Grid.Column="1"
+                            Width="160"
+                            Padding="16,6"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            Command="{Binding AddUserCommand}">
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+                            <materialDesign:PackIcon Kind="AccountPlus"
+                                                     Margin="0,0,6,0"/>
+                            <TextBlock Text="Add User"/>
+                        </StackPanel>
+                    </Button>
 
-                <!-- USERS TABLE -->
-                <DataGrid Grid.Row="1"
-                          ItemsSource="{Binding FilteredUsers}"
+                </Grid>
+            </materialDesign:Card>
+
+            <!-- ================================================= -->
+            <!-- USERS GRID -->
+            <!-- ================================================= -->
+            <materialDesign:Card Grid.Row="1" Padding="0">
+
+                <DataGrid ItemsSource="{Binding FilteredUsers}"
                           AutoGenerateColumns="False"
-                          HeadersVisibility="Column"
                           CanUserAddRows="False"
                           IsReadOnly="True"
-                          RowHeight="42">
+                          RowHeight="48"
+                          HeadersVisibility="Column"
+                          Style="{StaticResource MaterialDesignDataGrid}">
+
+                    <!-- ROW HOVER + SELECTION -->
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow"
+                               BasedOn="{StaticResource MaterialDesignDataGridRow}">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#F3F4F6"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#E0E7FF"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
 
                     <DataGrid.Columns>
 
                         <DataGridTextColumn Header="Username"
                                             Binding="{Binding Username}"
-                                            Width="*"/>
+                                            Width="2*"/>
 
                         <DataGridTextColumn Header="Email"
                                             Binding="{Binding Email}"
-                                            Width="*"/>
+                                            Width="3*"/>
 
                         <DataGridTextColumn Header="Role"
                                             Binding="{Binding Role}"
                                             Width="140"/>
 
-                        <DataGridTemplateColumn Header="Status" Width="120">
+                        <!-- ACTIVE STATUS -->
+                        <DataGridTemplateColumn Header="Active" Width="120">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding StatusText}"
-                                               Foreground="{Binding StatusColor}"
-                                               FontWeight="SemiBold"
-                                               HorizontalAlignment="Center"/>
+                                    <CheckBox IsChecked="{Binding IsActive}"
+                                              IsEnabled="False"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTemplateColumn Header="Actions" Width="200">
+                        <!-- EDIT ACTION -->
+                        <DataGridTemplateColumn Header="Edit" Width="80">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal"
-                                                HorizontalAlignment="Center">
-
-                                        <Button Content="Edit"
-                                                Width="70"
-                                                Margin="0,0,6,0"
-                                                Command="{Binding DataContext.EditUserCommand,
-                                                  RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                CommandParameter="{Binding}"/>
-
-                                        <Button Content="{Binding ToggleText}"
-                                                Width="90"
-                                                Command="{Binding DataContext.ToggleStatusCommand,
-                                                  RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                CommandParameter="{Binding}"/>
-
-                                    </StackPanel>
+                                    <Button Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Edit user"
+                                            Command="{Binding DataContext.EditUserCommand,
+                                              RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}">
+                                        <materialDesign:PackIcon Kind="Pencil"/>
+                                    </Button>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
                     </DataGrid.Columns>
                 </DataGrid>
-            </Grid>
-        </Border>
-    </Grid>
+            </materialDesign:Card>
+
+            <!-- ================================================= -->
+            <!-- PAGINATION -->
+            <!-- ================================================= -->
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Margin="0,12,0,0">
+
+                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                        Command="{Binding PrevPageCommand}"
+                        IsEnabled="{Binding CanGoPrevious}">
+                    ◀ Prev
+                </Button>
+
+                <TextBlock Text="{Binding PageInfo}"
+                           Margin="12,0"
+                           VerticalAlignment="Center"/>
+
+                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                        Command="{Binding NextPageCommand}"
+                        IsEnabled="{Binding CanGoNext}">
+                    Next ▶
+                </Button>
+            </StackPanel>
+
+            <!-- ================================================= -->
+            <!-- SNACKBAR -->
+            <!-- ================================================= -->
+            <materialDesign:Snackbar Grid.RowSpan="3"
+                                     MessageQueue="{Binding SnackbarMessageQueue}"
+                                     VerticalAlignment="Bottom"/>
+        </Grid>
+
+        <!-- ================================================= -->
+        <!-- ADD / EDIT USER DIALOG -->
+        <!-- ================================================= -->
+        <materialDesign:DialogHost.DialogContent>
+            <materialDesign:Card Padding="24" Width="400">
+
+                <StackPanel>
+
+                    <TextBlock Text="{Binding DialogTitle}"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,16"/>
+
+                    <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             materialDesign:HintAssist.Hint="Username"
+                             Text="{Binding EditUser.Username}"/>
+
+                    <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             Margin="0,12,0,0"
+                             materialDesign:HintAssist.Hint="Email"
+                             Text="{Binding EditUser.Email}"/>
+
+                    <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                              Margin="0,12,0,0"
+                              ItemsSource="{Binding Roles}"
+                              SelectedItem="{Binding EditUser.Role}"
+                              materialDesign:HintAssist.Hint="Role"/>
+
+                    <!-- ACTIVE TOGGLE -->
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,16,0,0">
+                        <TextBlock Text="Active"
+                                   Margin="0,0,12,0"
+                                   VerticalAlignment="Center"/>
+                        <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                      IsChecked="{Binding EditUser.IsActive}"/>
+                    </StackPanel>
+
+                    <!-- ACTIONS -->
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right"
+                                Margin="0,24,0,0">
+
+                        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                Command="{Binding CancelDialogCommand}">
+                            Cancel
+                        </Button>
+
+                        <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                Margin="12,0,0,0"
+                                Command="{Binding SaveUserCommand}">
+                            Save
+                        </Button>
+
+                    </StackPanel>
+
+                </StackPanel>
+            </materialDesign:Card>
+        </materialDesign:DialogHost.DialogContent>
+
+    </materialDesign:DialogHost>
 </UserControl>

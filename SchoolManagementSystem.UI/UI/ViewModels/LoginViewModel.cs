@@ -1,4 +1,5 @@
-﻿using SchoolManagementSystem.Business.Auth;
+﻿using MaterialDesignThemes.Wpf;
+using SchoolManagementSystem.Business.Auth;
 using SchoolManagementSystem.Common.Session;
 using SchoolManagementSystem.UI.UI.Helpers;
 using SchoolManagementSystem.UI.UI.Views;
@@ -11,6 +12,13 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
     public class LoginViewModel : BaseViewModel
     {
         private readonly IAuthService _authService;
+        public bool IsLoading { get; set; }
+
+        public Visibility LoadingVisibility =>
+            IsLoading ? Visibility.Visible : Visibility.Collapsed;
+
+        public Visibility ButtonTextVisibility =>
+            IsLoading ? Visibility.Collapsed : Visibility.Visible;
 
         public LoginViewModel(IAuthService authService)
         {

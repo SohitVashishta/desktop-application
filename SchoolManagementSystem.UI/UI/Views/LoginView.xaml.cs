@@ -18,6 +18,23 @@ namespace SchoolManagementSystem.UI.UI.Views
             DataContext = App.Services.GetRequiredService<LoginViewModel>();
 
         }
+        private void TogglePassword_Click(object sender, RoutedEventArgs e)
+        {
+            if (pwdBox.Visibility == Visibility.Visible)
+            {
+                txtPasswordVisible.Text = pwdBox.Password;
+                pwdBox.Visibility = Visibility.Collapsed;
+                txtPasswordVisible.Visibility = Visibility.Visible;
+                EyeIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.EyeOff;
+            }
+            else
+            {
+                pwdBox.Password = txtPasswordVisible.Text;
+                txtPasswordVisible.Visibility = Visibility.Collapsed;
+                pwdBox.Visibility = Visibility.Visible;
+                EyeIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Eye;
+            }
+        }
 
         // ================= PASSWORD TO VM =================
         private void Login_Click(object sender, RoutedEventArgs e)
@@ -29,22 +46,7 @@ namespace SchoolManagementSystem.UI.UI.Views
             ViewModel.LoginCommand.Execute(null);
         }
 
-        // ================= TOGGLE PASSWORD =================
-        private void TogglePassword_Click(object sender, RoutedEventArgs e)
-        {
-            if (pwdBox.Visibility == Visibility.Visible)
-            {
-                txtPasswordVisible.Text = pwdBox.Password;
-                pwdBox.Visibility = Visibility.Collapsed;
-                txtPasswordVisible.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                pwdBox.Password = txtPasswordVisible.Text;
-                txtPasswordVisible.Visibility = Visibility.Collapsed;
-                pwdBox.Visibility = Visibility.Visible;
-            }
-        }
+       
 
         // ================= FORGOT PASSWORD =================
         private void ForgotPassword_Click(object sender, RoutedEventArgs e)
