@@ -229,6 +229,9 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
             }
         }
 
+        public ObservableCollection<string> StatusOptions { get; } =
+     new ObservableCollection<string> { "All", "Active", "Inactive" };
+
         private string _selectedStatus = "All";
         public string SelectedStatus
         {
