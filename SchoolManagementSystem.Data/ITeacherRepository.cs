@@ -9,10 +9,10 @@ namespace SchoolManagementSystem.Data
 {
     public interface ITeacherRepository
     {
-        Task<List<Teacher>> GetAllAsync();
-        Task AddAsync(Teacher teacher);
-        Task UpdateAsync(Teacher teacher);
+        Task<List<TeacherMaster>> GetAllAsync();
+        Task AddAsync(TeacherMaster teacher);
+        Task UpdateAsync(TeacherMaster teacher);
         Task DeleteAsync(int id);
-        Task<Teacher> GetByIdAsync(int id);
+        Task<TeacherMaster> GetByIdAsync(int id);
     }
 }

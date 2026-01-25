@@ -10,7 +10,7 @@ namespace SchoolManagementSystem.Business.Services
     public interface IImportService
     {
         Task ImportStudentsAsync(List<Student> students);
-        Task ImportTeachersAsync(List<Teacher> teachers); 
+        Task ImportTeachersAsync(List<TeacherMaster> teachers); 
         Task ImportTeachersWithProgressAsync(
         string filePath,
         IProgress<int> progress);

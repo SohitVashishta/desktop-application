@@ -15,7 +15,7 @@ public class ReportService : IReportService
 
     public async Task ExportStudentsToExcelAsync(string path)
     {
-        var students = await _studentService.GetStudentsAsync();
+        var students = await _studentService.GetAllAsync();
 
         using var workbook = new XLWorkbook();
         var worksheet = workbook.AddWorksheet("Students");
@@ -27,7 +27,7 @@ public class ReportService : IReportService
         int row = 2;
         foreach (var s in students)
         {
-            worksheet.Cell(row, 1).Value = s.FirstName;
+            worksheet.Cell(row, 1).Value = s.StudentName;
             worksheet.Cell(row, 2).Value = s.Email;
             row++;
         }

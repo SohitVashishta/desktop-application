@@ -1,0 +1,235 @@
+﻿<UserControl x:Class="SchoolManagementSystem.UI.UI.Views.StudentManagement.Academic.AddEditClassDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- ================= HEADER ================= -->
+        <Border Grid.Row="0" Padding="16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- CLOSE -->
+                <Button Style="{StaticResource MaterialDesignIconButton}"
+                        Command="{Binding CloseDialogCommand}">
+                    <materialDesign:PackIcon Kind="Close"/>
+                </Button>
+
+                <!-- TITLE -->
+                <TextBlock Grid.Column="1"
+                           Text="{Binding DialogTitle}"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+
+                <!-- SAVE ICON -->
+                <Button Grid.Column="2"
+                        Style="{StaticResource MaterialDesignIconButton}"
+                        Command="{Binding SaveDialogCommand}">
+                    <materialDesign:PackIcon Kind="Check"
+                                             Foreground="#2563EB"/>
+                </Button>
+            </Grid>
+        </Border>
+
+        <!-- ================= CONTENT ================= -->
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto">
+
+            <StackPanel Margin="16">
+
+                <!-- ========== BASIC INFORMATION ========== -->
+                <materialDesign:Card Padding="16"
+                                      Margin="0,0,0,16"
+                                      materialDesign:ElevationAssist.Elevation="Dp2">
+
+                    <StackPanel>
+
+                        <TextBlock Text="Basic Information"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   Margin="0,0,0,12"/>
+
+                        <!-- Class Name -->
+                        <TextBlock Text="Class Name"
+                                   FontSize="12"
+                                   Foreground="#475569"/>
+                        <TextBox Height="40"
+                                 Margin="0,4,0,12"
+                                 Text="{Binding ClassName}"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
+
+                        <!-- Grade + Section -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <TextBlock Text="Grade"
+                                           FontSize="12"
+                                           Foreground="#475569"/>
+                                <ComboBox Height="40"
+                                          Margin="0,4,0,0"
+                                          ItemsSource="{Binding Grades}"
+                                          SelectedItem="{Binding SelectedGrade}"
+                                          Style="{StaticResource MaterialDesignOutlinedComboBox}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Section"
+                                           FontSize="12"
+                                           Foreground="#475569"/>
+                                <TextBox Height="40"
+                                         Margin="0,4,0,0"
+                                         Text="{Binding Section}"
+                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
+                            </StackPanel>
+                        </Grid>
+
+                    </StackPanel>
+                </materialDesign:Card>
+
+                <!-- ========== CAPACITY & LOCATION ========== -->
+                <materialDesign:Card Padding="16"
+                                      Margin="0,0,0,16"
+                                      materialDesign:ElevationAssist.Elevation="Dp2">
+
+                    <StackPanel>
+
+                        <TextBlock Text="Capacity &amp; Location"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   Margin="0,0,0,12"/>
+
+                        <!-- Room Number -->
+                        <TextBlock Text="Room Number"
+                                   FontSize="12"
+                                   Foreground="#475569"/>
+                        <TextBox Height="40"
+                                 Margin="0,4,0,4"
+                                 Text="{Binding RoomNumber}"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
+
+                        <TextBlock Text="Room number is required"
+                                   FontSize="11"
+                                   Foreground="#DC2626"
+                                   Margin="4,0,0,8"
+                                   Visibility="{Binding IsRoomInvalid,
+                                       Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                        <!-- Max Students -->
+                        <TextBlock Text="Max Students"
+                                   FontSize="12"
+                                   Foreground="#475569"/>
+
+                        <Border Height="40"
+                                Margin="0,4,0,0"
+                                BorderBrush="#CBD5E1"
+                                BorderThickness="1"
+                                CornerRadius="6">
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Grid.Column="0"
+                                        Style="{StaticResource MaterialDesignIconButton}"
+                                        Command="{Binding DecreaseCapacityCommand}">
+                                    <materialDesign:PackIcon Kind="Minus"/>
+                                </Button>
+
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding MaxStudents}"
+                                           FontSize="14"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+
+                                <Button Grid.Column="2"
+                                        Style="{StaticResource MaterialDesignIconButton}"
+                                        Command="{Binding IncreaseCapacityCommand}">
+                                    <materialDesign:PackIcon Kind="Plus"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+
+                    </StackPanel>
+                </materialDesign:Card>
+
+                <!-- ========== STAFFING ========== -->
+                <materialDesign:Card Padding="16"
+                                      materialDesign:ElevationAssist.Elevation="Dp2">
+
+                    <StackPanel>
+
+                        <TextBlock Text="Staffing"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   Margin="0,0,0,12"/>
+
+                        <TextBlock Text="Lead Teacher"
+                                   FontSize="12"
+                                   Foreground="#475569"/>
+                        <ComboBox Height="40"
+                                  Margin="0,4,0,12"
+                                  ItemsSource="{Binding Teachers}"
+                                  SelectedItem="{Binding LeadTeacher}"
+                                  Style="{StaticResource MaterialDesignOutlinedComboBox}"/>
+
+                        <TextBlock Text="Assistant Teacher"
+                                   FontSize="12"
+                                   Foreground="#475569"/>
+                        <ComboBox Height="40"
+                                  Margin="0,4,0,0"
+                                  ItemsSource="{Binding Teachers}"
+                                  SelectedItem="{Binding AssistantTeacher}"
+                                  Style="{StaticResource MaterialDesignOutlinedComboBox}"/>
+
+                    </StackPanel>
+                </materialDesign:Card>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- ================= FOOTER ================= -->
+        <Border Grid.Row="2"
+                Padding="16"
+                Background="#F8FAFC">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Content="Discard"
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        Command="{Binding CloseDialogCommand}"/>
+
+                <Button Grid.Column="1"
+                        Content="Save Class"
+                        Padding="24,8"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Command="{Binding SaveDialogCommand}"/>
+            </Grid>
+        </Border>
+
+    </Grid>
+</UserControl>

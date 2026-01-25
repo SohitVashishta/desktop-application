@@ -1,0 +1,29 @@
+﻿using SchoolManagementSystem.Models.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SchoolManagementSystem.Business.Services
+{
+    public interface IStudentService
+    {
+        Task<List<StudentModel>> GetAllAsync();
+        Task<StudentProfileVM> GetProfileAsync(int studentId);
+
+        Task AddAsync(StudentProfileVM profile);
+        Task UpdateAsync(StudentProfileVM profile);
+
+        Task ToggleStatusAsync(int studentId);
+
+        Task PromoteAsync(int studentId,
+                          int academicYearId,
+                          int classId,
+                          int sectionId);
+        Task BulkUploadAsync(List<StudentModel> students);
+
+
+    }
+
+}

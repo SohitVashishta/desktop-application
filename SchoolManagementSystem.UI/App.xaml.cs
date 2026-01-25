@@ -10,7 +10,10 @@ using SchoolManagementSystem.Services;
 using SchoolManagementSystem.UI.UI.ViewModels;
 using SchoolManagementSystem.UI.UI.ViewModels.Admin;
 using SchoolManagementSystem.UI.UI.ViewModels.Attendances;
+using SchoolManagementSystem.UI.UI.ViewModels.Dashboard;
 using SchoolManagementSystem.UI.UI.ViewModels.Import;
+using SchoolManagementSystem.UI.UI.ViewModels.StudentManagement;
+using SchoolManagementSystem.UI.UI.ViewModels.StudentManagement.Academic;
 using System.Configuration;
 using System.Windows;
 
@@ -47,7 +50,7 @@ namespace SchoolManagementSystem.UI
 
 
             // ================= REPOSITORIES =================
-            services.AddScoped<IStudentRepository, StudentRepository>();
+           
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<ITeacherRepository, TeacherRepository>();
             services.AddScoped<IAttendanceRepository, AttendanceRepository>();
@@ -62,6 +65,18 @@ namespace SchoolManagementSystem.UI
             services.AddScoped<ISystemRepository, SystemRepository>();
             services.AddScoped<ITimetableRepository, TimetableRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IGradeRepository, GradeRepository>();
+            services.AddScoped<IClassRepository, ClassRepository>(); 
+            services.AddScoped<ISubjectRepository, SubjectRepository>();
+            services.AddScoped<IAcademicYearRepository, AcademicYearRepository>();
+            services.AddScoped<ISectionRepository, SectionRepository>();
+            services.AddScoped<IClassSectionRepository, ClassSectionRepository>();
+            services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<IAdminDashboardRepository, AdminDashboardRepository>();
+            
+
+
+
 
             // ================= SERVICES =================
             services.AddScoped<IStudentService, StudentService>();
@@ -78,6 +93,14 @@ namespace SchoolManagementSystem.UI
             services.AddScoped<ISystemService, SystemService>();
             services.AddScoped<ITimetableService, TimetableService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IGradeService, GradeService>();
+            services.AddScoped<IClassService, ClassService>();
+            services.AddScoped<ISubjectService, SubjectService>();
+            services.AddScoped<IAcademicYearService, AcademicYearService>();
+            services.AddScoped<ISectionService, SectionService>();
+            services.AddScoped<IClassSectionService, ClassSectionService>();
+            services.AddTransient<IStudentService, StudentService>();
+            services.AddTransient<IAdminDashboardService, AdminDashboardService>();
 
             // ================= VIEWMODELS =================
             services.AddTransient<UserManagementViewModel>();
@@ -86,7 +109,6 @@ namespace SchoolManagementSystem.UI
             services.AddScoped<TeacherViewModel>();
             services.AddTransient<TeacherAddEditViewModel>();
             services.AddTransient<StudentAddEditViewModel>();
-            services.AddTransient<StudentViewModel>();
             services.AddTransient<ImportStudentsViewModel>();
             services.AddTransient<ImportTeachersViewModel>();
             services.AddTransient<MarkAttendanceViewModel>();
@@ -94,6 +116,14 @@ namespace SchoolManagementSystem.UI
             services.AddTransient<AssignRolesViewModel>();
             services.AddTransient<ResetPasswordsViewModel>();
             services.AddTransient<ControlPortalAccessViewModel>();
+            services.AddTransient<ClassMasterViewModel>();
+            services.AddTransient<AddEditClassDialogViewModel>();
+            services.AddTransient<SubjectMasterViewModel>();
+            services.AddTransient<AcademicYearViewModel>();
+            services.AddTransient<SectionMasterViewModel>();
+            services.AddTransient<ClassSectionMappingViewModel>();
+            services.AddTransient<StudentListViewModel>();
+            services.AddTransient<AdminDashboardViewModel>();
 
         }
 

@@ -39,6 +39,9 @@
             <local:PasswordMismatchVisibilityConverter x:Key="PasswordMismatchVisibilityConverter"/>
             <local:BoolToStatusBackgroundConverter x:Key="BoolToStatusBackgroundConverter"/>
             <local:FirstLetterConverter x:Key="FirstLetterConverter"/>
+            <local:UppercaseConverter  x:Key="UppercaseConverter "/>
+            <local:InverseBoolToVisibilityConverter   x:Key="InverseBoolToVisibilityConverter"/>
+            <local:StatusToBrushConverter   x:Key="StatusToBrushConverter"/>
             <Style TargetType="Control">
                 <Setter Property="FontFamily" Value="Segoe UI"/>
                 <Setter Property="FontSize" Value="13"/>

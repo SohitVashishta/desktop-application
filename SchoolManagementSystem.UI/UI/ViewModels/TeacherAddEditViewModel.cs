@@ -64,7 +64,7 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
         // EDIT
         public TeacherAddEditViewModel(
             ITeacherService teacherService,
-            Teacher teacher) : this(teacherService)
+            TeacherMaster teacher) : this(teacherService)
         {
             _teacherId = teacher.TeacherId;
             FirstName = teacher.FirstName;
@@ -86,7 +86,7 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
                 return;
             }
 
-            var teacher = new Teacher
+            var teacher = new TeacherMaster
             {
                 TeacherId = _teacherId,
                 FirstName = FirstName,

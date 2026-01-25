@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SchoolManagementSystem.UI.UI.ViewModels;
 using SchoolManagementSystem.UI.UI.ViewModels.Admin;
 using System;
 using System.Collections.Generic;

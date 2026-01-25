@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SchoolManagementSystem.UI.UI.ViewModels.Admin;
+using SchoolManagementSystem.UI.UI.ViewModels.Dashboard;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +26,7 @@ namespace SchoolManagementSystem.UI.UI.Views.Dashboard
         public AdminDashboard()
         {
             InitializeComponent();
+            DataContext = App.Services.GetRequiredService<AdminDashboardViewModel>();
         }
     }
 }

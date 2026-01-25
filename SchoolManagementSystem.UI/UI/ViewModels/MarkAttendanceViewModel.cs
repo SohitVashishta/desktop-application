@@ -61,7 +61,7 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Attendances
         // =========================================
         private async Task LoadStudentsAsync()
         {
-            var students = await _studentService.GetStudentsAsync();
+            var students = await _studentService.GetAllAsync();
 
             Students.Clear();
 

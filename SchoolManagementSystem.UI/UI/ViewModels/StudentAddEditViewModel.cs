@@ -104,7 +104,7 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
                 return;
             }
 
-            var student = new Student
+            var student = new StudentModel
             {
                 StudentId = _studentId,
                 FirstName = FirstName,
@@ -113,11 +113,12 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
                 DateOfBirth = DateOfBirth.Value,
                 EnrollmentDate = EnrollmentDate
             };
-
+StudentProfileVM studentProfileVM = new StudentProfileVM();
+            studentProfileVM.Student=student;
             if (_studentId == 0)
-                await _studentService.AddStudentAsync(student);
+                await _studentService.AddAsync(studentProfileVM);
             else
-                await _studentService.UpdateStudentAsync(student);
+                await _studentService.UpdateAsync(studentProfileVM);
 
             CloseRequested?.Invoke(true);
         }

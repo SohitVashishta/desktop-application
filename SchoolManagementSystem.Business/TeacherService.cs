@@ -14,16 +14,16 @@ namespace SchoolManagementSystem.Business.Services
             _repository = teacherRepository;
         }
 
-        public Task<List<Teacher>> GetTeachersAsync()
+        public Task<List<TeacherMaster>> GetTeachersAsync()
             => _repository.GetAllAsync();
 
-        public Task<Teacher?> GetTeacherByIdAsync(int id)
+        public Task<TeacherMaster?> GetTeacherByIdAsync(int id)
             => _repository.GetByIdAsync(id);
 
-        public Task AddTeacherAsync(Teacher teacher)
+        public Task AddTeacherAsync(TeacherMaster teacher)
             => _repository.AddAsync(teacher);
 
-        public Task UpdateTeacherAsync(Teacher teacher)
+        public Task UpdateTeacherAsync(TeacherMaster teacher)
             => _repository.UpdateAsync(teacher);
 
         public Task DeleteTeacherAsync(int id)

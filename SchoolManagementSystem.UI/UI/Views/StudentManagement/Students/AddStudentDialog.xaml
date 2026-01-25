@@ -1,0 +1,116 @@
+﻿<UserControl x:Class="SchoolManagementSystem.UI.UI.Views.StudentManagement.Students.AddStudentDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+    <materialDesign:Card Padding="24"
+                         Width="520"
+                         MaxHeight="650">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- ================= HEADER ================= -->
+            <TextBlock Text="Add Student"
+                       FontSize="18"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,16"/>
+
+            <!-- ================= FORM ================= -->
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto">
+
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Admission No -->
+                    <TextBox Grid.Row="0"
+                             Grid.Column="0"
+                             Margin="0,0,8,12"
+                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             materialDesign:HintAssist.Hint="Admission No"
+                             Text="{Binding AdmissionNo}"/>
+
+                    <!-- Student Name -->
+                    <TextBox Grid.Row="0"
+                             Grid.Column="1"
+                             Margin="0,0,0,12"
+                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             materialDesign:HintAssist.Hint="Student Name"
+                             Text="{Binding StudentName}"/>
+
+                    <!-- Class -->
+                    <ComboBox Grid.Row="1"
+                              Grid.Column="0"
+                              Margin="0,0,8,12"
+                              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                              ItemsSource="{Binding Classes}"
+                              SelectedItem="{Binding SelectedClass}"
+                              DisplayMemberPath="ClassName"
+                              materialDesign:HintAssist.Hint="Class"/>
+
+                    <!-- Section -->
+                    <ComboBox Grid.Row="1"
+                              Grid.Column="1"
+                              Margin="0,0,0,12"
+                              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                              ItemsSource="{Binding Sections}"
+                              SelectedItem="{Binding SelectedSection}"
+                              DisplayMemberPath="SectionName"
+                              materialDesign:HintAssist.Hint="Section"/>
+
+                    <!-- Gender -->
+                    <ComboBox Grid.Row="2"
+                              Grid.Column="0"
+                              Margin="0,0,8,12"
+                              Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                              SelectedItem="{Binding Gender}"
+                              materialDesign:HintAssist.Hint="Gender">
+                        <ComboBoxItem Content="Male"/>
+                        <ComboBoxItem Content="Female"/>
+                    </ComboBox>
+
+                    <!-- Date of Birth -->
+                    <DatePicker Grid.Row="2"
+                                Grid.Column="1"
+                                Margin="0,0,0,12"
+                                SelectedDate="{Binding DateOfBirth}"
+                                materialDesign:HintAssist.Hint="Date of Birth"/>
+                </Grid>
+            </ScrollViewer>
+
+            <!-- ================= ACTIONS ================= -->
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+
+                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                    Cancel
+                </Button>
+
+                <Button Margin="12,0,0,0"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Command="{Binding SaveCommand}">
+                    Save
+                </Button>
+
+            </StackPanel>
+        </Grid>
+
+    </materialDesign:Card>
+</UserControl>

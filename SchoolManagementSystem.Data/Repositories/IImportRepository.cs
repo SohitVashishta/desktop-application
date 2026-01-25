@@ -10,6 +10,6 @@ namespace SchoolManagementSystem.Data.Repositories
     public interface IImportRepository
     {
         Task ImportStudentsAsync(List<Student> students);
-        Task ImportTeachersAsync(List<Teacher> teachers);
+        Task ImportTeachersAsync(List<TeacherMaster> teachers);
     }
 }

@@ -26,12 +26,12 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
         private DateTime? _fromDate;
         private DateTime? _toDate;
 
-        private readonly ObservableCollection<Teacher> _allTeachers = new();
+        private readonly ObservableCollection<TeacherMaster> _allTeachers = new();
 
         // ================= COLLECTIONS =================
 
-        public ObservableCollection<Teacher> Teachers { get; } = new();
-        public ObservableCollection<Teacher> PagedTeachers { get; } = new();
+        public ObservableCollection<TeacherMaster> Teachers { get; } = new();
+        public ObservableCollection<TeacherMaster> PagedTeachers { get; } = new();
 
         // ================= PAGING =================
 
@@ -112,7 +112,7 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
                 () => CurrentPage < TotalPages);
 
            
-            DeleteTeacherCommand = new RelayCommand<Teacher>(
+            DeleteTeacherCommand = new RelayCommand<TeacherMaster>(
                 async t => await DeleteTeacherAsync(t));
 
             _ = LoadTeachersAsync();
@@ -194,7 +194,7 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
 
         
 
-        private async Task DeleteTeacherAsync(Teacher teacher)
+        private async Task DeleteTeacherAsync(TeacherMaster teacher)
         {
             if (MessageBox.Show("Delete teacher?", "Confirm",
                 MessageBoxButton.YesNo) != MessageBoxResult.Yes)

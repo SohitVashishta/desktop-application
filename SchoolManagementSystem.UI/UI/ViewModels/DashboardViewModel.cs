@@ -60,7 +60,7 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
 
         private async Task LoadDashboardAsync()
         {
-            var students = await _studentService.GetStudentsAsync();
+            var students = await _studentService.GetAllAsync();
             var attendance = await _attendanceService.GetAttendanceByDateAsync(DateTime.Now.Date).ConfigureAwait(false) ?? new();
 
             TotalStudents = students.Count;

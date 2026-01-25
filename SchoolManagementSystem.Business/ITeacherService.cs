@@ -9,10 +9,10 @@ namespace SchoolManagementSystem.Business
 {
     public interface ITeacherService
     {
-        Task<List<Teacher>> GetTeachersAsync();
-        Task<Teacher?> GetTeacherByIdAsync(int id);
-        Task AddTeacherAsync(Teacher teacher);
-        Task UpdateTeacherAsync(Teacher teacher);
+        Task<List<TeacherMaster>> GetTeachersAsync();
+        Task<TeacherMaster?> GetTeacherByIdAsync(int id);
+        Task AddTeacherAsync(TeacherMaster teacher);
+        Task UpdateTeacherAsync(TeacherMaster teacher);
         Task DeleteTeacherAsync(int id);
     }
 }

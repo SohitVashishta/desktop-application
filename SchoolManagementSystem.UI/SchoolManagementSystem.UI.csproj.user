@@ -14,6 +14,21 @@
     <Compile Update="UI\Views\Admin\AttendanceView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UI\Views\StudentManagement\Academic\AcademicYearMasterPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\StudentManagement\Academic\AddEditClassDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\StudentManagement\Academic\ClassMasterPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\StudentManagement\Academic\ClassSectionMappingPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\StudentManagement\Academic\ClassSubjectMappingPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UI\Views\Admin\CommunicationView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -56,7 +71,40 @@
     <Compile Update="UI\Views\Admin\ResetPasswordsPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UI\Views\StudentManagement\Academic\SectionMasterPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\StudentManagement\Students\AddStudentDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\StudentManagement\Students\BulkStudentUploadDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\StudentManagement\Students\EditStudentDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\StudentManagement\Students\StudentAcademicYearMappingPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\StudentManagement\Students\StudentAdmissionPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\StudentManagement\Students\StudentClassAssignmentPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\StudentManagement\Students\StudentDocumentsPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\StudentManagement\Students\StudentListPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UI\Views\Admin\StudentManagementView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\StudentManagement\Students\StudentTransferPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\StudentManagement\Academic\SubjectMasterPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UI\Views\Admin\SystemSecurityView.xaml.cs">
@@ -126,6 +174,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UI\Views\Reports\ReportsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\StudentManagement\Students\ViewStudentProfileDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UI\Views\Students\StudentAddEditView.xaml.cs">

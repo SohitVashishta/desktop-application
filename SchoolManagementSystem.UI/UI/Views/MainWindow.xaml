@@ -13,72 +13,130 @@
 
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
-        <!-- MAIN MENU BUTTON -->
-        <Style x:Key="MenuButtonStyle"
-               TargetType="Button"
-               BasedOn="{StaticResource MaterialDesignFlatButton}">
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="Margin" Value="6,3"/>
-            <Setter Property="Foreground" Value="White"/>
+        <!-- ================= MAIN MENU BUTTON ================= -->
+        <Style x:Key="MenuHeaderButtonStyle"
+       TargetType="Button"
+       BasedOn="{StaticResource MaterialDesignFlatButton}">
+
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="#111827"/>
+            <Setter Property="Foreground" Value="#CBD5E1"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="ContentTemplate">
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+
+            <Setter Property="Template">
                 <Setter.Value>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Tag}"
-                                                     Width="20"
-                                                     Height="20"
-                                                     Margin="0,0,10,0"
-                                                     Foreground="White"/>
-                            <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </DataTemplate>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="6">
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="44"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="24"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- ICON -->
+                                <materialDesign:PackIcon
+                            Grid.Column="0"
+                            Kind="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}"
+                            Width="18"
+                            Height="18"
+                            Foreground="#CBD5E1"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+
+                                <!-- TEXT -->
+                                <TextBlock Grid.Column="1"
+                                   Text="{TemplateBinding Content}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   Visibility="{Binding DataContext.IsSidebarExpanded,
+                                       RelativeSource={RelativeSource AncestorType=Window},
+                                       Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                <!-- CHEVRON (optional, for expander only) -->
+                                <materialDesign:PackIcon Grid.Column="2"
+                                                 Kind="ChevronDown"
+                                                 Width="16"
+                                                 Height="16"
+                                                 Foreground="#94A3B8"
+                                                 Visibility="{TemplateBinding IsEnabled}"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Hover only (NO blue press) -->
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#1E293B"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <!-- SUB MENU BUTTON -->
+
+        <!-- ================= SUB MENU BUTTON ================= -->
         <Style x:Key="SubMenuButtonStyle"
                TargetType="Button"
                BasedOn="{StaticResource MaterialDesignFlatButton}">
-            <Setter Property="Height" Value="34"/>
-            <Setter Property="Margin" Value="32,2,6,2"/>
-            <Setter Property="Foreground" Value="#E5E7EB"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="ContentTemplate">
-                <Setter.Value>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Tag}"
-                                                     Width="16"
-                                                     Height="16"
-                                                     Margin="0,0,8,0"
-                                                     Foreground="#9CA3AF"/>
-                            <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
 
-        <!-- SIDEBAR EXPANDER -->
-        <Style x:Key="SidebarExpanderStyle"
-               TargetType="Expander">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Margin" Value="4,2"/>
-            <Setter Property="HeaderTemplate">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="0,3,0,0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="#111827"/>
+            <Setter Property="Foreground" Value="#CBD5E1"/>
+            <Setter Property="FontSize" Value="11"/>
+
+            <Setter Property="Template">
                 <Setter.Value>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="{Binding RelativeSource={RelativeSource AncestorType=Expander}, Path=Tag}"
-                                                     Width="20"
-                                                     Height="20"
-                                                     Margin="0,0,10,0"
-                                                     Foreground="White"/>
-                            <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </DataTemplate>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="44"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- ✅ ICON (FIXED) -->
+                                <materialDesign:PackIcon
+                                    Grid.Column="0"
+                                    Kind="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}"
+                                    Width="14"
+                                    Height="14"
+                                    Foreground="#9CA3AF"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"/>
+
+                                <!-- TEXT -->
+                                <TextBlock Grid.Column="1"
+                                           Text="{TemplateBinding Content}"
+                                           VerticalAlignment="Center"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           Visibility="{Binding DataContext.IsSidebarExpanded,
+                                               RelativeSource={RelativeSource AncestorType=Window},
+                                               Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#1E293B"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -88,12 +146,12 @@
     <!-- ================= LAYOUT ================= -->
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="230"/>
+            <ColumnDefinition Width="330"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <!-- ================= SIDEBAR ================= -->
-        <Border Grid.Column="0" Background="#1F2937">
+        <Border Grid.Column="0" Background="#111827">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -102,78 +160,1442 @@
                 </Grid.RowDefinitions>
 
                 <!-- BRAND -->
-                <StackPanel Grid.Row="0" Margin="16">
-                    <TextBlock Text="SMS" FontSize="20" FontWeight="Bold" Foreground="White"/>
-                    <TextBlock Text="{Binding Username}" FontSize="12" Foreground="#9CA3AF"/>
+                <StackPanel Grid.Row="0" Margin="5">
+                    <TextBlock Text="School MS"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="White"/>
+                    <TextBlock Text="{Binding Username}"
+                               FontSize="12"
+                               Foreground="#9CA3AF"
+                               Visibility="{Binding IsSidebarExpanded,
+                                   Converter={StaticResource BoolToVisibilityConverter}}"/>
                 </StackPanel>
 
                 <!-- MENU -->
                 <ScrollViewer Grid.Row="1">
                     <StackPanel>
 
+                        <!-- Dashboard -->
                         <Button Content="Dashboard"
-                                Tag="ViewDashboard"
-                                Style="{StaticResource MenuButtonStyle}" Click="Dashboard_Click"/>
+                                Tag="ViewDashboardOutline"
+                                Style="{StaticResource MenuHeaderButtonStyle}"
+                                Click="Dashboard_Click" FontSize="12" Margin="0,0,0,0" />
 
+                        <!-- ADMINISTRATION -->
                         <Expander Header="User &amp; Role Management"
-                                  Tag="AccountGroup"
-                                  Style="{StaticResource SidebarExpanderStyle}"  
-                                  Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}">
+          IsExpanded="False"
+          Margin="0"
+          Visibility="{Binding IsAdmin,
+              Converter={StaticResource BoolToVisibilityConverter}}"
+          Background="Transparent">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccountOutline"
+                Width="18"
+                Height="18"
+                Foreground="#CBD5E1"/>
+                                        <TextBlock Text="User &amp; Role Management"
+  Margin="3,0,0,0"
+  Foreground="#CBD5E1"
+  Visibility="{Binding DataContext.IsSidebarExpanded,
+      RelativeSource={RelativeSource AncestorType=Window},
+      Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <!-- SUBMENU stays indented -->
                             <StackPanel>
-                                <Button Content="Manage Users" Tag="AccountMultiple" Style="{StaticResource SubMenuButtonStyle}" Click="ManageUsers_Click"/>
-                                <Button Content="Assign Roles &amp; Permissions" Tag="ShieldAccount" Style="{StaticResource SubMenuButtonStyle}" Click="AssignRoles_Click"/>
-                                <Button Content="Reset Passwords" Tag="LockReset" Style="{StaticResource SubMenuButtonStyle}" Click="ResetPasswords_Click"/>
-                                <Button Content="Portal Access Control" Tag="ShieldKey" Style="{StaticResource SubMenuButtonStyle}" Click="PortalAccess_Click"/>
+                                <Button Content="Manage Users"
+                Tag="AccountMultipleOutline"
+                Style="{StaticResource SubMenuButtonStyle}"  Click="ManageUsers_Click"/>
+
+                                <Button Content="Assign Roles &amp; Permissions"
+                Tag="ShieldKeyOutline"
+                Style="{StaticResource SubMenuButtonStyle}"  Click="AssignRoles_Click"/>
+
+                                <Button Content="Reset Passwords"
+                Tag="LockReset"
+                Style="{StaticResource SubMenuButtonStyle}"  Click="ResetPasswords_Click"/>
+
+                                <Button Content="Portal Access Control"
+                Tag="Security"
+                Style="{StaticResource SubMenuButtonStyle}"  Click="PortalAccess_Click"/>
                             </StackPanel>
                         </Expander>
-
+                      
+                        <!-- Student Management -->
                         <Expander Header="Student Management"
-                                  Tag="School"
-                                  Style="{StaticResource SidebarExpanderStyle}"  
-                                  Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}">
+           IsExpanded="False"
+           Visibility="{Binding IsAdmin,
+               Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="SchoolOutline"
+                                          Width="18"
+                                          Height="18"
+                                          Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Student Management"
+                            Margin="3,0,0,0"
+                            Foreground="#CBD5E1"
+                            Visibility="{Binding DataContext.IsSidebarExpanded,
+                                RelativeSource={RelativeSource AncestorType=Window},
+                                Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
                             <StackPanel>
-                                <Button Content="Student Profiles" Tag="AccountSchool" Style="{StaticResource SubMenuButtonStyle}"/>
-                                <Button Content="Class / Section Assignment" Tag="AccountGroupOutline" Style="{StaticResource SubMenuButtonStyle}"/>
-                                <Button Content="Academic Year Mapping" Tag="Calendar" Style="{StaticResource SubMenuButtonStyle}"/>
-                                <Button Content="Enrollment &amp; Transfers" Tag="AccountPlus" Style="{StaticResource SubMenuButtonStyle}"/>
-                                <Button Content="Document Uploads" Tag="FileDocument" Style="{StaticResource SubMenuButtonStyle}"/>
+                                <Button Content="Academic Year"
+Tag="AccountDetailsOutline"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="OpenAcademicYearPage_Click"/>
+                                <Button Content="Classes"
+Tag="AccountDetailsOutline"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="OpenClassMasterPage_Click"/>
+                                <Button Content="Sections"
+Tag="AccountDetailsOutline"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="OpenSectionPage_Click"/>
+                                <Button Content="Subjects"
+Tag="AccountDetailsOutline"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="OpenSubjectPage_Click"/>
+                                <Button Content="Class-Section Mapping"
+Tag="AccountDetailsOutline"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="OpenClassSectionMappingPage_Click"/>
+                                <Button Content="Class-Subject Mapping"
+Tag="AccountDetailsOutline"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="OpenClassSubjectMappingPage_Click"/>
+                                <Button Content="Student Admission"
+Tag="AccountDetailsOutline"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="OpenStudentAdmissionPage_Click"/>
+                                <Button Content="Student Profiles"
+                 Tag="AccountDetailsOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="OpenStudentProfiles_Click"/>
+
+                                <Button Content="Class/Section Assignment"
+                 Tag="AccountGroupOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="OpenClassSectionAssignment_Click"/>
+
+                                <Button Content="Academic Year Mapping"
+                 Tag="CalendarRangeOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="OpenAcademicYearMapping_Click"/>
+
+                                <Button Content="Enrollment &amp; Transfers"
+                 Tag="AccountArrowRightOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                                        
+                 Click="OpenEnrollmentTransfers_Click"/>
+                                <Button Content="Document Uploads"
+Tag="FileUploadOutline"
+Style="{StaticResource SubMenuButtonStyle}"
+                       
+Click="DocumentUploads_Click"/>
                             </StackPanel>
                         </Expander>
-
+                        <!-- Attendance Management -->
                         <Expander Header="Attendance Management"
-                                  Tag="CalendarCheck"
-                                  Style="{StaticResource SidebarExpanderStyle}"  
-                                  Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}">
+           IsExpanded="False"
+           Visibility="{Binding IsAdmin,
+               Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="CalendarCheckOutline"
+                                          Width="18"
+                                          Height="18"
+                                          Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Attendance Management"
+                            Margin="3,0,0,0"
+                            Foreground="#CBD5E1"
+                            Visibility="{Binding DataContext.IsSidebarExpanded,
+                                RelativeSource={RelativeSource AncestorType=Window},
+                                Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
                             <StackPanel>
-                                <Button Content="Student Attendance" Tag="ClipboardCheck" Style="{StaticResource SubMenuButtonStyle}"/>
-                                <Button Content="Teacher Attendance" Tag="AccountTie" Style="{StaticResource SubMenuButtonStyle}"/>
-                                <Button Content="Staff Attendance" Tag="AccountHardHat" Style="{StaticResource SubMenuButtonStyle}"/>
-                                <Button Content="Attendance Reports" Tag="FileChart" Style="{StaticResource SubMenuButtonStyle}"/>
-                                <Button Content="Absentee Alerts" Tag="Alert" Style="{StaticResource SubMenuButtonStyle}"/>
+                                <Button Content="Student Attendance"
+                 Tag="ClipboardAccountOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="ManageUsers_Click"/>
+
+                                <Button Content="Teacher Attendance"
+                 Tag="ClipboardAccountOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="AssignRoles_Click"/>
+
+                                <Button Content="Staff Attendance"
+                 Tag="ClipboardAccountOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="ResetPasswords_Click"/>
+
+                                <Button Content="Attendance Reports"
+                 Tag="FileChartOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                                        
+                 Click="PortalAccess_Click"/>
+                                <Button Content="Absentee Alerts"
+Tag="AlertOutline"
+Style="{StaticResource SubMenuButtonStyle}"
+                       
+Click="PortalAccess_Click"/>
                             </StackPanel>
                         </Expander>
+                        <!-- Examination Grading -->
+                        <Expander Header="Examination &amp; Grading"
+           IsExpanded="False"
+           Visibility="{Binding IsAdmin,
+               Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
 
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="FileDocumentEditOutline"
+                                          Width="18"
+                                          Height="18"
+                                          Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Examination &amp; Grading"
+                            Margin="3,0,0,0"
+                            Foreground="#CBD5E1"
+                            Visibility="{Binding DataContext.IsSidebarExpanded,
+                                RelativeSource={RelativeSource AncestorType=Window},
+                                Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Exam Setup"
+                 Tag="FileCogOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="ExaminationGrading_Click"/>
+
+                                <Button Content="Subjects &amp; Schedules"
+                 Tag="BookOpenOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="AssignRoles_Click"/>
+
+                                <Button Content="Grading Rules"
+                 Tag="PercentOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="ResetPasswords_Click"/>
+
+                                <Button Content="Approve Marks"
+                 Tag="CheckDecagramOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                                        
+                 Click="PortalAccess_Click"/>
+                                <Button Content="Report Cards &amp; Rankings"
+Tag="FileCertificateOutline"
+Style="{StaticResource SubMenuButtonStyle}"
+                       
+Click="PortalAccess_Click"/>
+                            </StackPanel>
+                        </Expander>
+                        <!-- Fee Management -->
+                        <Expander Header="Fee Management"
+           IsExpanded="False"
+           Visibility="{Binding IsAdmin,
+               Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="CurrencyInr"
+                                          Width="18"
+                                          Height="18"
+                                          Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Fee Management"
+                            Margin="3,0,0,0"
+                            Foreground="#CBD5E1"
+                            Visibility="{Binding DataContext.IsSidebarExpanded,
+                                RelativeSource={RelativeSource AncestorType=Window},
+                                Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Fee Structure"
+                 Tag="CashMultiple"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="FeeManagement_Click"/>
+
+                                <Button Content="Discounts &amp; Due Dates"
+                 Tag="BellOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="AssignRoles_Click"/>
+
+                                <Button Content="Payments &amp; Dues"
+                 Tag="CashCheck"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="ResetPasswords_Click"/>
+
+                                <Button Content="Receipts &amp; Reports"
+                 Tag="ReceiptOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                                        
+                 Click="PortalAccess_Click"/>
+                                <Button Content="Payment Reminders"
+Tag="BellOutline"
+Style="{StaticResource SubMenuButtonStyle}"
+                       
+Click="PortalAccess_Click"/>
+                            </StackPanel>
+                        </Expander>
+                        <!-- Timetable Management -->
+                        <Expander Header="Timetable Management"
+           IsExpanded="False"
+           Visibility="{Binding IsAdmin,
+               Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="CalendarClockOutline"
+                                          Width="18"
+                                          Height="18"
+                                          Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Timetable Management"
+                            Margin="3,0,0,0"
+                            Foreground="#CBD5E1"
+                            Visibility="{Binding DataContext.IsSidebarExpanded,
+                                RelativeSource={RelativeSource AncestorType=Window},
+                                Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Class Timetable"
+                 Tag="CalendarTextOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="FeeManagement_Click"/>
+
+                                <Button Content="Teacher Assignments"
+                 Tag="AccountSwitchOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="AssignRoles_Click"/>
+
+                                <Button Content="Conflict Detection"
+                 Tag="AlertCircleOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="ResetPasswords_Click"/>
+                                <Button Content="Period Configuration"
+Tag="AlertCircleOutline"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="ResetPasswords_Click"/>
+                                <Button Content="Teacher Timetable"
+Tag="AlertCircleOutline"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="ResetPasswords_Click"/>
+
+
+                            </StackPanel>
+                        </Expander>
+                        <!-- Communication Notifications -->
+                        <Expander Header="Communication &amp; Notifications"
+           IsExpanded="False"
+           Visibility="{Binding IsAdmin,
+               Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="MessageTextOutline"
+                                          Width="18"
+                                          Height="18"
+                                          Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Communication &amp; Notifications"
+                            Margin="3,0,0,0"
+                            Foreground="#CBD5E1"
+                            Visibility="{Binding DataContext.IsSidebarExpanded,
+                                RelativeSource={RelativeSource AncestorType=Window},
+                                Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Announcements"
+                 Tag="BullhornOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="FeeManagement_Click"/>
+
+                                <Button Content="Emergency Alerts"
+                 Tag="AlertOctagonOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="AssignRoles_Click"/>
+
+                                <Button Content="Messaging System"
+                 Tag="MessageOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="ResetPasswords_Click"/>
+
+                                <Button Content="Email / SMS Templates"
+                 Tag="ShieldKey"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                                        
+                 Click="PortalAccess_Click"/>
+
+                            </StackPanel>
+                        </Expander>
+                        <!-- Library Management -->
+                        <Expander Header="Library Management"
+           IsExpanded="False"
+           Visibility="{Binding IsAdmin,
+               Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="LibraryShelves"
+                                          Width="18"
+                                          Height="18"
+                                          Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Library Management"
+                            Margin="3,0,0,0"
+                            Foreground="#CBD5E1"
+                            Visibility="{Binding DataContext.IsSidebarExpanded,
+                                RelativeSource={RelativeSource AncestorType=Window},
+                                Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Book Inventory"
+                 Tag="Bookshelf"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="FeeManagement_Click"/>
+
+                                <Button Content="Issue / Return History"
+                 Tag="BookArrowLeftRight"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="AssignRoles_Click"/>
+
+                                <Button Content="Overdue Tracking"
+                 Tag="ClockAlertOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="ResetPasswords_Click"/>
+
+
+                            </StackPanel>
+                        </Expander>
+                        <!-- HR &amp; Payroll -->
+                        <Expander Header="HR &amp; Payroll"
+           IsExpanded="False"
+           Visibility="{Binding IsAdmin,
+               Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="AccountTieOutline"
+                                          Width="18"
+                                          Height="18"
+                                          Foreground="#CBD5E1"/>
+                                        <TextBlock Text="HR &amp; Payroll"
+                            Margin="3,0,0,0"
+                            Foreground="#CBD5E1"
+                            Visibility="{Binding DataContext.IsSidebarExpanded,
+                                RelativeSource={RelativeSource AncestorType=Window},
+                                Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Staff Profiles"
+                 Tag="BadgeAccountOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="FeeManagement_Click"/>
+
+                                <Button Content="Staff Attendance"
+                 Tag="CashSync"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="AssignRoles_Click"/>
+
+                                <Button Content="Payroll Processing"
+                 Tag="CashSync"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="ResetPasswords_Click"/>
+
+                                <Button Content="Tax &amp; Deductions"
+                 Tag="PercentOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                                        
+                 Click="PortalAccess_Click"/>
+
+
+                            </StackPanel>
+                        </Expander>
+                        <!-- Inventory Assets -->
+                        <Expander Header="Inventory &amp; Assets"
+           IsExpanded="False"
+           Visibility="{Binding IsAdmin,
+               Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Warehouse"
+                                          Width="18"
+                                          Height="18"
+                                          Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Inventory &amp; Assets"
+                            Margin="3,0,0,0"
+                            Foreground="#CBD5E1"
+                            Visibility="{Binding DataContext.IsSidebarExpanded,
+                                RelativeSource={RelativeSource AncestorType=Window},
+                                Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Assets &amp; Equipment"
+                 Tag="DesktopTowerMonitor"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="FeeManagement_Click"/>
+
+                                <Button Content="Purchase Logs"
+                 Tag="FileDocumentOutline"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="AssignRoles_Click"/>
+
+                                <Button Content="Maintenance Records"
+                 Tag="Tools"
+                 Style="{StaticResource SubMenuButtonStyle}"
+                 Click="ResetPasswords_Click"/>
+
+                            </StackPanel>
+                        </Expander>
+                        <Expander Header="System &amp; Security"
+IsExpanded="False"
+Visibility="{Binding IsAdmin,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldLockOutline"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="System &amp; Security"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Assets &amp; Equipment"
+      Tag="DesktopTowerMonitor"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="FeeManagement_Click"/>
+
+                                <Button Content="System Settings"
+      Tag="Cogs"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="AssignRoles_Click"/>
+
+                                <Button Content="Backups"
+      Tag="BackupRestore"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="ResetPasswords_Click"/>
+                                <Button Content="Performance Monitoring"
+Tag="ChartLine"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="ResetPasswords_Click"/>
+
+                            </StackPanel>
+                        </Expander>
+                        <!-- ================= TEACHER ================= -->
                         <Expander Header="Teacher"
-                                  Tag="AccountTie"
-                                  Style="{StaticResource SidebarExpanderStyle}"  
-                                  Visibility="{Binding IsTeacher, Converter={StaticResource BoolToVisibilityConverter}}">
+IsExpanded="False"
+Visibility="{Binding IsTeacher,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Teacher"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
                             <StackPanel>
-                                <Button Content="My Students" Tag="AccountMultiple" Style="{StaticResource SubMenuButtonStyle}"/>
-                                <Button Content="Mark Attendance" Tag="ClipboardCheck" Style="{StaticResource SubMenuButtonStyle}"/>
-                                <Button Content="Enter Marks" Tag="Pen" Style="{StaticResource SubMenuButtonStyle}"/>
+                                <Button Content="My Students"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Mark Attendance"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+
+                                <Button Content="Enter Marks"
+      Tag="LockReset"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="TeacherMarks_Click"/>
+
+
                             </StackPanel>
                         </Expander>
+                        <!-- ================= Student Information ================= -->
+                        <Expander Header="Student Information"
+IsExpanded="False"
+Visibility="{Binding IsTeacher,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
 
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Student Information"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="My Students"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Student Profiles"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+
+                                <Button Content="Academic History"
+      Tag="LockReset"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="TeacherMarks_Click"/>
+
+
+                            </StackPanel>
+                        </Expander>
+                        <!-- ================= Attendance ================= -->
+                        <Expander Header="Attendance"
+IsExpanded="False"
+Visibility="{Binding IsTeacher,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Attendance"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Mark Attendance"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Edit Same-Day Attendance"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+
+                                <Button Content="Attendance Reports"
+      Tag="LockReset"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="TeacherMarks_Click"/>
+
+
+                            </StackPanel>
+                        </Expander>
+                        <!-- ================= Examination &amp; Marks ================= -->
+                        <Expander Header="Examination &amp; Marks"
+IsExpanded="False"
+Visibility="{Binding IsTeacher,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Examination &amp; Marks"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Create Assessments"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Enter Marks"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+
+                                <Button Content="Submit Grades"
+      Tag="LockReset"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="TeacherMarks_Click"/>
+                                <Button Content="Performance Analytics"
+Tag="LockReset"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="TeacherMarks_Click"/>
+
+
+                            </StackPanel>
+                        </Expander>
+                        <!-- ================= Timetable ================= -->
+                        <Expander Header="Timetable"
+IsExpanded="False"
+Visibility="{Binding IsTeacher,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Timetable"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="My Timetable"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Class Timetable"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+
+                                <Button Content="Timetable Notifications"
+      Tag="LockReset"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="TeacherMarks_Click"/>
+
+
+
+                            </StackPanel>
+                        </Expander>
+                        <!-- ================= Communication ================= -->
+                        <Expander Header="Communication"
+IsExpanded="False"
+Visibility="{Binding IsTeacher,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Communication"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Message Students"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Message Parents"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+
+                                <Button Content="Message Admin"
+      Tag="LockReset"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="TeacherMarks_Click"/>
+                                <Button Content="Class Announcements"
+Tag="LockReset"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="TeacherMarks_Click"/>
+                                <Button Content="Alerts &amp; Notifications"
+Tag="LockReset"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="TeacherMarks_Click"/>
+
+
+
+                            </StackPanel>
+                        </Expander>
+                        <!-- ================= Library ================= -->
+                        <Expander Header="Library"
+IsExpanded="False"
+Visibility="{Binding IsTeacher,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Library"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Issued Books"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Message ParentsRequest New Books"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+
+
+
+
+                            </StackPanel>
+                        </Expander>
+                        <!-- ================= STUDENT ================= -->
                         <Expander Header="My Profile"
-                                  Tag="Account"
-                                  Style="{StaticResource SidebarExpanderStyle}" 
-                                  Visibility="{Binding IsStudent, Converter={StaticResource BoolToVisibilityConverter}}">
+IsExpanded="False"
+Visibility="{Binding IsStudent,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="My Profile"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
                             <StackPanel>
-                                <Button Content="View Profile" Tag="AccountCircle" Style="{StaticResource SubMenuButtonStyle}"/>
-                                <Button Content="Update Profile" Tag="AccountEdit" Style="{StaticResource SubMenuButtonStyle}"/>
+                                <Button Content="View Profile"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Update Profile"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+
+
+
+
+                            </StackPanel>
+                        </Expander>
+                        <!-- ================= Attendance ================= -->
+                        <Expander Header="Attendance"
+IsExpanded="False"
+Visibility="{Binding IsStudent,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Attendance"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Attendance Records"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Absentee History"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+
+
+
+
+                            </StackPanel>
+                        </Expander>
+                        <!-- ================= Exams &amp; Grades ================= -->
+                        <Expander Header="Exams &amp; Grades"
+IsExpanded="False"
+Visibility="{Binding IsStudent,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Exams &amp; Grades"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Exam Schedule"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Marks &amp; Grades"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+                                <Button Content="Download Report Card"
+Tag="ShieldAccount"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="Attendance_Click"/>
+
+
+
+
+                            </StackPanel>
+                        </Expander>
+                        <!-- ================= Exams &amp; GradesTimetable ================= -->
+                        <Expander Header="Exams &amp; GradesTimetable"
+IsExpanded="False"
+Visibility="{Binding IsStudent,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Exams &amp; GradesTimetable"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Class Timetable"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Timetable Updates"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+
                             </StackPanel>
                         </Expander>
 
+                        <!-- =================Fees ================= -->
+                        <Expander Header="Fees"
+IsExpanded="False"
+Visibility="{Binding IsStudent,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Fees"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Fee Structure"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Payment History"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+                                <Button Content="Download Receipts"
+Tag="ShieldAccount"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="Attendance_Click"/>
+
+                            </StackPanel>
+                        </Expander>
+
+                        <!-- =================Library ================= -->
+                        <Expander Header="Library"
+IsExpanded="False"
+Visibility="{Binding IsStudent,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Library"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Issued Books"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Due Dates &amp; Fines"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+
+
+                            </StackPanel>
+                        </Expander>
+
+                        <!-- =================Communication ================= -->
+                        <Expander Header="Communication"
+IsExpanded="False"
+Visibility="{Binding IsStudent,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Communication"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Announcements"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Message Teachers"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+
+
+                            </StackPanel>
+                        </Expander>
+
+                        <!-- ================= PARENT ================= -->
+                        <Expander Header="Student Monitoring"
+IsExpanded="False"
+Visibility="{Binding IsParent,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Student Monitoring"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Attendance"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Academic Performance"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+                                <Button Content="Report Cards"
+Tag="ShieldAccount"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="Attendance_Click"/>
+
+
+                            </StackPanel>
+                        </Expander>
+                        <Expander Header="Fee Management"
+IsExpanded="False"
+Visibility="{Binding IsParent,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Fee Management"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="View Fee Dues"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Online Payments"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+                                <Button Content="Download Receipts"
+Tag="ShieldAccount"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="Attendance_Click"/>
+
+
+                            </StackPanel>
+                        </Expander>
+                        <Expander Header="Communication"
+IsExpanded="False"
+Visibility="{Binding IsParent,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Fee Management"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Alerts &amp; Notifications"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Message Teachers"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+                                <Button Content="Message Admin"
+Tag="ShieldAccount"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="Attendance_Click"/>
+
+
+                            </StackPanel>
+                        </Expander>
+                        <Expander Header="Timetable"
+IsExpanded="False"
+Visibility="{Binding IsParent,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Timetable"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Timetable"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Schedule Updates"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+
+
+
+                            </StackPanel>
+                        </Expander>
+
+                        <!-- ================= ACCOUNTANT ================= -->
+                        <Expander Header="Accountant"
+IsExpanded="False"
+Visibility="{Binding IsAccountant,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Accountant"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Fee Collection"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Financial Reports"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+                                <Button Content="Pending Dues"
+Tag="ShieldAccount"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="Attendance_Click"/>
+
+
+
+                            </StackPanel>
+                        </Expander>
+                        <!-- ================= LIBRARIAN ================= -->
+                        <Expander Header="Librarian"
+IsExpanded="False"
+Visibility="{Binding IsLibrarian,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="Librarian"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Book Inventory"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Issue / Return Books"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+                                <Button Content="Apply Fines"
+Tag="ShieldAccount"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="Attendance_Click"/>
+
+
+
+                            </StackPanel>
+                        </Expander>
+                        <!-- ================= HR STAFF ================= -->
+                        <Expander Header="HR Staff"
+IsExpanded="False"
+Visibility="{Binding IsHR,
+    Converter={StaticResource BoolToVisibilityConverter}}" Background="Black">
+
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ShieldAccount"
+                               Width="18"
+                               Height="18"
+                               Foreground="#CBD5E1"/>
+                                        <TextBlock Text="HR Staff"
+                 Margin="3,0,0,0"
+                 Foreground="#CBD5E1"
+                 Visibility="{Binding DataContext.IsSidebarExpanded,
+                     RelativeSource={RelativeSource AncestorType=Window},
+                     Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
+                            <StackPanel>
+                                <Button Content="Staff Attendance"
+      Tag="AccountMultiple"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Students_Click"/>
+
+                                <Button Content="Payroll Processing"
+      Tag="ShieldAccount"
+      Style="{StaticResource SubMenuButtonStyle}"
+      Click="Attendance_Click"/>
+                                <Button Content="Leave Management"
+Tag="ShieldAccount"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="Attendance_Click"/>
+
+
+
+                            </StackPanel>
+                        </Expander>
                     </StackPanel>
                 </ScrollViewer>
 
@@ -184,8 +1606,7 @@
                         Style="{StaticResource MenuButtonStyle}"
                         Background="#DC2626"
                         Foreground="White"
-                        Click="Logout_Click"
-                        />
+                        Click="Logout_Click"/>
             </Grid>
         </Border>
 

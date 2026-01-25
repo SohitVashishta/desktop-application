@@ -15,20 +15,20 @@ namespace SchoolManagementSystem.Data.Repositories
             _context = context;
         }
 
-        public async Task<List<Teacher>> GetAllAsync()
+        public async Task<List<TeacherMaster>> GetAllAsync()
         {
             return await _context.Teachers
                 .AsNoTracking()
                 .ToListAsync();
         }
 
-        public async Task AddAsync(Teacher teacher)
+        public async Task AddAsync(TeacherMaster teacher)
         {
             await _context.Teachers.AddAsync(teacher);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Teacher teacher)
+        public async Task UpdateAsync(TeacherMaster teacher)
         {
             _context.Teachers.Update(teacher);
             await _context.SaveChangesAsync();
@@ -46,7 +46,7 @@ namespace SchoolManagementSystem.Data.Repositories
             }
         }
 
-        public async Task<Teacher> GetByIdAsync(int id)
+        public async Task<TeacherMaster> GetByIdAsync(int id)
         {
             return await _context.Teachers
                                  .FirstOrDefaultAsync(t => t.TeacherId == id);

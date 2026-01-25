@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="SchoolManagementSystem.UI.UI.Views.StudentManagement.Students.BulkStudentUploadDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+    <materialDesign:Card Padding="24" Width="420">
+        <StackPanel>
+            <TextBlock Text="Bulk Student Upload"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,16"/>
+
+            <TextBlock Text="Upload Excel file (.xlsx)"
+                               FontSize="12"
+                               Foreground="Gray"
+                               Margin="0,0,0,12"/>
+
+            <Button Height="36"
+                            Style="{StaticResource MaterialDesignOutlinedButton}"
+                            Command="{Binding BrowseExcelCommand}">
+                Choose File
+            </Button>
+
+            <TextBlock Text="{Binding SelectedFileName}"
+                               FontSize="11"
+                               Margin="0,8,0,0"/>
+
+            <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right"
+                                Margin="0,24,0,0">
+                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                    Cancel
+                </Button>
+
+                <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                Margin="12,0,0,0"
+                                Command="{Binding UploadBulkCommand}">
+                    Upload
+                </Button>
+            </StackPanel>
+        </StackPanel>
+    </materialDesign:Card>
+</UserControl>

@@ -23,7 +23,6 @@
     <Folder Include="UI\Controls\" />
     <Folder Include="UI\Resources\" />
     <Folder Include="UI\ViewModels\Parent\" />
-    <Folder Include="UI\ViewModels\Student\" />
     <Folder Include="UI\Views\Courses\" />
     <Folder Include="UI\Views\Gradebook\" />
   </ItemGroup>

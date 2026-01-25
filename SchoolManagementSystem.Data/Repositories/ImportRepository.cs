@@ -62,7 +62,7 @@ namespace SchoolManagementSystem.Data.Repositories
         // =============================
         // IMPORT TEACHERS (ASYNC + TRANSACTION SAFE)
         // =============================
-        public async Task ImportTeachersAsync(List<Teacher> teachers)
+        public async Task ImportTeachersAsync(List<TeacherMaster> teachers)
         {
             if (teachers == null || teachers.Count == 0)
                 return;

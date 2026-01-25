@@ -23,7 +23,7 @@ namespace SchoolManagementSystem.Business.Services
             throw new NotImplementedException();
         }
 
-        public Task ImportTeachersAsync(List<Teacher> teachers)
+        public Task ImportTeachersAsync(List<TeacherMaster> teachers)
             => _repo.ImportTeachersAsync(teachers);
 
         public Task ImportTeachersWithProgressAsync(string filePath, IProgress<int> progress)

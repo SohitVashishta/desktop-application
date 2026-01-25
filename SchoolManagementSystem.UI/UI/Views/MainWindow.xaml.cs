@@ -1,14 +1,19 @@
 ﻿using SchoolManagementSystem.Common.Session;
 using SchoolManagementSystem.UI.UI.ViewModels;
+using SchoolManagementSystem.UI.UI.ViewModels.StudentManagement.Academic;
 using SchoolManagementSystem.UI.UI.Views.Admin;
 using SchoolManagementSystem.UI.UI.Views.Attendance;
 using SchoolManagementSystem.UI.UI.Views.Dashboard;
 using SchoolManagementSystem.UI.UI.Views.Perent;
+using SchoolManagementSystem.UI.UI.Views.StudentManagement;
+using SchoolManagementSystem.UI.UI.Views.StudentManagement.Academic;
 using SchoolManagementSystem.UI.UI.Views.Students;
 using SchoolManagementSystem.UI.UI.Views.Teachers;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace SchoolManagementSystem.UI.UI.Views
 {
@@ -19,9 +24,29 @@ namespace SchoolManagementSystem.UI.UI.Views
         public MainWindow()
         {
             InitializeComponent();
+
             _vm = new MainWindowViewModel();
-            DataContext = _vm;   // ✅ THIS IS REQUIRED
+            DataContext = _vm;
+
             LoadDefaultDashboard();
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        private void ToggleSidebar_Click(object sender, RoutedEventArgs e)
+        {
+            // Toggle ONLY in ViewModel
+            _vm.IsSidebarExpanded = !_vm.IsSidebarExpanded;
+
+            // Animate sidebar width
+            var animation = new DoubleAnimation
+            {
+                To = _vm.IsSidebarExpanded ? 240 : 64,
+                Duration = TimeSpan.FromMilliseconds(250),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
+            };
+
+            //SidebarBorder.BeginAnimation(WidthProperty, animation);
         }
 
         /* ================= DASHBOARD ================= */
@@ -55,18 +80,6 @@ namespace SchoolManagementSystem.UI.UI.Views
         private void PortalAccess_Click(object sender, RoutedEventArgs e)
             => Navigate(new ControlPortalAccessPage(), "Portal Access Control");
 
-        private void StudentManagement_Click(object sender, RoutedEventArgs e)
-            => Navigate(new StudentManagementView(), "Student Management");
-
-        private void AttendanceManagement_Click(object sender, RoutedEventArgs e)
-            => Navigate(new AttendanceManagementView(), "Attendance Management");
-
-        private void ExaminationGrading_Click(object sender, RoutedEventArgs e)
-            => Navigate(new ExaminationGradingView(), "Exams & Grading");
-
-        private void FeeManagement_Click(object sender, RoutedEventArgs e)
-            => Navigate(new FeeManagementView(), "Fee Management");
-
         /* ================= TEACHER ================= */
 
         private void Students_Click(object sender, RoutedEventArgs e)
@@ -93,6 +106,46 @@ namespace SchoolManagementSystem.UI.UI.Views
 
         private void ParentFees_Click(object sender, RoutedEventArgs e)
             => Navigate(new ParentFeesView(), "Fees & Payments");
+        private void ExaminationGrading_Click(object sender, RoutedEventArgs e)
+            => Navigate(new ExaminationGradingView(), "Fees & Payments");
+        private void FeeManagement_Click(object sender, RoutedEventArgs e)
+           => Navigate(new FeeManagementView(), "Fees & Payments");
+        // Academic Management
+        private void OpenAcademicYearPage_Click(object sender, RoutedEventArgs e)
+         => Navigate(new AcademicYearMasterPage(), "Academic Year");
+
+        private void OpenClassMasterPage_Click(object sender, RoutedEventArgs e)
+         => Navigate(new ClassMasterPage(), "Classes");
+
+        private void OpenSectionPage_Click(object sender, RoutedEventArgs e)
+         => Navigate(new SectionMasterPage(), "Sections");
+
+        private void OpenSubjectPage_Click(object sender, RoutedEventArgs e)
+         => Navigate(new SubjectMasterPage(), "Subjects");
+
+        private void OpenClassSectionMappingPage_Click(object sender, RoutedEventArgs e)
+         => Navigate(new ClassSectionMappingPage(), "Class-Section Mapping");
+
+        private void OpenClassSubjectMappingPage_Click(object sender, RoutedEventArgs e)
+         => Navigate(new ClassSubjectMappingPage(), "Class-Subject Mapping");
+        private void OpenStudentAdmissionPage_Click(object sender, RoutedEventArgs e)
+        => Navigate(new StudentAdmissionPage(), "Student Admission");
+
+        private void OpenStudentProfiles_Click(object sender, RoutedEventArgs e)
+        => Navigate(new StudentListPage(), "Student Profiles");
+
+        private void OpenClassSectionAssignment_Click(object sender, RoutedEventArgs e)
+        => Navigate(new StudentClassAssignmentPage(), "Class/Section Assignment");
+
+        private void OpenAcademicYearMapping_Click(object sender, RoutedEventArgs e)
+        => Navigate(new StudentAcademicYearMappingPage(), "Academic Year Mapping");
+
+        private void OpenEnrollmentTransfers_Click(object sender, RoutedEventArgs e)
+        => Navigate(new StudentTransferPage(), "Enrollment &amp; Transfers");
+
+        private void DocumentUploads_Click(object sender, RoutedEventArgs e)
+        => Navigate(new StudentDocumentsPage(), "Document Uploads");
+
 
         /* ================= LOGOUT ================= */
 
@@ -108,32 +161,33 @@ namespace SchoolManagementSystem.UI.UI.Views
         private void Navigate(UserControl view, string title)
         {
             MainContent.Content = view;
-            SetBreadcrumb(title);
+            _vm.PageTitle = title;
         }
-
-        private void SetBreadcrumb(string text)
+        private void NavigatePage(Page view, string title)
         {
-            if (DataContext is MainWindowViewModel vm)
-                vm.PageTitle = text;
+            MainContent.Content = view;
+            _vm.PageTitle = title;
         }
 
         /* ================= UI HELPERS ================= */
 
         private void SidebarExpander_Expanded(object sender, RoutedEventArgs e)
         {
-            if (sender is Expander expanded)
-            {
-                var parent = VisualTreeHelper.GetParent(expanded);
-                while (parent != null && parent is not StackPanel)
-                    parent = VisualTreeHelper.GetParent(parent);
+            if (sender is not Expander expanded) return;
 
-                if (parent is StackPanel panel)
+            var parent = VisualTreeHelper.GetParent(expanded);
+            while (parent != null && parent is not StackPanel)
+                parent = VisualTreeHelper.GetParent(parent);
+
+            if (parent is StackPanel panel)
+            {
+                foreach (var child in panel.Children)
                 {
-                    foreach (var child in panel.Children)
-                        if (child is Expander exp && exp != expanded)
-                            exp.IsExpanded = false;
+                    if (child is Expander exp && exp != expanded)
+                        exp.IsExpanded = false;
                 }
             }
         }
+
     }
 }

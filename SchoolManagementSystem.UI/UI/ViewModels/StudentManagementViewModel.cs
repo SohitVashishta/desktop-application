@@ -12,7 +12,7 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
     {
         private readonly IStudentService _studentService;
 
-        public ObservableCollection<Student> Students { get; } = new();
+        public ObservableCollection<StudentModel> Students { get; } = new();
 
         // ✅ Constructor Injection
         public StudentManagementViewModel(IStudentService studentService)
@@ -24,7 +24,7 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
         {
             Students.Clear();
 
-            var students = await _studentService.GetStudentsAsync();
+            var students = await _studentService.GetAllAsync();
             foreach (var s in students)
                 Students.Add(s);
         }
