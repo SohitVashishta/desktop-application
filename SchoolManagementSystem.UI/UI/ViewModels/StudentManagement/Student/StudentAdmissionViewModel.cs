@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -425,7 +426,16 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.StudentManagement
                 await _studentService.SaveAdmissionAsync(Profile);
             else
                 await _studentService.UpdateAsync(Profile);
+            MessageBox.Show(
+       "Student admission saved successfully.",
+       "Success",
+       MessageBoxButton.OK,
+       MessageBoxImage.Information);
+
+            ResetForm();
         }
+
+       
 
         #endregion
 
@@ -447,6 +457,26 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.StudentManagement
                 Documents = new ObservableCollection<StudentDocumentModel>(),
                 ClassHistory = new List<StudentClassHistoryModel>()
             };
+        }
+        private void ResetForm()
+        {
+            Profile = CreateEmptyProfile();
+            OnPropertyChanged(nameof(Profile));
+
+            CurrentStep = 0;
+
+            TotalFees = 0;
+            PaidFees = 0;
+            SelectedPaymentMode = null;
+            ReceiptNo = null;
+            PaymentDate = DateTime.Today;
+            IsDeclarationAccepted = false;
+            FeeValidationMessage = string.Empty;
+
+            GenerateAdmissionNo();
+
+            // important: notify Save button & bindings
+            OnPropertyChanged(nameof(CanSave));
         }
 
         private void GenerateAdmissionNo()
