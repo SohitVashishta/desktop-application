@@ -2,6 +2,7 @@
 using SchoolManagementSystem.Data.Repositories;
 using SchoolManagementSystem.Models;
 using SchoolManagementSystem.Models.Models;
+using SchoolManagementSystem.Models.Models.SchoolManagementSystem.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -149,5 +150,14 @@ namespace SchoolManagementSystem.Business
 
             await _studentRepository.UpdateAsync(profile.Student);
         }
+        public async Task SaveAdmissionAsync(StudentProfileVM model)
+        {
+            await _studentRepository.AddAdmissionAsync(model);
+        }
+        public async Task UpdateAdmissionAsync(StudentAdmissionModel model)
+        {
+            await _studentRepository.UpdateAdmissionAsync(model);
+        }
+
     }
 }

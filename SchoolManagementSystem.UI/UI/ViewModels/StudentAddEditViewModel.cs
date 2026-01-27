@@ -111,7 +111,7 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
                 LastName = LastName,
                 Email = Email,
                 DateOfBirth = DateOfBirth.Value,
-                EnrollmentDate = EnrollmentDate
+                AdmissionDate = EnrollmentDate
             };
 StudentProfileVM studentProfileVM = new StudentProfileVM();
             studentProfileVM.Student=student;

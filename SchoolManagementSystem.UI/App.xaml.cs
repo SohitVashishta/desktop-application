@@ -73,7 +73,8 @@ namespace SchoolManagementSystem.UI
             services.AddScoped<IClassSectionRepository, ClassSectionRepository>();
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IAdminDashboardRepository, AdminDashboardRepository>();
-            
+            services.AddScoped<IStudentAdmissionRepository, StudentAdmissionRepository>();
+
 
 
 
@@ -101,6 +102,7 @@ namespace SchoolManagementSystem.UI
             services.AddScoped<IClassSectionService, ClassSectionService>();
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<IAdminDashboardService, AdminDashboardService>();
+            services.AddScoped<IStudentAdmissionService, StudentAdmissionService>();
 
             // ================= VIEWMODELS =================
             services.AddTransient<UserManagementViewModel>();
@@ -124,6 +126,7 @@ namespace SchoolManagementSystem.UI
             services.AddTransient<ClassSectionMappingViewModel>();
             services.AddTransient<StudentListViewModel>();
             services.AddTransient<AdminDashboardViewModel>();
+            services.AddTransient<StudentAdmissionViewModel>();
 
         }
 

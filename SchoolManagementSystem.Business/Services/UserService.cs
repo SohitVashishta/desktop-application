@@ -58,7 +58,7 @@ namespace SchoolManagementSystem.Business.Services
             if (string.IsNullOrWhiteSpace(newPassword))
                 throw new ArgumentException("Password required");
 
-            var hash = PasswordHasher.Hash(newPassword);
+            var hash = HashPassword(newPassword);
             await _repo.UpdatePasswordAsync(userId, hash);
         }
 

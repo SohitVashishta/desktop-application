@@ -1,12 +1,776 @@
-﻿<UserControl x:Class="SchoolManagementSystem.UI.UI.Views.Admin.StudentAdmissionPage"
+﻿<UserControl x:Class="SchoolManagementSystem.UI.UI.Views.StudentManagement.StudentAdmissionPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SchoolManagementSystem.UI.UI.Views.Admin"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+    <Grid Background="#F3F4F6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- ================= HEADER ================= -->
+        <Border Grid.Row="0"
+                Background="White"
+                Padding="12"
+                BorderBrush="#E5E7EB"
+                BorderThickness="0,0,0,1">
+
+            <StackPanel>
+                <TextBlock Text="Student Admission"
+                           FontSize="20"
+                           FontWeight="SemiBold"/>
+                <TextBlock Text="Complete admission in 5 steps"
+                           FontSize="12"
+                           Foreground="#6B7280"/>
+            </StackPanel>
+        </Border>
+
+        <!-- ================= STEPPER ================= -->
+        <TabControl Grid.Row="1"
+                    Margin="16"
+                    SelectedIndex="{Binding CurrentStep}"
+                    Style="{StaticResource MaterialDesignTabControl}">
+
+            <!-- ================================================= -->
+            <!-- STEP 1 : STUDENT DETAILS -->
+            <!-- ================================================= -->
+            <!-- ================================================= -->
+            <!-- STEP 1 : STUDENT DETAILS -->
+            <!-- ================================================= -->
+            <TabItem Header="1. Student">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="8">
+
+                        <!-- SECTION TITLE -->
+                        <TextBlock Text="Student Details"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,10"/>
+
+                        <UniformGrid Columns="2">
+
+                            <!-- FIRST NAME -->
+                            <TextBox Height="32"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Student.FirstName, UpdateSourceTrigger=PropertyChanged}"
+                         materialDesign:HintAssist.Hint="First Name *"/>
+
+                            <!-- MIDDLE NAME -->
+                            <TextBox Height="32"
+                         Margin="8,0,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Student.MiddleName}"
+                         materialDesign:HintAssist.Hint="Middle Name"/>
+
+                            <!-- LAST NAME -->
+                            <TextBox Height="32"
+                         Margin="0,8,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Student.LastName}"
+                         materialDesign:HintAssist.Hint="Last Name *"/>
+
+                            <!-- GENDER -->
+                            <ComboBox Height="32"
+                          Margin="8,8,0,0"
+                          Padding="8,5"
+                          FontSize="10.5"
+                          Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                          ItemsSource="{Binding GenderList}"
+                          SelectedItem="{Binding Profile.Student.Gender}"
+                          materialDesign:HintAssist.Hint="Gender *"/>
+
+                            <!-- DATE OF BIRTH -->
+                            <DatePicker Height="32"
+            Margin="0,8,0,0"
+            Padding="8,5"
+            FontSize="10.5"
+            SelectedDate="{Binding Profile.Student.DateOfBirth, Mode=TwoWay}"
+            materialDesign:HintAssist.Hint="Date of Birth *"
+            materialDesign:HintAssist.IsFloating="True"/>
+
+
+                            <!-- SELECT CLASS -->
+                            <ComboBox Height="32"
+                          Margin="8,8,0,0"
+                          Padding="8,5"
+                          FontSize="10.5"
+                          Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                          ItemsSource="{Binding Classes}"
+                          SelectedItem="{Binding SelectedClass}"
+                          DisplayMemberPath="ClassName"
+                          materialDesign:HintAssist.Hint="Select Class *"/>
+
+                            <!-- BIRTH PLACE -->
+                            <TextBox Height="32"
+                         Margin="0,8,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Student.BirthPlace}"
+                         materialDesign:HintAssist.Hint="Place of Birth"/>
+
+                            <!-- MOTHER TONGUE -->
+                            <ComboBox Height="32"
+                          Margin="8,8,0,0"
+                          Padding="8,5"
+                          FontSize="10.5"
+                          Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                          ItemsSource="{Binding MotherTongueList}"
+                          SelectedItem="{Binding Profile.Student.MotherTongue}"
+                          materialDesign:HintAssist.Hint="Mother Tongue *"/>
+
+                            <!-- RELIGION -->
+                            <ComboBox Height="32"
+                          Margin="0,8,0,0"
+                          Padding="8,5"
+                          FontSize="10.5"
+                          Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                          ItemsSource="{Binding ReligionList}"
+                          SelectedItem="{Binding Profile.Student.Religion}"
+                          materialDesign:HintAssist.Hint="Religion *"/>
+
+                            <!-- CATEGORY -->
+                            <ComboBox Height="32"
+                          Margin="8,8,0,0"
+                          Padding="8,5"
+                          FontSize="10.5"
+                          Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                          ItemsSource="{Binding CategoryList}"
+                          SelectedItem="{Binding Profile.Student.Category}"
+                          materialDesign:HintAssist.Hint="Category *"/>
+
+                            <!-- AADHAAR NO -->
+                            <TextBox Height="32"
+                         Margin="0,8,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Student.AadhaarNo}"
+                         materialDesign:HintAssist.Hint="Aadhaar No"/>
+
+                            <!-- NATIONALITY -->
+                            <TextBox Height="32"
+                         Margin="8,8,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Student.Nationality}"
+                         materialDesign:HintAssist.Hint="Nationality"/>
+
+                            <!-- SIBLING IN SCHOOL -->
+                            <ComboBox Height="32"
+                          Margin="0,8,0,0"
+                          Padding="8,5"
+                          FontSize="10.5"
+                          Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                          ItemsSource="{Binding YesNoList}"
+                          SelectedItem="{Binding Profile.Student.HasSibling}"
+                          materialDesign:HintAssist.Hint="Any Sibling in this School?"/>
+
+                        </UniformGrid>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ================================================= -->
+            <!-- STEP 2 : ACADEMIC + ADDRESS -->
+            <!-- ================================================= -->
+            <!-- ================================================= -->
+            <!-- STEP 2 : ACADEMIC + ADDRESS DETAILS -->
+            <!-- ================================================= -->
+            <TabItem Header="2. Academic &amp; Address">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="8">
+
+                        <!-- ================= ACADEMIC DETAILS ================= -->
+                        <TextBlock Text="Academic Details"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,10"/>
+
+                        <UniformGrid Columns="2">
+
+                            <!-- ACADEMIC YEAR -->
+                            <ComboBox Height="32"
+                          Padding="8,5"
+                          FontSize="10.5"
+                          Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                          ItemsSource="{Binding AcademicYears}"
+                          SelectedItem="{Binding SelectedAcademicYear}"
+                          DisplayMemberPath="YearName"
+                          materialDesign:HintAssist.Hint="Academic Year *"/>
+
+                            <!-- ADMISSION DATE -->
+                            <DatePicker Height="32"
+                            Margin="8,0,0,0"
+                            Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                            SelectedDate="{Binding Profile.Student.AdmissionDate}"
+                            materialDesign:HintAssist.Hint="Admission Date *"/>
+
+                            <!-- CLASS -->
+                            <ComboBox Height="32"
+                          Margin="0,8,0,0"
+                          Padding="8,5"
+                          FontSize="10.5"
+                          Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                          ItemsSource="{Binding Classes}"
+                          SelectedItem="{Binding SelectedClass}"
+                          DisplayMemberPath="ClassName"
+                          materialDesign:HintAssist.Hint="Class *"/>
+
+                            <!-- SECTION -->
+                            <ComboBox Height="32"
+                          Margin="8,8,0,0"
+                          Padding="8,5"
+                          FontSize="10.5"
+                          Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                          ItemsSource="{Binding Sections}"
+                          SelectedItem="{Binding SelectedSection}"
+                          DisplayMemberPath="SectionName"
+                          materialDesign:HintAssist.Hint="Section *"/>
+
+                            <!-- ROLL NO -->
+                            <TextBox Height="32"
+                         Margin="0,8,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Student.RollNo}"
+                         materialDesign:HintAssist.Hint="Roll No"/>
+
+                            <!-- ADMISSION TYPE -->
+                            <ComboBox Height="32"
+                          Margin="8,8,0,0"
+                          Padding="8,5"
+                          FontSize="10.5"
+                          Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                          ItemsSource="{Binding AdmissionTypeList}"
+                          SelectedItem="{Binding Profile.Student.AdmissionType}"
+                          materialDesign:HintAssist.Hint="Admission Type"/>
+
+                        </UniformGrid>
+
+                        <!-- ================= ADDRESS DETAILS ================= -->
+                        <TextBlock Text="Residential Address"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="0,16,0,10"/>
+
+                        <UniformGrid Columns="2">
+
+                            <!-- ADDRESS LINE -->
+                            <TextBox Height="32"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Address.AddressLine}"
+                         materialDesign:HintAssist.Hint="Address Line *"/>
+
+                            <!-- CITY -->
+                            <TextBox Height="32"
+                         Margin="8,0,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Address.City}"
+                         materialDesign:HintAssist.Hint="City *"/>
+
+                            <!-- STATE -->
+                            <TextBox Height="32"
+                         Margin="0,8,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Address.State}"
+                         materialDesign:HintAssist.Hint="State *"/>
+
+                            <!-- PINCODE -->
+                            <TextBox Height="32"
+                         Margin="8,8,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Address.Pincode}"
+                         materialDesign:HintAssist.Hint="Pincode *"/>
+
+                        </UniformGrid>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+
+            <!-- ================================================= -->
+            <!-- STEP 3 : PARENTS -->
+            <!-- ================================================= -->
+            <!-- ================================================= -->
+            <!-- STEP 3 : PARENTS / GUARDIAN DETAILS -->
+            <!-- ================================================= -->
+            <TabItem Header="3. Parents">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="8">
+
+                        <!-- ================= FATHER DETAILS ================= -->
+                        <TextBlock Text="Father Details"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,8"/>
+
+                        <UniformGrid Columns="2">
+
+                            <TextBox Height="32"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Parent.FatherName}"
+                         materialDesign:HintAssist.Hint="Father Name *"/>
+
+                            <TextBox Height="32"
+                         Margin="8,0,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Parent.FatherQualification}"
+                         materialDesign:HintAssist.Hint="Qualification *"/>
+
+                            <TextBox Height="32"
+                         Margin="0,8,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Parent.FatherOccupation}"
+                         materialDesign:HintAssist.Hint="Occupation *"/>
+
+                            <TextBox Height="32"
+                         Margin="8,8,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Parent.FatherOrganization}"
+                         materialDesign:HintAssist.Hint="Organization"/>
+
+                            <TextBox Height="32"
+                         Margin="0,8,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Parent.FatherMobile}"
+                         materialDesign:HintAssist.Hint="Mobile No *"/>
+
+                            <TextBox Height="32"
+                         Margin="8,8,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Parent.FatherAadhaar}"
+                         materialDesign:HintAssist.Hint="Aadhaar No"/>
+
+                        </UniformGrid>
+
+                        <!-- ================= MOTHER DETAILS ================= -->
+                        <TextBlock Text="Mother Details"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="0,16,0,8"/>
+
+                        <UniformGrid Columns="2">
+
+                            <TextBox Height="32"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Parent.MotherName}"
+                         materialDesign:HintAssist.Hint="Mother Name *"/>
+
+                            <TextBox Height="32"
+                         Margin="8,0,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Parent.MotherQualification}"
+                         materialDesign:HintAssist.Hint="Qualification"/>
+
+                            <TextBox Height="32"
+                         Margin="0,8,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Parent.MotherOccupation}"
+                         materialDesign:HintAssist.Hint="Occupation"/>
+
+                            <TextBox Height="32"
+                         Margin="8,8,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Parent.MotherOrganization}"
+                         materialDesign:HintAssist.Hint="Organization"/>
+
+                            <TextBox Height="32"
+                         Margin="0,8,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Parent.MotherMobile}"
+                         materialDesign:HintAssist.Hint="Mobile No"/>
+
+                            <TextBox Height="32"
+                         Margin="8,8,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Parent.MotherEmail}"
+                         materialDesign:HintAssist.Hint="Email"/>
+
+                        </UniformGrid>
+
+                        <!-- ================= GUARDIAN DETAILS ================= -->
+                        <TextBlock Text="Guardian Details (If Applicable)"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="0,16,0,8"/>
+
+                        <UniformGrid Columns="2">
+
+                            <TextBox Height="32"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Parent.GuardianName}"
+                         materialDesign:HintAssist.Hint="Guardian Name"/>
+
+                            <TextBox Height="32"
+                         Margin="8,0,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Parent.GuardianRelation}"
+                         materialDesign:HintAssist.Hint="Relation"/>
+
+                            <TextBox Height="32"
+                         Margin="0,8,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Parent.GuardianMobile}"
+                         materialDesign:HintAssist.Hint="Mobile No"/>
+
+                            <TextBox Height="32"
+                         Margin="8,8,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding Profile.Parent.GuardianEmail}"
+                         materialDesign:HintAssist.Hint="Email"/>
+
+                        </UniformGrid>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+
+            <!-- ================================================= -->
+            <!-- STEP 4 : DOCUMENTS -->
+            <!-- ================================================= -->
+            <!-- ================================================= -->
+            <!-- STEP 4 : DOCUMENTS & PHOTO -->
+            <!-- ================================================= -->
+            <!-- ================================================= -->
+            <!-- STEP 4 : DOCUMENTS & PHOTO -->
+            <!-- ================================================= -->
+            <TabItem Header="4. Documents">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="8">
+
+                        <!-- ================= STUDENT PHOTO ================= -->
+                        <TextBlock Text="Student Photograph"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,8"/>
+
+                        <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Center">
+
+                            <Border Width="110"
+                        Height="130"
+                        BorderBrush="#D1D5DB"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Background="#F9FAFB">
+
+                                <Image Source="{Binding StudentPhoto}"
+                           Stretch="UniformToFill"/>
+                            </Border>
+
+                            <StackPanel Margin="12,0,0,0">
+                                <Button Height="32"
+                            Width="160"
+                            Padding="8,5"
+                            FontSize="10.5"
+                            Style="{StaticResource MaterialDesignOutlinedButton}"
+                            Command="{Binding UploadPhotoCommand}">
+                                    Upload Photo
+                                </Button>
+
+                                <TextBlock Text="JPG / PNG • Max 2MB"
+                               FontSize="10"
+                               Foreground="#6B7280"
+                               Margin="0,6,0,0"/>
+                            </StackPanel>
+
+                        </StackPanel>
+
+                        <!-- ================= DOCUMENT UPLOAD ================= -->
+                        <TextBlock Text="Required Documents"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="0,20,0,8"/>
+
+                        <UniformGrid Columns="2">
+
+                            <Button Height="32"
+                        Padding="8,5"
+                        FontSize="10.5"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Command="{Binding UploadBirthCertificateCommand}">
+                                Upload Birth Certificate
+                            </Button>
+
+                            <Button Height="32"
+                        Margin="8,0,0,0"
+                        Padding="8,5"
+                        FontSize="10.5"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Command="{Binding UploadTransferCertificateCommand}">
+                                Upload Transfer Certificate
+                            </Button>
+
+                            <Button Height="32"
+                        Margin="0,8,0,0"
+                        Padding="8,5"
+                        FontSize="10.5"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Command="{Binding UploadAadhaarCommand}">
+                                Upload Aadhaar
+                            </Button>
+
+                            <Button Height="32"
+                        Margin="8,8,0,0"
+                        Padding="8,5"
+                        FontSize="10.5"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Command="{Binding UploadCasteCertificateCommand}">
+                                Upload Caste Certificate
+                            </Button>
+
+                        </UniformGrid>
+
+                        <!-- ================= UPLOADED FILES LIST ================= -->
+                        <TextBlock Text="Uploaded Files"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="0,20,0,8"/>
+
+                        <Border BorderBrush="#E5E7EB"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Background="White">
+
+                            <ItemsControl ItemsSource="{Binding UploadedDocuments}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel Margin="6">
+
+                                            <materialDesign:PackIcon Kind="FileDocumentOutline"
+                                                         Width="18"
+                                                         Height="18"
+                                                         Foreground="#2563EB"
+                                                         DockPanel.Dock="Left"/>
+
+                                            <TextBlock Text="{Binding FileName}"
+                                           FontSize="11"
+                                           Margin="6,0"
+                                           VerticalAlignment="Center"/>
+
+                                            <Button DockPanel.Dock="Right"
+                                        Width="24"
+                                        Height="24"
+                                        Style="{StaticResource MaterialDesignIconButton}"
+                                        Command="{Binding DataContext.RemoveDocumentCommand,
+                                                  RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}">
+                                                <materialDesign:PackIcon Kind="Close"
+                                                             Width="14"
+                                                             Height="14"/>
+                                            </Button>
+
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                        </Border>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+
+
+
+            <!-- ================================================= -->
+            <!-- STEP 5 : FEES + DECLARATION -->
+            <!-- ================================================= -->
+            <!-- ================================================= -->
+            <!-- ================================================= -->
+            <!-- STEP 5 : FEES & DECLARATION -->
+            <!-- ================================================= -->
+            <TabItem Header="5. Fees">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="8">
+
+                        <!-- ================= FEE DETAILS ================= -->
+                        <TextBlock Text="Fee Details"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,8"/>
+
+                        <UniformGrid Columns="2">
+
+                            <TextBox Height="32"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding TotalFees}"
+                         materialDesign:HintAssist.Hint="Total Fees *"/>
+
+                            <TextBox Height="32"
+                         Margin="8,0,0,0"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding PaidFees}"
+                         materialDesign:HintAssist.Hint="Paid Amount *"/>
+
+                            <TextBox Height="32"
+         Margin="8,0,0,0"
+         Padding="8,5"
+         FontSize="10.5"
+         IsReadOnly="True"
+         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+         Text="{Binding BalanceFees, Mode=OneWay}"
+         materialDesign:HintAssist.Hint="Balance Fees"/>
+
+
+                            <ComboBox Height="32"
+                          Margin="8,8,0,0"
+                          Padding="8,5"
+                          FontSize="10.5"
+                          Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                          ItemsSource="{Binding PaymentModes}"
+                          SelectedItem="{Binding SelectedPaymentMode}"
+                          materialDesign:HintAssist.Hint="Payment Mode"/>
+
+                        </UniformGrid>
+
+                        <!-- ================= PAYMENT REFERENCE ================= -->
+                        <UniformGrid Columns="2" Margin="0,12,0,0">
+
+                            <TextBox Height="32"
+                         Padding="8,5"
+                         FontSize="10.5"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Text="{Binding ReceiptNo}"
+                         materialDesign:HintAssist.Hint="Receipt No"/>
+
+                            <DatePicker Height="32"
+                            Margin="8,0,0,0"
+                            Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                            SelectedDate="{Binding PaymentDate}"
+                            materialDesign:HintAssist.Hint="Payment Date"/>
+
+                        </UniformGrid>
+
+                        <!-- ================= DECLARATION ================= -->
+                        <Border Margin="0,16,0,0"
+                    Padding="10"
+                    Background="#F9FAFB"
+                    BorderBrush="#E5E7EB"
+                    BorderThickness="1"
+                    CornerRadius="4">
+
+                            <StackPanel>
+
+                                <CheckBox IsChecked="{Binding IsDeclarationAccepted}"
+                              FontSize="11"
+                              Content="I hereby declare that the information provided above is true and correct."/>
+
+                                <TextBlock Text="Admission will be confirmed only after fee verification."
+                               FontSize="10"
+                               Foreground="#6B7280"
+                               Margin="22,4,0,0"/>
+
+                            </StackPanel>
+                        </Border>
+
+                        <!-- ================= VALIDATION MESSAGE ================= -->
+                        <TextBlock Margin="0,8,0,0"
+                       FontSize="10"
+                       Foreground="Red"
+                       Text="{Binding FeeValidationMessage}"/>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+
+
+        </TabControl>
+
+        <!-- ================= FOOTER ================= -->
+        <Border Grid.Row="2"
+                Background="White"
+                Padding="10"
+                BorderBrush="#E5E7EB"
+                BorderThickness="1,0,0,0">
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+
+                <Button Height="32"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Command="{Binding PrevStepCommand}">
+                    Back
+                </Button>
+
+                <Button Height="32"
+                        Margin="8,0,0,0"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Command="{Binding NextStepCommand}">
+                    Next
+                </Button>
+
+                <Button Height="32"
+                        Margin="8,0,0,0"
+                        Background="#2563EB"
+                        Foreground="White"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Command="{Binding SaveCommand}">
+                    Save &amp; Print
+                </Button>
+
+            </StackPanel>
+        </Border>
+
     </Grid>
 </UserControl>

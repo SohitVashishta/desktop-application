@@ -1,4 +1,5 @@
 ﻿using SchoolManagementSystem.Models.Models;
+using SchoolManagementSystem.Models.Models.SchoolManagementSystem.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,8 @@ namespace SchoolManagementSystem.Business.Services
                           int classId,
                           int sectionId);
         Task BulkUploadAsync(List<StudentModel> students);
-
+        Task SaveAdmissionAsync(StudentProfileVM model);
+        Task UpdateAdmissionAsync(StudentAdmissionModel model);
 
     }
 
