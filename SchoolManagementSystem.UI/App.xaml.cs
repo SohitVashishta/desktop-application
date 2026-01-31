@@ -11,9 +11,11 @@ using SchoolManagementSystem.UI.UI.ViewModels;
 using SchoolManagementSystem.UI.UI.ViewModels.Admin;
 using SchoolManagementSystem.UI.UI.ViewModels.Attendances;
 using SchoolManagementSystem.UI.UI.ViewModels.Dashboard;
+using SchoolManagementSystem.UI.UI.ViewModels.FeeManagement;
 using SchoolManagementSystem.UI.UI.ViewModels.Import;
 using SchoolManagementSystem.UI.UI.ViewModels.StudentManagement;
 using SchoolManagementSystem.UI.UI.ViewModels.StudentManagement.Academic;
+using SchoolManagementSystem.UI.UI.Views.FeeManagement;
 using System.Configuration;
 using System.Windows;
 
@@ -74,6 +76,7 @@ namespace SchoolManagementSystem.UI
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IAdminDashboardRepository, AdminDashboardRepository>();
             services.AddScoped<IStudentAdmissionRepository, StudentAdmissionRepository>();
+            services.AddScoped<IFeeRepository, FeeRepository>();
 
 
 
@@ -103,6 +106,7 @@ namespace SchoolManagementSystem.UI
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<IAdminDashboardService, AdminDashboardService>();
             services.AddScoped<IStudentAdmissionService, StudentAdmissionService>();
+            services.AddScoped<IFeeService, FeeService>();
 
             // ================= VIEWMODELS =================
             services.AddTransient<UserManagementViewModel>();
@@ -127,6 +131,11 @@ namespace SchoolManagementSystem.UI
             services.AddTransient<StudentListViewModel>();
             services.AddTransient<AdminDashboardViewModel>();
             services.AddTransient<StudentAdmissionViewModel>();
+            services.AddTransient<FeeManagementViewModel>();
+            services.AddTransient<FeeConcessionViewModel>();
+            services.AddTransient<AddNewFeeEntryViewModel>();
+            services.AddTransient<AddNewFeeEntry>();
+            services.AddTransient<FeeStructureViewModel>();
 
         }
 

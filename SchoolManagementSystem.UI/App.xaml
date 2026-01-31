@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:SchoolManagementSystem.UI.UI.Helpers"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              StartupUri="UI/Views/LoginView.xaml">
 
     <Application.Resources>
@@ -157,7 +158,29 @@
                 </Setter>
             </Style>
 
-          
+            <!-- Thin default -->
+            <sys:Double x:Key="ScrollBarThin">4</sys:Double>
+
+            <!-- On hover -->
+            <sys:Double x:Key="ScrollBarHover">10</sys:Double>
+            <Style TargetType="ScrollBar"
+       BasedOn="{StaticResource MaterialDesignScrollBar}">
+
+                <!-- Default thin scrollbar -->
+                <Setter Property="MinWidth" Value="1"/>
+                <Setter Property="Opacity" Value="0.4"/>
+                <Setter Property="Background" Value="Transparent"/>
+
+                <Style.Triggers>
+
+                    <!-- On mouse hover -->
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="MinWidth" Value="1"/>
+                        <Setter Property="Opacity" Value="1"/>
+                    </Trigger>
+
+                </Style.Triggers>
+            </Style>
 
 
         </ResourceDictionary>

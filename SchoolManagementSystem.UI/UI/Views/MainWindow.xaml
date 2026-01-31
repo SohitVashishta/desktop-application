@@ -440,12 +440,12 @@ Click="PortalAccess_Click"/>
                                 <Button Content="Discounts &amp; Due Dates"
                  Tag="BellOutline"
                  Style="{StaticResource SubMenuButtonStyle}"
-                 Click="AssignRoles_Click"/>
+                 Click="FeeDiscount_Click"/>
 
                                 <Button Content="Payments &amp; Dues"
                  Tag="CashCheck"
                  Style="{StaticResource SubMenuButtonStyle}"
-                 Click="ResetPasswords_Click"/>
+                 Click="AddNewFeeEntry_Click"/>
 
                                 <Button Content="Receipts &amp; Reports"
                  Tag="ReceiptOutline"
@@ -1626,8 +1626,8 @@ Click="Attendance_Click"/>
             </Border>
 
             <materialDesign:Card Grid.Row="1"
-                                  Margin="16"
-                                  Padding="16"
+                                  Margin="6"
+                                  Padding="0"
                                   materialDesign:ElevationAssist.Elevation="Dp6">
                 <ContentControl x:Name="MainContent"/>
             </materialDesign:Card>

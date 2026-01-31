@@ -14,6 +14,24 @@
     <Compile Update="UI\Views\Admin\AttendanceView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UI\Views\FeeManagement\AddNewFeeEntry.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\FeeManagement\FeeConcessionPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\FeeManagement\FeeDiscountPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\FeeManagement\FeeRefundPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\FeeManagement\FeeReportPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\FeeManagement\FeeStructurePage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UI\Views\StudentManagement\Academic\AcademicYearMasterPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

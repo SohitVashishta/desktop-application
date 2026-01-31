@@ -11,37 +11,38 @@ using System.Windows.Input;
 
 namespace SchoolManagementSystem.UI.UI.ViewModels
 {
-    public class FeeManagementViewModel
+    public class FeeManagementViewModel : NotifyPropertyChangedBase
     {
         private readonly IFeeService _service = new FeeService();
 
-        public ObservableCollection<FeeDto> Fees { get; } = new();
+        public ObservableCollection<AcademicYearModel> AcademicYears { get; } = new();
+        public ObservableCollection<ClassModel> Classes { get; } = new();
+        public ObservableCollection<FeeHeadModel> FeeHeads { get; } = new();
 
-        public ICommand LoadCommand { get; }
-        public ICommand RecordPaymentCommand { get; }
+        public ObservableCollection<FeeStructureDetailModel> FeeDetails { get; } = new();
 
-        public FeeManagementViewModel()
+        public int SelectedAcademicYearId { get; set; }
+        public int SelectedClassId { get; set; }
+
+        public ICommand SaveCommand { get; }
+
+        public FeeManagementViewModel(IFeeService service)
         {
-            LoadCommand = new RelayCommand(async () => await LoadAsync());
-            RecordPaymentCommand = new RelayCommand<FeeDto>(RecordPayment);
+            _service = service;
+            SaveCommand = new RelayCommand(async () => await SaveAsync());
         }
 
-        private async Task LoadAsync()
+        private async Task SaveAsync()
         {
-            Fees.Clear();
-            var data = await _service.GetFeesAsync();
-            foreach (var f in data)
-                Fees.Add(f);
+            var model = new FeeStructureModel
+            {
+                AcademicYearId = SelectedAcademicYearId,
+                ClassId = SelectedClassId,
+                Details = FeeDetails
+            };
+
+            await _service.SaveAsync(model);
         }
 
-        private async void RecordPayment(FeeDto fee)
-        {
-            if (fee == null || fee.IsPaid) return;
-
-            decimal paymentAmount = fee.PendingAmount; // Full payment for now
-            await _service.RecordPaymentAsync(fee.FeeId, paymentAmount);
-
-            fee.PaidAmount += paymentAmount;
-        }
     }
 }

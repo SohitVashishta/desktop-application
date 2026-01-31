@@ -1,14 +1,18 @@
 ﻿using SchoolManagementSystem.Business.Services;
+using SchoolManagementSystem.Models.Models;
+using SchoolManagementSystem.UI.UI.Helpers;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace SchoolManagementSystem.UI.UI.ViewModels.Dashboard
 {
     public class AdminDashboardViewModel : INotifyPropertyChanged
     {
         private readonly IAdminDashboardService _service;
+        private readonly IFeeService _feeService;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -24,10 +28,28 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Dashboard
         public string ServerStatus { get; private set; }
         public string LastBackupDate { get; private set; }
 
-        public AdminDashboardViewModel(IAdminDashboardService service)
+        public FeesDashboardKpiModel Kpi { get; private set; }
+
+        public ObservableCollection<MonthlyCollectionModel> MonthlyCollections { get; }
+            = new();
+
+        public ICommand LoadDashboardCommand { get; }
+        public AdminDashboardViewModel(IAdminDashboardService service, IFeeService feeService)
         {
             _service = service;
+            _feeService = feeService;
+            LoadDashboardCommand = new RelayCommand(async () =>
+            {
+                Kpi = await _feeService.GetKpiAsync();
+                OnPropertyChanged(nameof(Kpi));
+
+                MonthlyCollections.Clear();
+                var data = await _feeService.GetMonthlyAsync();
+                foreach (var item in data)
+                    MonthlyCollections.Add(item);
+            });
             _ = LoadAsync();
+            
         }
 
         private async Task LoadAsync()
@@ -67,5 +89,9 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Dashboard
 
         protected void OnPropertyChanged([CallerMemberName] string? name = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+
+
+        
     }
 }

@@ -4,6 +4,7 @@ using SchoolManagementSystem.UI.UI.ViewModels.StudentManagement.Academic;
 using SchoolManagementSystem.UI.UI.Views.Admin;
 using SchoolManagementSystem.UI.UI.Views.Attendance;
 using SchoolManagementSystem.UI.UI.Views.Dashboard;
+using SchoolManagementSystem.UI.UI.Views.FeeManagement;
 using SchoolManagementSystem.UI.UI.Views.Perent;
 using SchoolManagementSystem.UI.UI.Views.StudentManagement;
 using SchoolManagementSystem.UI.UI.Views.StudentManagement.Academic;
@@ -109,7 +110,11 @@ namespace SchoolManagementSystem.UI.UI.Views
         private void ExaminationGrading_Click(object sender, RoutedEventArgs e)
             => Navigate(new ExaminationGradingView(), "Fees & Payments");
         private void FeeManagement_Click(object sender, RoutedEventArgs e)
-           => Navigate(new FeeManagementView(), "Fees & Payments");
+           => Navigate(new FeeStructurePage(), "Fees & Payments");
+        private void FeeDiscount_Click(object sender, RoutedEventArgs e)
+            => Navigate(new FeeDiscountPage(), "Fee Discounts");
+        private void AddNewFeeEntry_Click(object sender, RoutedEventArgs e)
+            => Navigate(new AddNewFeeEntry(), "Add New Fee Entry");
         // Academic Management
         private void OpenAcademicYearPage_Click(object sender, RoutedEventArgs e)
          => Navigate(new AcademicYearMasterPage(), "Academic Year");

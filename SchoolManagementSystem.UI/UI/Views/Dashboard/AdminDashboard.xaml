@@ -64,6 +64,38 @@
                                        Foreground="White"/>
                         </StackPanel>
                     </Border>
+                    <Border Background="#EFF6FF" CornerRadius="6" Margin="8" Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="Active Classes" Foreground="White"/>
+                            <TextBlock Text="{Binding Kpi.TotalFees}"
+                    FontSize="26"
+                    FontWeight="Bold"
+                    Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+
+ <Border Background="#E0F2FE" CornerRadius="6" Margin="8" Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="Collected Fees" Foreground="White"/>
+                            <TextBlock Text="{Binding Kpi.CollectedFees}"
+                                       FontSize="26"
+                                       FontWeight="Bold"
+                                       Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+
+
+
+                    <Border Background="#E0F2FE" CornerRadius="6" Margin="8" Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="Collected Fees" Foreground="White"/>
+                            <TextBlock Text="{Binding Kpi.PedingFees}"
+                                      FontSize="26"
+                                      FontWeight="Bold"
+                                      Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+
 
                 </UniformGrid>
 
