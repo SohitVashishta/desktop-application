@@ -136,6 +136,9 @@ namespace SchoolManagementSystem.UI
             services.AddTransient<AddNewFeeEntryViewModel>();
             services.AddTransient<AddNewFeeEntry>();
             services.AddTransient<FeeStructureViewModel>();
+            services.AddTransient<ReceiptViewModel>();
+            services.AddTransient<StudentFeeAssignmentViewModel>();
+            services.AddTransient<StudentFeeAssignViewModel>();
 
         }
 

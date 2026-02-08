@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace SchoolManagementSystem.UI.UI.Views.FeeManagement
 {
     /// <summary>
-    /// Interaction logic for FeeDiscountPage.xaml
+    /// Interaction logic for StudentLedgerPage.xaml
     /// </summary>
-    public partial class FeeDiscountPage : UserControl
+    public partial class StudentLedgerPage : UserControl
     {
-        public FeeDiscountPage()
+        public StudentLedgerPage()
         {
             InitializeComponent();
         }

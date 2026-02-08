@@ -15,6 +15,7 @@ namespace SchoolManagementSystem.UI.UI.Helpers
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
     }
 
 }

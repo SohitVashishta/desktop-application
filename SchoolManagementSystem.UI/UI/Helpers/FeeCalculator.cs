@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolManagementSystem.UI.UI.Helpers
 {
@@ -11,32 +9,40 @@ namespace SchoolManagementSystem.UI.UI.Helpers
     {
         public static StudentFeeAssignmentModel Calculate(
             StudentModel student,
-            List<FeeStructureModel> feeStructure,
-            List<FeeDiscountModel> discounts,
-            List<FeeDueDateModel> dueDates)
+            List<FeeStructureModel> feeStructures,
+            List<FeeRuleRowModel> feeRules   // unified Discount + DueDate
+        )
         {
+            if (student == null)
+                throw new ArgumentNullException(nameof(student));
+
             var assignment = new StudentFeeAssignmentModel
             {
                 StudentId = student.StudentId,
-                AcademicYearId = student.AcademicYearId
+                AcademicYearId = student.AcademicYearId,
+                Details = new List<StudentFeeAssignmentDetailModel>()
             };
 
-            foreach (var fee in feeStructure)
+            // ================= FLATTEN FEE STRUCTURE =================
+            var feeHeads = feeStructures
+                .Where(fs => fs.FeesDetails != null)
+                .SelectMany(fs => fs.FeesDetails)
+                .GroupBy(x => x.FeeHeadId)
+                .Select(g => g.First());
+
+            foreach (var fee in feeHeads)
             {
-                var discount = discounts
-                    .FirstOrDefault(x => x.FeeHeadId == fee.FeeHeadId);
+                var rule = feeRules?
+                    .FirstOrDefault(r => r.FeeHeadId == fee.FeeHeadId);
 
                 decimal discountAmount = 0;
 
-                if (discount != null)
+                if (rule != null && rule.DiscountValue > 0)
                 {
-                    discountAmount = discount.IsPercentage
-                        ? fee.Amount * discount.DiscountAmount / 100
-                        : discount.DiscountAmount;
+                    discountAmount = rule.DiscountType == "Percentage"
+                        ? fee.Amount * rule.DiscountValue / 100
+                        : rule.DiscountValue;
                 }
-
-                var due = dueDates
-                    .FirstOrDefault(x => x.FeeHeadId == fee.FeeHeadId);
 
                 assignment.Details.Add(new StudentFeeAssignmentDetailModel
                 {
@@ -44,17 +50,15 @@ namespace SchoolManagementSystem.UI.UI.Helpers
                     FeeHeadName = fee.FeeHeadName,
                     FeeAmount = fee.Amount,
                     DiscountAmount = discountAmount,
-                    NetAmount = fee.Amount - discountAmount,
-                    DueDate = due?.DueDate ?? DateTime.Today
+                    //NetAmount = fee.Amount - discountAmount,
+                    //DueDate = rule?.DueDate
                 });
             }
 
-            assignment.TotalFees = assignment.Details.Sum(x => x.FeeAmount);
-            assignment.DiscountAmount = assignment.Details.Sum(x => x.DiscountAmount);
-            assignment.NetFees = assignment.Details.Sum(x => x.NetAmount);
+            // ❌ DO NOT SET TOTALS HERE
+            // Totals are auto-calculated in StudentFeeAssignmentModel
 
             return assignment;
         }
     }
-
 }

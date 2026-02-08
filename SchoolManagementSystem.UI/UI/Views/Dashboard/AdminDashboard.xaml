@@ -8,7 +8,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- HEADER -->
+        <!-- HEADER --><!--
         <StackPanel Margin="0,0,0,20">
             <TextBlock Text="Admin Dashboard"
                        FontSize="24"
@@ -16,7 +16,7 @@
             <TextBlock Text="System overview, statistics and administrative insights"
                        Foreground="Gray"
                        FontSize="12"/>
-        </StackPanel>
+        </StackPanel>-->
 
         <!-- CONTENT -->
         <ScrollViewer Grid.Row="1">
@@ -64,20 +64,20 @@
                                        Foreground="White"/>
                         </StackPanel>
                     </Border>
-                    <Border Background="#EFF6FF" CornerRadius="6" Margin="8" Padding="16">
+                    <Border Background="#C0392B" CornerRadius="6" Margin="8" Padding="16">
                         <StackPanel>
-                            <TextBlock Text="Active Classes" Foreground="White"/>
-                            <TextBlock Text="{Binding Kpi.TotalFees}"
+                            <TextBlock Text="Collected Fees" Foreground="White"/>
+                            <TextBlock Text="{Binding Kpi.CollectedFees}"
                     FontSize="26"
                     FontWeight="Bold"
                     Foreground="White"/>
                         </StackPanel>
                     </Border>
 
- <Border Background="#E0F2FE" CornerRadius="6" Margin="8" Padding="16">
+                    <Border Background="#E67E22" CornerRadius="6" Margin="8" Padding="16">
                         <StackPanel>
-                            <TextBlock Text="Collected Fees" Foreground="White"/>
-                            <TextBlock Text="{Binding Kpi.CollectedFees}"
+                            <TextBlock Text="Peding Fees" Foreground="White"/>
+                            <TextBlock Text="{Binding Kpi.PedingFees}"
                                        FontSize="26"
                                        FontWeight="Bold"
                                        Foreground="White"/>
@@ -86,19 +86,63 @@
 
 
 
-                    <Border Background="#E0F2FE" CornerRadius="6" Margin="8" Padding="16">
+                    <Border Background="#27AE60" CornerRadius="6" Margin="8" Padding="16">
                         <StackPanel>
-                            <TextBlock Text="Collected Fees" Foreground="White"/>
-                            <TextBlock Text="{Binding Kpi.PedingFees}"
+                            <TextBlock Text="Upcoming Exam" Foreground="White"/>
+                            <TextBlock Text="{Binding Kpi.UpcomigExam}"
                                       FontSize="26"
                                       FontWeight="Bold"
                                       Foreground="White"/>
                         </StackPanel>
                     </Border>
-
+                    <Border Background="#2C3E50" CornerRadius="6" Margin="8" Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="Total Staff" Foreground="White"/>
+                            <TextBlock Text="{Binding TotalUsers}"
+                    FontSize="26"
+                    FontWeight="Bold"
+                    Foreground="White"/>
+                        </StackPanel>
+                    </Border>
 
                 </UniformGrid>
+                <!-- QUICK ACTIONS -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
+                    <!-- LEFT: QUICK ACTIONS -->
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Quick Actions"
+                    FontSize="18"
+                    FontWeight="SemiBold"
+                    Margin="0,0,0,10"/>
+
+                        <Button Content="➕ Add Student" Height="40" Margin="0,5"/>
+                        <Button Content="🧑‍🏫 Add Teacher" Height="40" Margin="0,5"/>
+                        <Button Content="📅 Mark Attendance" Height="40" Margin="0,5"/>
+                    </StackPanel>
+
+                    <!-- RIGHT: ALERTS -->
+                    <StackPanel Grid.Column="1" Margin="20,0,0,0">
+                        <TextBlock Text="Alerts"
+                    FontSize="18"
+                    FontWeight="SemiBold"
+                    Margin="0,0,0,10"/>
+
+                        <TextBlock Text="• Pending attendance for today"
+                    Foreground="#C0392B"
+                    FontSize="14"
+                    Margin="0,5"/>
+
+                        <TextBlock Text="• Monthly attendance report pending"
+                    Foreground="#E67E22"
+                    FontSize="14"
+                    Margin="0,5"/>
+                    </StackPanel>
+                </Grid>
                 <!-- SYSTEM OVERVIEW -->
                 <TextBlock Text="System Overview"
                            FontSize="18"

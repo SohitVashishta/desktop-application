@@ -112,7 +112,11 @@ namespace SchoolManagementSystem.UI.UI.Views
         private void FeeManagement_Click(object sender, RoutedEventArgs e)
            => Navigate(new FeeStructurePage(), "Fees & Payments");
         private void FeeDiscount_Click(object sender, RoutedEventArgs e)
-            => Navigate(new FeeDiscountPage(), "Fee Discounts");
+            => Navigate(new FeeRulePage(), "Fee Discounts");
+        private void AssignFeeToStudent_Click(object sender, RoutedEventArgs e)
+            => Navigate(new StudentFeeAssignmentPage(), "Assign Fees");
+        private void Receipt_Click(object sender, RoutedEventArgs e)
+            => Navigate(new FeeReportPage(), "Fee Receipts");
         private void AddNewFeeEntry_Click(object sender, RoutedEventArgs e)
             => Navigate(new AddNewFeeEntry(), "Add New Fee Entry");
         // Academic Management

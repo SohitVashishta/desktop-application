@@ -19,7 +19,7 @@ namespace SchoolManagementSystem.Data.Repositories
         {
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
-
+            user.LastLoginOn= DateTime.Now;
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
         }

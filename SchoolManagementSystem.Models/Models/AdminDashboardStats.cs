@@ -12,6 +12,10 @@ namespace SchoolManagementSystem.Models.Models
         public int TotalStudents { get; set; }
         public int TotalTeachers { get; set; }
         public int TotalClasses { get; set; }
+        public int TotalPendingFees { get; set; }
+        public int TotalFees { get; set; }
+        public int UpcomingExams { get; set; }
+        public int TotalStaff { get; set; }
 
         public List<string> RecentActivities { get; set; } = new();
         public List<string> Announcements { get; set; } = new();

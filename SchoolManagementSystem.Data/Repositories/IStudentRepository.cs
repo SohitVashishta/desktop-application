@@ -19,6 +19,9 @@ namespace SchoolManagementSystem.Data.Repositories
         Task UpdateClassSectionAsync(int studentId, int classId, int sectionId);
         Task<int> AddAdmissionAsync(StudentProfileVM model);
         Task UpdateAdmissionAsync(StudentAdmissionModel model);
+       Task<List<StudentModel>> GetByClassAsync(int academicYearId, int classId);
+        Task AssignFeeAsync(int studentId,int academicYearId,decimal paidAmount,string paymentMode,DateTime paymentDate);
+        Task<StudentFeeAssignmentModel> GetStudentFeeAssignmentAsync(int studentId);
     }
 
 

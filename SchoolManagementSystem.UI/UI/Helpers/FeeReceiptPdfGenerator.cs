@@ -45,7 +45,7 @@ namespace SchoolManagementSystem.UI.UI.Helpers
             doc.Add(new Paragraph($"Receipt No : {r.ReceiptNo}").SetFont(normalFont));
             doc.Add(new Paragraph($"Date       : {r.PaymentDate:dd-MMM-yyyy}").SetFont(normalFont));
             doc.Add(new Paragraph($"Student    : {r.StudentName}").SetFont(normalFont));
-            doc.Add(new Paragraph($"Class      : {r.ClassSection}")
+            doc.Add(new Paragraph($"Class      : {r.ClassName}")
                 .SetFont(normalFont)
                 .SetMarginBottom(15));
 

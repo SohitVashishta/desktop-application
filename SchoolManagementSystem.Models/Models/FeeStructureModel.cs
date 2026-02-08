@@ -9,13 +9,23 @@ namespace SchoolManagementSystem.Models.Models
 {
     public class FeeStructureModel
     {
-        public string FeeHeadName { get; set; } // FeeHeadName
         public int FeeStructureId { get; set; }
+
         public int AcademicYearId { get; set; }
         public int ClassId { get; set; }
-        public int FeeHeadId { get; set; }
-        public decimal Amount { get; set; }
-        public ObservableCollection<FeeStructureDetailModel> Details { get; set; }
-            = new();
+        public int? SectionId { get; set; }
+
+        public string FeeType { get; set; }   // Monthly / Quarterly / Yearly / OneTime
+
+        public decimal TotalAmount { get; set; }
+
+        public bool IsActive { get; set; } = true;
+
+        public DateTime CreatedOn { get; set; }
+        public int? CreatedBy { get; set; }
+
+        // 🔗 Child records
+        public List<FeeStructureDetailModel> FeesDetails { get; set; }
+            = new List<FeeStructureDetailModel>();
     }
 }

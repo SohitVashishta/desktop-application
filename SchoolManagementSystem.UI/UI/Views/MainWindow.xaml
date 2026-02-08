@@ -436,6 +436,11 @@ Click="PortalAccess_Click"/>
                  Tag="CashMultiple"
                  Style="{StaticResource SubMenuButtonStyle}"
                  Click="FeeManagement_Click"/>
+                                <Button Content="Assign fees to student"
+Tag="CashMultiple"
+Style="{StaticResource SubMenuButtonStyle}"
+Click="AssignFeeToStudent_Click"/>
+                                
 
                                 <Button Content="Discounts &amp; Due Dates"
                  Tag="BellOutline"
@@ -451,7 +456,7 @@ Click="PortalAccess_Click"/>
                  Tag="ReceiptOutline"
                  Style="{StaticResource SubMenuButtonStyle}"
                                         
-                 Click="PortalAccess_Click"/>
+                 Click="Receipt_Click"/>
                                 <Button Content="Payment Reminders"
 Tag="BellOutline"
 Style="{StaticResource SubMenuButtonStyle}"

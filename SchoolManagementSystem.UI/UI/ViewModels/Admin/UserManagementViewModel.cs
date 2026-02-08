@@ -1,6 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using SchoolManagementSystem.Business.Services;
 using SchoolManagementSystem.Common.Enums;
+using SchoolManagementSystem.Common.Security;
 using SchoolManagementSystem.Models.Models;
 using SchoolManagementSystem.UI.UI.Helpers;
 using System;
@@ -471,10 +472,15 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.Admin
             {
                 UserId = user.UserId,
                 Username = user.Username,
+                FullName = user.FullName,
+                PasswordSalt= user.PasswordHash,
                 Email = user.Email,
                 Role = user.Role,
                 IsActive = user.IsActive,
-                PasswordHash = user.PasswordHash
+                PasswordHash = user.PasswordHash,
+                LastLoginOn = user.LastLoginOn,
+                CreatedBy = user.CreatedBy
+
             };
 
             IsDialogOpen = true;

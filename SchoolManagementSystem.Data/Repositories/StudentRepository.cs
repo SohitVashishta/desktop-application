@@ -279,8 +279,150 @@ namespace SchoolManagementSystem.Data.Repositories
                     return $"RCPT-{year}-{_lastNumber:D6}";
                 }
             }
-        
+        public async Task<List<StudentModel>> GetByClassAsync(int academicYearId, int classId)
+        {
+            var list = new List<StudentModel>();
 
+            using var con = (SqlConnection)DbConnectionFactory.Create();
+            using var cmd = new SqlCommand("usp_Student_GetByClass", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@AcademicYearId", academicYearId);
+            cmd.Parameters.AddWithValue("@ClassId", classId);
+
+            await con.OpenAsync();
+
+            using var reader = await cmd.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                list.Add(new StudentModel
+                {
+                    StudentId = Convert.ToInt32(reader["StudentId"]),
+                    AdmissionNo = reader["AdmissionNo"].ToString(),
+                    StudentName = reader["StudentName"].ToString(),
+                    Gender = reader["Gender"].ToString(),
+
+                    AcademicYearId = academicYearId,
+                    ClassId = Convert.ToInt32(reader["ClassId"]),
+                    ClassName = reader["ClassName"].ToString(),
+
+                    SectionId = Convert.ToInt32(reader["SectionId"]),
+                    SectionName = reader["SectionName"].ToString(),
+
+                    IsActive = Convert.ToBoolean(reader["IsActive"])
+                });
+            }
+
+            return list;
+        }
+
+        public async Task AssignFeeAsync(
+    int studentId,
+    int academicYearId,
+    decimal paidAmount,
+    string paymentMode,
+    DateTime paymentDate)
+        {
+            using var con = (SqlConnection)DbConnectionFactory.Create();
+            using var cmd = new SqlCommand("usp_StudentFeeAssignment_Pay", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@StudentId", studentId);
+            cmd.Parameters.AddWithValue("@AcademicYearId", academicYearId);
+            cmd.Parameters.AddWithValue("@PaidAmount", paidAmount);
+            cmd.Parameters.AddWithValue("@PaymentMode", paymentMode);
+            cmd.Parameters.AddWithValue("@PaymentDate", paymentDate);
+
+            await con.OpenAsync();
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+
+        public async Task<StudentFeeAssignmentModel> GetStudentFeeAssignmentAsync(int studentId)
+        {
+            StudentFeeAssignmentModel model = null;
+
+            using var con = (SqlConnection)DbConnectionFactory.Create();
+            using var cmd = new SqlCommand("usp_StudentFeeAssignment_GetByStudentId", con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@StudentId", studentId);
+
+            await con.OpenAsync();
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            while (await reader.ReadAsync())
+            {
+                // ================= HEADER =================
+                if (model == null)
+                {
+                    model = new StudentFeeAssignmentModel
+                    {
+                        StudentFeeAssignmentId =
+                            reader.GetInt32(reader.GetOrdinal("StudentFeeAssignmentId")),
+
+                        StudentId =
+                            reader.GetInt32(reader.GetOrdinal("StudentId")),
+
+                        AcademicYearId =
+                            reader.GetInt32(reader.GetOrdinal("AcademicYearId")),
+
+                        FeeType =
+                            reader.GetString(reader.GetOrdinal("FeeType")),
+
+                        PaidAmount =
+                            reader.IsDBNull(reader.GetOrdinal("PaidAmount"))
+                                ? 0
+                                : reader.GetDecimal(reader.GetOrdinal("PaidAmount")),
+
+                        DueDate =
+                            reader.IsDBNull(reader.GetOrdinal("DueDate"))
+                                ? DateTime.Today
+                                : reader.GetDateTime(reader.GetOrdinal("DueDate")),
+
+                        Details = new List<StudentFeeAssignmentDetailModel>()
+                    };
+                }
+
+                // ================= DETAILS =================
+                model.Details.Add(new StudentFeeAssignmentDetailModel
+                {
+                    FeeHeadId =
+                        reader.GetInt32(reader.GetOrdinal("FeeHeadId")),
+
+                    FeeHeadName =
+                        reader.GetString(reader.GetOrdinal("FeeHeadName")),
+
+                    FeeAmount =   // 🔥 BaseAmount → FeeAmount
+                        reader.GetDecimal(reader.GetOrdinal("BaseAmount")),
+
+                    DiscountAmount =
+                        reader.GetDecimal(reader.GetOrdinal("DiscountAmount")),
+
+                    DueDate =
+                        reader.IsDBNull(reader.GetOrdinal("DueDate"))
+                            ? (DateTime?)null
+                            : reader.GetDateTime(reader.GetOrdinal("DueDate"))
+                });
+            }
+
+            return model;
+        }
+
+
+        public Task<List<StudentModel>> GetByClassAsync(int studentId, int academicYearId, decimal paidAmount, string paymentMode, DateTime paymentDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AssignFeeAsync(int studentId, int feeStructureId)
+        {
+            throw new NotImplementedException();
+        }
+
+       
 
     }
 }

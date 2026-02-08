@@ -1,42 +1,250 @@
-﻿<Page x:Class="SchoolManagementSystem.UI.UI.Views.FeeManagement.FeeReportPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:SchoolManagementSystem.UI.UI.Views.FeeManagement"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="FeeReportPage">
+﻿<UserControl x:Class="SchoolManagementSystem.UI.UI.Views.FeeManagement.FeeReportPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes">
 
-    <DataGrid ItemsSource="{Binding Reports}"
-          AutoGenerateColumns="False"
-          IsReadOnly="True">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!-- ================= FILTER BAR ================= -->
+        <Border Padding="12"
+                CornerRadius="6"
+                Background="{DynamicResource MaterialDesignPaper}">
 
-        <DataGrid.Columns>
-            <DataGridTextColumn Header="Student"
-                            Binding="{Binding StudentName}"/>
 
-            <DataGridTextColumn Header="Class"
-                            Binding="{Binding ClassName}"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            <DataGridTextColumn Header="Total Fees"
-                            Binding="{Binding TotalFees}"/>
+                <ComboBox Grid.Column="0"
+                          ItemsSource="{Binding AcademicYears}"
+                          SelectedItem="{Binding SelectedAcademicYear , Mode=TwoWay}"
+                          DisplayMemberPath="YearName"
+                          md:HintAssist.Hint="Academic Year"/>
 
-            <DataGridTextColumn Header="Concession"
-                            Binding="{Binding Concession}"/>
+                <ComboBox Grid.Column="1"
+                          Margin="8,0,0,0"
+                          ItemsSource="{Binding Classes}"
+                          SelectedItem="{Binding SelectedClass , Mode=TwoWay}"
+                          DisplayMemberPath="ClassName"
+                          md:HintAssist.Hint="Class"/>
 
-            <DataGridTextColumn Header="Paid"
-                            Binding="{Binding PaidFees}"/>
+                <ComboBox Grid.Column="2"
+                          Margin="8,0,0,0"
+                          ItemsSource="{Binding Students}"
+                          SelectedItem="{Binding SelectedStudent , Mode=TwoWay}"
+                          DisplayMemberPath="StudentName"
+                          md:HintAssist.Hint="Student"/>
 
-            <DataGridTextColumn Header="Balance"
-                            Binding="{Binding BalanceFees}"/>
+                <Button Grid.Column="3"
+                        Margin="12,0,0,0"
+                        Content="Load"
+                        Command="{Binding LoadStudentCommand}"
+                        Style="{StaticResource MaterialDesignRaisedButton}"/>
+            </Grid>
+        </Border>
 
-            <DataGridTextColumn Header="Payment Date"
-                            Binding="{Binding PaymentDate}"/>
+        <!-- ================= MAIN CONTENT ================= -->
+        <Grid Grid.Row="1" Margin="0,16,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
 
-            <DataGridTextColumn Header="Mode"
-                            Binding="{Binding PaymentMode}"/>
-        </DataGrid.Columns>
-    </DataGrid>
+            <!-- ================= LEFT : FEE SUMMARY ================= -->
+            <Border Padding="12"
+        Margin="0,0,16,0"
+        CornerRadius="6"
+        Background="{DynamicResource MaterialDesignPaper}"
+        md:ShadowAssist.ShadowDepth="Depth1">
 
-</Page>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <!-- Title -->
+                        <RowDefinition Height="*"/>
+                        <!-- Scrollable grid -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Footer -->
+                    </Grid.RowDefinitions>
+
+                    <!-- ===== TITLE ===== -->
+                    <TextBlock Grid.Row="0"
+                   Text="Fee Summary"
+                   FontSize="16"
+                   FontWeight="SemiBold"
+                   Margin="0,0,0,12"/>
+
+                    <!-- ===== SCROLLABLE GRID ===== -->
+                    <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+
+                        <DataGrid ItemsSource="{Binding FeeDetails}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="None"
+                      RowHeight="34"
+                      MaxHeight="320">
+                            <!-- 🔥 adjust as needed -->
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Fee Head"
+                                        Binding="{Binding FeeHeadName}"
+                                        Width="*"/>
+
+                                <DataGridTextColumn Header="Amount"
+                                        Binding="{Binding FeeAmount}"
+                                        Width="100"/>
+
+                                <DataGridTextColumn Header="Discount"
+                                        Binding="{Binding DiscountAmount}"
+                                        Width="100"/>
+
+                                <DataGridTextColumn Header="Net"
+                                        Binding="{Binding NetAmount}"
+                                        Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </ScrollViewer>
+
+                    <!-- ===== FOOTER ===== -->
+                    <Grid Grid.Row="2" Margin="0,8,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Net Payable"
+                       FontWeight="Bold"/>
+
+                        <TextBlock Grid.Column="1"
+                       Text="{Binding NetAmount, StringFormat=₹ {0}}"
+                       FontWeight="Bold"/>
+                    </Grid>
+
+                </Grid>
+            </Border>
+
+            <!-- ================= RIGHT : PAYMENT / RECEIPT ================= -->
+            <Border Grid.Column="1"
+                    Padding="12"
+                    CornerRadius="6"
+                    Background="{DynamicResource MaterialDesignPaper}"
+                    md:ShadowAssist.ShadowDepth="Depth1">
+
+                <StackPanel>
+
+                    <TextBlock Text="Generate Receipt"
+                               FontSize="16"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,12"/>
+
+                    <TextBox Text="{Binding PaidAmount,
+                Mode=TwoWay,
+                UpdateSourceTrigger=PropertyChanged}"
+         md:HintAssist.Hint="Paid Amount"/>
+
+                    <ComboBox SelectedValue="{Binding SelectedPaymentMode, Mode=TwoWay}"
+          SelectedValuePath="Content"
+          md:HintAssist.Hint="Payment Mode">
+                        <ComboBoxItem Content="Cash"/>
+                        <ComboBoxItem Content="Online"/>
+                        <ComboBoxItem Content="Cheque"/>
+                    </ComboBox>
+
+
+                    <DatePicker Margin="0,8,0,0"
+                                SelectedDate="{Binding PaymentDate}"
+                                md:HintAssist.Hint="Payment Date"/>
+
+                    <TextBlock Margin="0,12,0,0"
+                               Text="{Binding BalanceAmount,
+                                      StringFormat=Balance After Payment: ₹ {0}}"
+                               FontWeight="Bold"/>
+
+                    <Button Margin="0,16,0,0"
+                            Content="Generate Receipt"
+                            Command="{Binding GenerateReceiptCommand}"
+                            Style="{StaticResource MaterialDesignRaisedButton}"/>
+
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- ================= RECEIPT / REPORT HISTORY ================= -->
+        <Border Grid.Row="2"
+                Margin="0,16,0,0"
+                Padding="12"
+                CornerRadius="6"
+                Background="{DynamicResource MaterialDesignPaper}"
+                md:ShadowAssist.ShadowDepth="Depth1">
+
+            <StackPanel>
+
+                <TextBlock Text="Receipt History"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,12"/>
+
+                <DataGrid ItemsSource="{Binding ReceiptHistory}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          GridLinesVisibility="None">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Receipt No"
+                                            Binding="{Binding ReceiptNo}"
+                                            Width="120"/>
+
+                        <DataGridTextColumn Header="Date"
+                                            Binding="{Binding PaymentDate}"
+                                            Width="120"/>
+
+                        <DataGridTextColumn Header="Mode"
+                                            Binding="{Binding PaymentMode}"
+                                            Width="100"/>
+
+                        <DataGridTextColumn Header="Paid"
+                                            Binding="{Binding PaidAmount}"
+                                            Width="120"/>
+
+                        <DataGridTextColumn Header="Balance"
+                                            Binding="{Binding BalanceAmount}"
+                                            Width="120"/>
+
+                        <DataGridTemplateColumn Header="Actions" Width="140">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Content="PDF"
+                                                Command="{Binding DataContext.DownloadPdfCommand,
+                                                RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                CommandParameter="{Binding}"
+                                                Margin="0,0,4,0"/>
+
+                                        <Button Content="Print"
+                                                Command="{Binding DataContext.PrintCommand,
+                                                RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                CommandParameter="{Binding}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+
+                </DataGrid>
+
+            </StackPanel>
+        </Border>
+
+    </Grid>
+</UserControl>

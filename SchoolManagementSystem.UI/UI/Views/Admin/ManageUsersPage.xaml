@@ -222,9 +222,13 @@
                        FontSize="18"
                        FontWeight="SemiBold"
                        Margin="0,0,0,16"/>
+                    <!--Full Name-->
+                    <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"  Margin="0,12,0,0"
+ materialDesign:HintAssist.Hint="Full Name"
+ Text="{Binding EditUser.FullName}"/>
 
                     <!-- USERNAME -->
-                    <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"  Margin="0,12,0,0"
                      materialDesign:HintAssist.Hint="Username"
                      Text="{Binding EditUser.Username}"/>
 
@@ -233,6 +237,11 @@
                      Margin="0,12,0,0"
                      materialDesign:HintAssist.Hint="Email"
                      Text="{Binding EditUser.Email}"/>
+                    <!-- MOBILE -->
+                    <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
+ Margin="0,12,0,0"
+ materialDesign:HintAssist.Hint="Mobile"
+ Text="{Binding EditUser.Mobile}"/>
 
                     <!-- PASSWORD (ADD MODE ONLY) -->
                     <Grid Margin="0,12,0,0"

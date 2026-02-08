@@ -29,6 +29,7 @@ namespace SchoolManagementSystem.Data.Repositories
                 result.TotalStudents = reader.GetInt32(1);
                 result.TotalTeachers = reader.GetInt32(2);
                 result.TotalClasses = reader.GetInt32(3);
+                result.TotalFees = reader.GetInt32(4);
             }
 
             // ===== RESULT SET 2 : RECENT ACTIVITIES =====

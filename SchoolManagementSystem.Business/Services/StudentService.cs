@@ -158,6 +158,18 @@ namespace SchoolManagementSystem.Business
         {
             await _studentRepository.UpdateAdmissionAsync(model);
         }
+        public async Task<List<StudentModel>> GetByClassAsync(int academicYearId, int classId)
+        {
+            return await _studentRepository.GetByClassAsync(academicYearId, classId);
+        }
+        public async Task AssignFeeAsync(int studentId,int academicYearId,decimal paidAmount,string paymentMode,DateTime paymentDate)
+        {
+            await _studentRepository.AssignFeeAsync( studentId,academicYearId,paidAmount,paymentMode, paymentDate);
+        }
 
+        public async Task<StudentFeeAssignmentModel> GetStudentFeeAssignmentAsync(int studentId)
+        {
+            return await _studentRepository.GetStudentFeeAssignmentAsync(studentId);
+        }
     }
 }

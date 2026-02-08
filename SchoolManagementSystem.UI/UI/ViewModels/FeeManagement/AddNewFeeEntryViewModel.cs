@@ -122,7 +122,7 @@ namespace SchoolManagementSystem.UI.UI.ViewModels.FeeManagement
                 IsActive = true
             };
 
-            await _feeService.SaveAsync(model);
+            await _feeService.SaveFeeHeadAsync(model);
 
             // Close dialog safely
             MaterialDesignThemes.Wpf.DialogHost.CloseDialogCommand.Execute(null, null);

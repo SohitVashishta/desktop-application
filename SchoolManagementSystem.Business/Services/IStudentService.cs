@@ -25,7 +25,9 @@ namespace SchoolManagementSystem.Business.Services
         Task BulkUploadAsync(List<StudentModel> students);
         Task SaveAdmissionAsync(StudentProfileVM model);
         Task UpdateAdmissionAsync(StudentAdmissionModel model);
-
+        Task<List<StudentModel>> GetByClassAsync(int academicYearId, int classId);
+        Task AssignFeeAsync(int studentId,int academicYearId,decimal paidAmount, string paymentMode, DateTime paymentDate );
+        Task<StudentFeeAssignmentModel> GetStudentFeeAssignmentAsync(int studentId);
     }
 
 }

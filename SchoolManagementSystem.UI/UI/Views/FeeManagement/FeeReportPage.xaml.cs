@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SchoolManagementSystem.UI.UI.ViewModels.FeeManagement;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,11 +20,12 @@ namespace SchoolManagementSystem.UI.UI.Views.FeeManagement
     /// <summary>
     /// Interaction logic for FeeReportPage.xaml
     /// </summary>
-    public partial class FeeReportPage : Page
+    public partial class FeeReportPage : UserControl
     {
         public FeeReportPage()
         {
             InitializeComponent();
+            DataContext = App.Services.GetRequiredService<ReceiptViewModel>();
         }
     }
 }

@@ -7,7 +7,7 @@ using SchoolManagementSystem.Models.Models;
 
 namespace SchoolManagementSystem.Business.Services
 {
-    public class NotificationService
+    public class NotificationService :INotificationService
     {
         private readonly SchoolDbContext _context;
 
@@ -42,6 +42,16 @@ namespace SchoolManagementSystem.Business.Services
 
             notification.IsRead = true;
             await _context.SaveChangesAsync();
+        }
+        public async Task SendSmsAsync(string mobile, string msg)
+        {
+            var client = new HttpClient();
+            await client.GetAsync($"https://sms-api/send?to={mobile}&msg={msg}");
+        }
+
+        public Task SendWhatsAppAsync(string mobile, string message)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -15,6 +15,10 @@ public class UserDialogViewModel : BaseViewModel
     public string Username { get; set; } = "";
     public string Email { get; set; } = "";
     public string Password { get; set; } = "";
+    public string FullName { get; set; } = "";
+    public string PasswordSalt { get; set; } = "";
+    public DateTime LastLoginOn { get; set; }= DateTime.Now;
+    public int RoleId { get; set; }
 
     public bool IsActive { get; set; } = true;
 
@@ -50,6 +54,9 @@ public class UserDialogViewModel : BaseViewModel
         var user = new User
         {
             Username = Username,
+            FullName = FullName,
+            PasswordSalt = Password,
+            LastLoginOn = LastLoginOn= DateTime.Now,
             Email = Email,
             Role = SelectedRole,
             IsActive = IsActive   // ✅ FROM UI

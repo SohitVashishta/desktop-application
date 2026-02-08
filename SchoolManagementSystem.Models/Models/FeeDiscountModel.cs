@@ -9,15 +9,19 @@ namespace SchoolManagementSystem.Models.Models
     public class FeeDiscountModel
     {
         public int FeeDiscountId { get; set; }
+
         public int AcademicYearId { get; set; }
         public int ClassId { get; set; }
+        public int? SectionId { get; set; }
+
         public int FeeHeadId { get; set; }
 
-        public decimal DiscountAmount { get; set; }
-        public bool IsPercentage { get; set; }   // true = %, false = flat
-        public string Reason { get; set; }
+        public bool IsPercentage { get; set; }
+        public decimal DiscountValue { get; set; }   // 🔑 replaces DiscountAmount
 
-        public DateTime CreatedOn { get; set; }
+        public string? Reason { get; set; }
+
+        public bool IsActive { get; set; }
     }
 
 }

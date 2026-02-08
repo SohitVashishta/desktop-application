@@ -38,10 +38,10 @@ namespace SchoolManagementSystem.UI.UI.ViewModels
             {
                 AcademicYearId = SelectedAcademicYearId,
                 ClassId = SelectedClassId,
-                Details = FeeDetails
+//FeesDetails = FeesDetails
             };
 
-            await _service.SaveAsync(model);
+            await _service.SaveFeeStructureAsync(model);
         }
 
     }

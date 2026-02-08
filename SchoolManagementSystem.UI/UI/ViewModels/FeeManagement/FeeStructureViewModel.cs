@@ -1,113 +1,261 @@
-﻿using SchoolManagementSystem.Business.Services;
+﻿using MaterialDesignThemes.Wpf;
+using SchoolManagementSystem.Business.Services;
 using SchoolManagementSystem.Models.Models;
 using SchoolManagementSystem.UI.UI.Helpers;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace SchoolManagementSystem.UI.UI.ViewModels.FeeManagement
 {
     public class FeeStructureViewModel : NotifyPropertyChangedBase
     {
-        public readonly IFeeService feeService;
-        public FeeStructureViewModel(IFeeService feeService)
+        private readonly IFeeService _feeService;
+        private readonly IClassService _classService;
+        private readonly ISectionService _sectionService;
+        private readonly IAcademicYearService _academicYearService;
+        private bool _feeHeadsLoaded;
+
+        public FeeStructureViewModel(
+            IClassService classService,
+            ISectionService sectionService,
+            IAcademicYearService academicYearService)
         {
-            this.feeService = feeService;
-            OpenAddFeeDialogCommand = new RelayCommand(OpenAddFeeDialog);
-            CloseAddFeeDialogCommand = new RelayCommand(CloseAddFeeDialog);
-           
-            RefreshKpis();
-            _ = LoadAsync();
+            _feeService = new FeeService();
+            _classService = classService;
+            _sectionService = sectionService;
+            _academicYearService = academicYearService;
+
+            AcademicYears = new ObservableCollection<AcademicYearModel>();
+            Classes = new ObservableCollection<ClassModel>();
+            Sections = new ObservableCollection<SectionModel>();
+            FeeHeadAmounts = new ObservableCollection<FeeHeadAmountVM>();
+
+            FeeTypes = new ObservableCollection<string>
+        {
+            "Monthly", "Quarterly", "Yearly", "OneTime"
+        };
+
+            SaveCommand = new RelayCommand(async () => await SaveAsync(null));
+
+            LoadAcademicYears();
+            LoadClasses();
+            LoadSections();
+            LoadFeeHeads();
         }
 
-        // ================= GRID =================
-        public ObservableCollection<FeeHeadModel> FeeDetails { get; }
-            = new ObservableCollection<FeeHeadModel>();
+        // ================= DROPDOWNS =================
+        public ObservableCollection<AcademicYearModel> AcademicYears { get; }
+        public ObservableCollection<ClassModel> Classes { get; }
+        public ObservableCollection<SectionModel> Sections { get; }
 
-        // ================= SEARCH =================
-        private string _searchText;
-        public string SearchText
+        public ObservableCollection<string> FeeTypes { get; }
+
+        private AcademicYearModel _selectedAcademicYear;
+        public AcademicYearModel SelectedAcademicYear
         {
-            get => _searchText;
-            set
-            {
-                _searchText = value;
-                OnPropertyChanged(nameof(SearchText));
+            get => _selectedAcademicYear;
+            set { _selectedAcademicYear = value; OnPropertyChanged(nameof(SelectedAcademicYear));
+                ReloadGrid();
             }
         }
 
-        /* ================= LOAD ================= */
-
-        // ================= LOAD =================
-        private async Task LoadAsync()
+        private ClassModel _selectedClass;
+        public ClassModel SelectedClass
         {
-            FeeDetails.Clear();
-
-            var fees = await feeService.GetAllAsync();
-
-            foreach (var fee in fees)
-                FeeDetails.Add(fee);
-
-            RefreshKpis();
-        }
-        // ================= KPI =================
-        public int TotalFeesCount => FeeDetails.Count;
-        public int MonthlyFeesCount => 0;
-        public int AnnualFeesCount => 0;
-        public int TotalClasses => 0;
-
-        // ================= DIALOG =================
-        private bool _isAddFeeDialogOpen;
-        public bool IsAddFeeDialogOpen
-        {
-            get => _isAddFeeDialogOpen;
-            set
-            {
-                _isAddFeeDialogOpen = value;
-                OnPropertyChanged(nameof(IsAddFeeDialogOpen));
+            get => _selectedClass;
+            set { _selectedClass = value; OnPropertyChanged(nameof(SelectedClass));
+                ReloadGrid();
             }
         }
-        public void AddFee(FeeHeadModel fee)
+
+        private SectionModel _selectedSection;
+        public SectionModel SelectedSection
         {
-            FeeDetails.Add(fee);
-
-            // refresh KPIs
-            OnPropertyChanged(nameof(TotalFeesCount));
-            OnPropertyChanged(nameof(MonthlyFeesCount));
-            OnPropertyChanged(nameof(AnnualFeesCount));
-
-            // close dialog
-
+            get => _selectedSection;
+            set { _selectedSection = value; OnPropertyChanged(nameof(SelectedSection)); }
         }
 
-        public void RefreshKpis()
+        private string _selectedFeeType;
+        public string SelectedFeeType
         {
-            OnPropertyChanged(nameof(TotalFeesCount));
-            OnPropertyChanged(nameof(MonthlyFeesCount));
-            OnPropertyChanged(nameof(AnnualFeesCount));
-            OnPropertyChanged(nameof(TotalClasses));
+            get => _selectedFeeType;
+            set { _selectedFeeType = value; OnPropertyChanged(nameof(SelectedFeeType)); ReloadGrid(); }
         }
 
-        public ICommand OpenAddFeeDialogCommand { get; }
-        public ICommand CloseAddFeeDialogCommand { get; }
+        // ================= FEE HEAD GRID =================
+        public ObservableCollection<FeeHeadAmountVM> FeeHeadAmounts { get; }
 
-        private void OpenAddFeeDialog()
+        public ICommand SaveCommand { get; }
+
+        // ================= LOADERS =================
+        private async void ReloadGrid()
         {
-            IsAddFeeDialogOpen = true;
+            if (SelectedAcademicYear == null ||
+                SelectedClass == null ||
+                string.IsNullOrEmpty(SelectedFeeType))
+                return;
+
+            _feeHeadsLoaded = false;
+
+            // Reload fee heads FIRST
+            FeeHeadAmounts.Clear();
+
+            var heads = await _feeService.GetFeeHeadsAsync(SelectedFeeType);
+            foreach (var h in heads)
+            {
+                FeeHeadAmounts.Add(new FeeHeadAmountVM
+                {
+                    FeeHeadId = h.FeeHeadId,
+                    FeeHeadName = h.FeeHeadName,
+                    Amount = 0
+                });
+            }
+
+            _feeHeadsLoaded = true;
+
+            // THEN load saved structure
+            TryLoadFeeStructure();
         }
 
-        private void CloseAddFeeDialog()
+        private async void LoadAcademicYears()
         {
-            IsAddFeeDialogOpen = false;
+            AcademicYears.Clear();
+            foreach (var y in await _academicYearService.GetAllAsync())
+                AcademicYears.Add(y);
         }
 
-        // ================= PAGINATION (PLACEHOLDER) =================
-        public ICommand PrevPageCommand => new RelayCommand(() => { });
-        public ICommand NextPageCommand => new RelayCommand(() => { });
-        public string PageInfo => "1 of 1";
-        public bool CanGoPrevious => false;
-        public bool CanGoNext => false;
+        private async void LoadClasses()
+        {
+            Classes.Clear();
+
+            var classes = (await _classService.GetClassesAsync())
+                .GroupBy(x => x.ClassName)
+                .Select(g => g.First())
+                .ToList();
+
+            foreach (var c in classes)
+                Classes.Add(c);
+        }
+
+
+        private async void LoadSections()
+        {
+            Sections.Clear();
+            foreach (var s in await _sectionService.GetAllAsync())
+                Sections.Add(s);
+        }
+
+        private async void LoadFeeHeads()
+        {
+            FeeHeadAmounts.Clear();
+
+            var heads = await _feeService.GetFeeHeadsAsync("OneTime");
+
+            foreach (var h in heads)
+            {
+                FeeHeadAmounts.Add(new FeeHeadAmountVM
+                {
+                    FeeHeadId = h.FeeHeadId,
+                    FeeHeadName = h.FeeHeadName,
+                    Amount = 0
+                });
+            }
+
+            _feeHeadsLoaded = true;
+
+            // 🔥 IMPORTANT: retry load after fee heads exist
+            TryLoadFeeStructure();
+        }
+
+
+        // ================= SAVE =================
+        private async Task SaveAsync(object parameter)
+        {
+            if (parameter is DataGrid grid)
+            {
+                grid.CommitEdit(DataGridEditingUnit.Cell, true);
+                grid.CommitEdit(DataGridEditingUnit.Row, true);
+            }
+
+            if (SelectedAcademicYear == null || SelectedClass == null)
+            {
+                MessageBox.Show("Please select Academic Year and Class.");
+                return;
+            }
+
+            if (!FeeHeadAmounts.Any(x => x.Amount > 0))
+            {
+                MessageBox.Show("Please enter at least one fee amount.");
+                return;
+            }
+
+            var model = new FeeStructureModel
+            {
+                AcademicYearId = SelectedAcademicYear.AcademicYearId,
+                ClassId = SelectedClass.ClassId,
+                SectionId = SelectedSection?.SectionId,
+                FeeType = SelectedFeeType,
+                FeesDetails = FeeHeadAmounts
+                    .Where(x => x.Amount > 0)
+                    .Select(x => new FeeStructureDetailModel
+                    {
+                        FeeHeadId = x.FeeHeadId,
+                        Amount = x.Amount
+                    }).ToList()
+            };
+
+            await _feeService.SaveFeeStructureAsync(model);
+
+            MessageBox.Show("Fee Structure saved successfully.");
+            
+          
+        }
+        private void LoadSavedStructure(List<FeeStructureDetailModel> saved)
+        {
+            foreach (var item in FeeHeadAmounts)
+            {
+                var match = saved.FirstOrDefault(x => x.FeeHeadId == item.FeeHeadId);
+                item.Amount = match?.Amount ?? 0;
+            }
+        }
+        private void LoadEmptyStructure()
+        {
+            foreach (var item in FeeHeadAmounts)
+            {
+                item.Amount = 0;
+            }
+        }
+
+        private async void TryLoadFeeStructure()
+        {
+            if (!_feeHeadsLoaded)
+                return;
+
+            if (SelectedAcademicYear == null ||
+                SelectedClass == null ||
+                string.IsNullOrEmpty(SelectedFeeType))
+                return;
+
+            var saved = await _feeService.GetFeeStructureAsync(
+                SelectedAcademicYear.AcademicYearId,
+                SelectedClass.ClassId,
+                SelectedFeeType
+            );
+
+            if (saved.Any())
+                LoadSavedStructure(saved);
+            else
+                LoadEmptyStructure();
+        }
+
+
+
+
     }
 
-    // ================= GRID ROW VM =================
-   
+
+
 }

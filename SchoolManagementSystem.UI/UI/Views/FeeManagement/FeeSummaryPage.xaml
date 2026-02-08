@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="SchoolManagementSystem.UI.UI.Views.FeeManagement.FeeSummaryPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Margin="16">
+        <StackPanel>
+
+            <TextBlock Text="Fee Summary"
+                       FontSize="18"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,16"/>
+
+            <DataGrid ItemsSource="{Binding SummaryRows}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Period" Binding="{Binding Period}" Width="*"/>
+                    <DataGridTextColumn Header="Collected" Binding="{Binding Collected}" Width="150"/>
+                    <DataGridTextColumn Header="Discount" Binding="{Binding Discount}" Width="150"/>
+                    <DataGridTextColumn Header="Pending" Binding="{Binding Pending}" Width="150"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </StackPanel>
+    </Grid>
+</UserControl>
