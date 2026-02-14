@@ -13,6 +13,7 @@ using SchoolManagementSystem.UI.UI.ViewModels.Attendances;
 using SchoolManagementSystem.UI.UI.ViewModels.Dashboard;
 using SchoolManagementSystem.UI.UI.ViewModels.FeeManagement;
 using SchoolManagementSystem.UI.UI.ViewModels.Import;
+using SchoolManagementSystem.UI.UI.ViewModels.Library;
 using SchoolManagementSystem.UI.UI.ViewModels.StudentManagement;
 using SchoolManagementSystem.UI.UI.ViewModels.StudentManagement.Academic;
 using SchoolManagementSystem.UI.UI.Views.FeeManagement;
@@ -77,6 +78,8 @@ namespace SchoolManagementSystem.UI
             services.AddScoped<IAdminDashboardRepository, AdminDashboardRepository>();
             services.AddScoped<IStudentAdmissionRepository, StudentAdmissionRepository>();
             services.AddScoped<IFeeRepository, FeeRepository>();
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IBookTransactionRepository, BookTransactionRepository>();
 
 
 
@@ -107,6 +110,8 @@ namespace SchoolManagementSystem.UI
             services.AddTransient<IAdminDashboardService, AdminDashboardService>();
             services.AddScoped<IStudentAdmissionService, StudentAdmissionService>();
             services.AddScoped<IFeeService, FeeService>();
+            services.AddScoped<IBookService, BookService>();
+            services.AddScoped<IBookTransactionService, BookTransactionService>();
 
             // ================= VIEWMODELS =================
             services.AddTransient<UserManagementViewModel>();
@@ -139,6 +144,8 @@ namespace SchoolManagementSystem.UI
             services.AddTransient<ReceiptViewModel>();
             services.AddTransient<StudentFeeAssignmentViewModel>();
             services.AddTransient<StudentFeeAssignViewModel>();
+            services.AddTransient<BookInventoryViewModel>();
+            services.AddTransient<IssueReturnHistoryViewModel>();
 
         }
 

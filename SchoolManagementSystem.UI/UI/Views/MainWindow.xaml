@@ -588,17 +588,17 @@ Click="ResetPasswords_Click"/>
                                 <Button Content="Book Inventory"
                  Tag="Bookshelf"
                  Style="{StaticResource SubMenuButtonStyle}"
-                 Click="FeeManagement_Click"/>
+                 Click="BookInventory_Click"/>
 
                                 <Button Content="Issue / Return History"
                  Tag="BookArrowLeftRight"
                  Style="{StaticResource SubMenuButtonStyle}"
-                 Click="AssignRoles_Click"/>
+                 Click="IssueReturnHistory_Click"/>
 
                                 <Button Content="Overdue Tracking"
                  Tag="ClockAlertOutline"
                  Style="{StaticResource SubMenuButtonStyle}"
-                 Click="ResetPasswords_Click"/>
+                 Click="OverdueTracking_Click"/>
 
 
                             </StackPanel>

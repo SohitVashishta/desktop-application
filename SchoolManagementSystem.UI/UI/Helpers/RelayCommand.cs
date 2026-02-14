@@ -63,6 +63,7 @@ namespace SchoolManagementSystem.UI.UI.Helpers
     }
 
     // ================= GENERIC RELAY COMMAND =================
+    // ================= GENERIC RELAY COMMAND =================
     public class RelayCommand<T> : ICommand
     {
         private readonly Action<T> _execute;
@@ -70,28 +71,39 @@ namespace SchoolManagementSystem.UI.UI.Helpers
 
         public RelayCommand(Action<T> execute, Func<T, bool>? canExecute = null)
         {
-            _execute = execute;
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute;
         }
 
         public bool CanExecute(object? parameter)
         {
-            if (parameter is T value)
-                return _canExecute?.Invoke(value) ?? true;
+            if (_canExecute == null)
+                return true;
 
-            return false;
+            if (parameter == null && typeof(T).IsValueType)
+                return _canExecute(default!);
+
+            return parameter is T value && _canExecute(value);
         }
 
         public void Execute(object? parameter)
         {
+            if (parameter == null && typeof(T).IsValueType)
+            {
+                _execute(default!);
+                return;
+            }
+
             if (parameter is T value)
                 _execute(value);
         }
 
-        public event EventHandler? CanExecuteChanged
+        public event EventHandler? CanExecuteChanged;
+
+        public void RaiseCanExecuteChanged()
         {
-            add { }
-            remove { }
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
+
 }

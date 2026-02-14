@@ -53,6 +53,21 @@
     <Compile Update="UI\Views\FeeManagement\StudentLedgerPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UI\Views\Library\BookDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Library\BookInventoryPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Library\IssueBookDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Library\IssueReturnHistoryPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UI\Views\Library\OverdueTrackingPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UI\Views\StudentManagement\Academic\AcademicYearMasterPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

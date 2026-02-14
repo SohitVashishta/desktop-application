@@ -5,6 +5,7 @@ using SchoolManagementSystem.UI.UI.Views.Admin;
 using SchoolManagementSystem.UI.UI.Views.Attendance;
 using SchoolManagementSystem.UI.UI.Views.Dashboard;
 using SchoolManagementSystem.UI.UI.Views.FeeManagement;
+using SchoolManagementSystem.UI.UI.Views.Library;
 using SchoolManagementSystem.UI.UI.Views.Perent;
 using SchoolManagementSystem.UI.UI.Views.StudentManagement;
 using SchoolManagementSystem.UI.UI.Views.StudentManagement.Academic;
@@ -155,7 +156,15 @@ namespace SchoolManagementSystem.UI.UI.Views
         private void DocumentUploads_Click(object sender, RoutedEventArgs e)
         => Navigate(new StudentDocumentsPage(), "Document Uploads");
 
+        /*===================Library Management====================*/
+        private void BookInventory_Click(object sender, RoutedEventArgs e)
+            => Navigate(new BookInventoryPage(), "Book Inventory");
 
+        private void IssueReturnHistory_Click(object sender, RoutedEventArgs e)
+            => Navigate(new IssueReturnHistoryPage(), "Issue/Return History");
+
+        private void OverdueTracking_Click(object sender, RoutedEventArgs e)
+           => Navigate(new OverdueTrackingPage(), "Overdue Tracking");
         /* ================= LOGOUT ================= */
 
         private void Logout_Click(object sender, RoutedEventArgs e)
